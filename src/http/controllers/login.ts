@@ -4,7 +4,7 @@ import { FirebaseService } from '../../services/firebase.service';
 import { JwtService } from '../../services/jwt.service';
 import { NoderedTokenService } from '../../services/nodered-token.service';
 import { UserRepository } from '../../services/user.repository';
-import { delay } from '../../util';
+// import { delay } from '../../util';
 import { Http } from '../decorators/http';
 import { Param } from '../decorators/param';
 import { Controller } from './controller';
@@ -13,7 +13,7 @@ import { Controller } from './controller';
 export class LoginController extends Controller {
 
     constructor(
-        @Inject(UserRepository)
+        @Inject('UserRepository')
         private userRepository: Lazy<UserRepository>,
         @Inject(JwtService)
         private jwtService: Lazy<JwtService>,
@@ -30,7 +30,10 @@ export class LoginController extends Controller {
     async getLoginTemplate(
         @Param.queryString() query: string,
     ) {
-        return await this.renderTemplate('login', { query: query ? '?' + query : '' });
+        return await this.renderTemplate('login', {
+            query: query ? '?' + query : '',
+            authClientConfig: JSON.stringify(config.authClientConfig)
+        });
     }
 
     @Http.post()
@@ -39,10 +42,17 @@ export class LoginController extends Controller {
         @Param.fromQuery('redirect') redirect: string,
         @Param.queryString() query: string,
     ) {
-        await delay(500);
+        // await delay(500);
+        // console.log('firebaseToken', firebaseToken);
+        // console.log('redirect', redirect);
+        // console.log('query', query);
+        // debugger;
         try {
             const decoded = await this.firebase.value.verifyToken(firebaseToken);
-            await this.userRepository.value.createUserRecordIfNotExists(decoded.uid);
+            const ur = this.userRepository.value;
+            // debugger;
+            await ur.incrementNoderedTokenVersion(decoded.uid);
+            // debugger;
             const token: UserToken = {
                 uid: decoded.uid,
                 exp: Math.round((new Date().getTime() + 3600000) / 1000),

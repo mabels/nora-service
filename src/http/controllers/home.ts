@@ -10,7 +10,7 @@ import { Controller } from './controller';
 export class HomeController extends Controller {
 
     constructor(
-        @Inject(UserRepository) private userRepo: Lazy<UserRepository>,
+        @Inject('UserRepository') private userRepo: Lazy<UserRepository>,
         @Inject(NoderedTokenService) private nrtokenService: Lazy<NoderedTokenService>,
         @Inject(JwtService) private jwtService: Lazy<JwtService>,
     ) {

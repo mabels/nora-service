@@ -13,7 +13,6 @@ export class PostgressService {
     });
 
     async query<T = any>(query: string, ...values: any[]): Promise<T[]> {
-        const result = await this.pool.query(query, values);
-        return result.rows;
+        return this.pool.query(query, values) as unknown as Promise<T[]>;
     }
 }

@@ -1,5 +1,5 @@
 export const isLocal = process.env.NODE_ENV !== 'production';
-const local = isLocal ? require('./config_local') : {};
+const local = isLocal ? require('../config_local') : {};
 
 export const port = isLocal ? local.port : process.env.PORT;
 export const oauthClientId = isLocal ? local.oauthClientId : process.env.OAUTH_ID;
@@ -12,3 +12,6 @@ export const postgressConnectionString = isLocal ? local.postgressConnectionStri
 export const serviceAccountIssuer = isLocal ? local.serviceAccountIssuer : process.env.SERVICE_ACCOUNT_ISSUER;
 export const serviceAccountPrivateKey = isLocal ? local.serviceAccountPrivateKey : process.env.SERVICE_ACCOUNT_KEY;
 export const userAdminUid = isLocal ? local.userAdminUid : process.env.USER_ADMIN_UID;
+export const storageBackend = isLocal ? local.storageBackend : process.env.STORAGE_BACKEND;
+export const authClientConfig = isLocal ? local.authClientConfig : JSON.parse(process.env.AUTH_CLIENT_CONFIG);
+
