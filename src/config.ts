@@ -13,5 +13,6 @@ export const serviceAccountIssuer = isLocal ? local.serviceAccountIssuer : proce
 export const serviceAccountPrivateKey = isLocal ? local.serviceAccountPrivateKey : process.env.SERVICE_ACCOUNT_KEY;
 export const userAdminUid = isLocal ? local.userAdminUid : process.env.USER_ADMIN_UID;
 export const storageBackend = isLocal ? local.storageBackend : process.env.STORAGE_BACKEND;
-export const authClientConfig = isLocal ? local.authClientConfig : JSON.parse(process.env.AUTH_CLIENT_CONFIG);
+export const authClientConfig = isLocal ? local.authClientConfig :
+  process.env.AUTH_CLIENT_CONFIG && JSON.parse(process.env.AUTH_CLIENT_CONFIG);
 

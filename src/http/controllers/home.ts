@@ -20,6 +20,7 @@ export class HomeController extends Controller {
     @Http.get()
     async get() {
         if (!this.request.token) {
+            // const my = this.request.get('baseUrl');
             return this.response.redirect('/login');
         }
 

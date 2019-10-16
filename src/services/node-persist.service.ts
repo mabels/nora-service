@@ -1,9 +1,10 @@
 // import { Pool } from 'pg';
 // import { postgressConnectionString } from '../config';
 import * as Storage from 'node-persist';
-import { User } from './user.repository';
+import { PersistService } from './persist-service';
+import { User } from './user';
 
-export class NodePersistService {
+export class NodePersistService implements PersistService {
 
   private initDone = false;
   private async storage() {

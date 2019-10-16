@@ -17,9 +17,14 @@
     <script src="https://www.gstatic.com/firebasejs/6.4.2/firebase-auth.js"></script>
     <script src="https://cdn.firebase.com/libs/firebaseui/4.1.0/firebaseui.js"></script>
 
+
+    {{scriptFireBaseInitJs}}
+
     <script>
         var config = {{authClientConfig}};
-        firebase.initializeApp(config);
+        if (config) {
+            firebase.initializeApp(config);
+        }
 
         var uiConfig = {
             signInOptions: [
@@ -49,7 +54,7 @@
 
 <body class="text-center p-3" style="background-color:#f5f5f5">
     <div class="container card mt-5 pb-3 pt-4" style="max-width: 450px">
-        <form id="loginForm" method="post" action="/login{{query}}">
+        <form id="loginForm" method="post" action="{{loginFormUrl}}">
             <h1 class="h3 mb-3 font-weight-normal"><strong>NO</strong>de-<strong>R</strong>ed home <strong>A</strong>utomation</h1>
             <h1 class="h4 mb-3 font-weight-normal">Select sign in method</h1>
             <input type="hidden" id="inputToken" name="token">

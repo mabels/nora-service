@@ -11,7 +11,7 @@ import { Http } from './decorators/http';
 import { containerMiddleware, destroyContainerMiddleware } from './middlewares/container';
 import { exceptionMiddleware } from './middlewares/exception';
 
-const app = express();
+const app = express.Router();
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));

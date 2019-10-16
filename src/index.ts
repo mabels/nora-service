@@ -6,6 +6,11 @@ import { container } from './container';
 import { app } from './http/app';
 import { initWebSocketListener } from './socket';
 
-const server = createServer(app);
+
+import * as express from 'express';
+const base = express();
+base.use(app);
+
+const server = createServer(base);
 initWebSocketListener(server, container);
 server.listen(port, () => console.log(`listening on ${port}`));

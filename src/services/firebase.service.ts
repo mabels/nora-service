@@ -4,13 +4,19 @@ import { projectId, serviceAccountIssuer, serviceAccountPrivateKey } from '../co
 export class FirebaseService {
 
     constructor() {
-        admin.initializeApp({
-            credential: admin.credential.cert({
-                projectId: projectId,
-                clientEmail: serviceAccountIssuer,
-                privateKey: serviceAccountPrivateKey,
-            }),
-        });
+        if (typeof serviceAccountPrivateKey === 'string') {
+            console.log(`FireBaseService:explizit`);
+            admin.initializeApp({
+                credential: admin.credential.cert({
+                    projectId: projectId,
+                    clientEmail: serviceAccountIssuer,
+                    privateKey: serviceAccountPrivateKey,
+                })
+            });
+        } else {
+            console.log(`FireBaseService:implizit`);
+            admin.initializeApp();
+        }
     }
 
     async verifyToken(token: string) {

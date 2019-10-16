@@ -1,4 +1,6 @@
 import { Inject, Lazy } from '@andrei-tatar/ts-ioc';
+// import * as admin from 'firebase-admin';
+import * as functions from 'firebase-functions';
 import * as config from '../../config';
 import { FirebaseService } from '../../services/firebase.service';
 import { JwtService } from '../../services/jwt.service';
@@ -30,9 +32,20 @@ export class LoginController extends Controller {
     async getLoginTemplate(
         @Param.queryString() query: string,
     ) {
+        const fbConfig = functions.config();
+        // console.log(`WTF:`, fbConfig, config);
         return await this.renderTemplate('login', {
-            query: query ? '?' + query : '',
-            authClientConfig: JSON.stringify(config.authClientConfig)
+            loginFormUrl: `${this.redirectUrl('/login')}${query ? '?' + query : ''}`,
+            authClientConfig:
+                typeof config.authClientConfig === 'object' ?
+                JSON.stringify(config.authClientConfig) :
+                'undefined',
+            scriptFireBaseInitJs:
+                (typeof fbConfig.nora_service === 'object' &&
+                 typeof fbConfig.nora_service.firebase_init_js_url === 'string') ?
+                 `<script src="${fbConfig.nora_service.firebase_init_js_url}"></script>`
+                 :
+                 '',
         });
     }
 
