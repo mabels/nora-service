@@ -77,13 +77,6 @@ export class Http {
             const handler = this.requestHandler.bind(this, async (req: Request) => {
                 const controllerInstance = resolveController(req, controller);
                 const params = await Promise.all(paramsFactory(req));
-                const old = controllerInstance.response.redirect;
-                // annotate base redirect base method
-                controllerInstance.response.redirect = (url) => {
-                    return old.apply(controllerInstance.response, [
-                        controllerInstance.redirectUrl.apply(controllerInstance, [url])
-                    ]);
-                };
                 const result = await controllerInstance[methodName].apply(controllerInstance, params);
                 return result;
             });

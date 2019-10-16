@@ -1,4 +1,4 @@
-import { Injectable, Inject, Lazy } from '@andrei-tatar/ts-ioc';
+import { Inject, Lazy } from '@andrei-tatar/ts-ioc';
 import { JwtService } from './jwt.service';
 import { UserRepository } from './user.repository';
 
@@ -8,11 +8,11 @@ interface NoderedToken {
     readonly version: number;
 }
 
-@Injectable()
 export class NoderedTokenService {
     constructor(
-        private jwtService: JwtService,
-        @Inject('UserRepository')
+        @Inject(JwtService)
+        private jwtService: Lazy<JwtService>,
+        @Inject(UserRepository)
         private userRepo: Lazy<UserRepository>
     ) {
     }
@@ -23,11 +23,11 @@ export class NoderedTokenService {
             scope: 'node-red',
             version: await this.userRepo.value.getNodeRedTokenVersion(uid),
         };
-        return this.jwtService.sign(token);
+        return this.jwtService.value.sign(token);
     }
 
     async validateToken(token: string) {
-        const decoded = await this.jwtService.verify<NoderedToken>(token);
+        const decoded = await this.jwtService.value.verify<NoderedToken>(token);
         if (decoded.scope !== 'node-red') {
             throw new Error('invalid scope');
         }

@@ -1,25 +1,40 @@
+import { Inject } from '@andrei-tatar/ts-ioc';
 import * as admin from 'firebase-admin';
-import { projectId, serviceAccountIssuer, serviceAccountPrivateKey } from '../config';
+import { Config } from './config';
+import { ConfigService } from './config.service';
 
 export class FirebaseService {
 
-    constructor() {
-        if (typeof serviceAccountPrivateKey === 'string') {
-            console.log(`FireBaseService:explizit`);
-            admin.initializeApp({
-                credential: admin.credential.cert({
-                    projectId: projectId,
-                    clientEmail: serviceAccountIssuer,
-                    privateKey: serviceAccountPrivateKey,
-                })
-            });
-        } else {
-            console.log(`FireBaseService:implizit`);
-            admin.initializeApp();
+    private _config?: Config;
+
+    constructor(
+        @Inject('ConfigService')
+        private readonly config: ConfigService
+    ) {
+    }
+
+    async getConfig() {
+        if (!this._config) {
+            this._config = await this.config.init();
+            if (typeof this._config.serviceAccountPrivateKey === 'string') {
+                console.log(`FireBaseService:fromConfig`);
+                admin.initializeApp({
+                    credential: admin.credential.cert({
+                        projectId: this._config.projectId,
+                        clientEmail: this._config.serviceAccountIssuer,
+                        privateKey: this._config.serviceAccountPrivateKey,
+                    })
+                });
+            } else {
+                console.log(`FireBaseService:fromGoogle`);
+                admin.initializeApp();
+            }
         }
+        return this._config;
     }
 
     async verifyToken(token: string) {
+        await this.getConfig();
         const decoded = await admin.auth().verifyIdToken(token);
         if (decoded.firebase.sign_in_provider === 'password') {
             if (decoded.uid !== 'SaZLefUTKJYSPTbb2PrZRsU0Sr33') {

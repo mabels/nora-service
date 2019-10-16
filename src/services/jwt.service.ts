@@ -1,15 +1,21 @@
+import { Inject } from '@andrei-tatar/ts-ioc';
 import { sign, SignOptions, verify, VerifyOptions } from 'jsonwebtoken';
-import { jwtSecret } from '../config';
+import { ConfigService } from './config.service';
 
 export class JwtService {
-    sign(payload: any, key = jwtSecret, options?: SignOptions) {
-        return new Promise<string>((resolve, reject) => sign(payload, key, options, (err, token) => {
+    @Inject('ConfigService')
+    private configSrv: ConfigService;
+
+    sign(payload: any, options?: SignOptions) {
+        return new Promise<string>(async (resolve, reject) =>
+        sign(payload, (await this.configSrv.init()).jwtSecret, options, (err, token) => {
             if (err) { reject(err); } else { resolve(token); }
         }));
     }
 
     verify<T = any>(token: string, options?: VerifyOptions) {
-        return new Promise<T>((resolve, reject) => verify(token, jwtSecret, options, (err, decoded) => {
+        return new Promise<T>(async (resolve, reject) =>
+            verify(token, (await this.configSrv.init()).jwtSecret, options, (err, decoded) => {
             if (err) { reject(err); } else { resolve(decoded as any); }
         }));
     }

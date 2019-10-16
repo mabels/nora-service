@@ -5,9 +5,14 @@ import * as path from 'path';
 import { join } from 'path';
 
 import { Inject } from '@andrei-tatar/ts-ioc';
+import { Config } from '../../services/config';
+import { ConfigService } from '../../services/config.service';
 
 export abstract class Controller {
     private static templateCache: _.Dictionary<Promise<string>> = {};
+
+    @Inject('ConfigService')
+    public readonly configSrv: ConfigService;
 
     @Inject('response')
     public readonly response: Response;
@@ -29,18 +34,32 @@ export abstract class Controller {
         return data ? template.replace(/\{\{(\w+)\}\}/mg, (_, id) => data[id] || '') : template;
     }
 
-    public redirectUrl(url: string): string {
+    public async config(): Promise<Config> {
+        return await this.configSrv.init();
+    }
+
+
+    public async redirectUrl(url: string): Promise<string> {
         let absPath = url;
-        if (typeof this.request.baseUrl === 'string' &&
-            this.request.baseUrl.length &&
-            !url.startsWith(this.request.baseUrl)) {
-        // namespace of express
-            absPath = path.posix.join(this.request.baseUrl, url);
+        const baseUrl = (await this.config()).baseUrl;
+        if (baseUrl) {
+            absPath = path.posix.join(baseUrl, url);
         }
+        // node 8 gcloud functions
         if (typeof process.env.ENTRY_POINT === 'string') {
             absPath = path.posix.join(`/${process.env.ENTRY_POINT}`, url);
         }
-        // console.log('redirect:', absPath, process.env.ENTRY_POINT);
+        // node 10 gcloud functions
+        if (typeof process.env.FUNCTION_TARGET === 'string') {
+            absPath = path.posix.join(`/${process.env.FUNCTION_TARGET}`, url);
+        }
+        console.log('redirectUrl:', url, absPath,
+            baseUrl,
+            JSON.stringify(process.env));
         return absPath;
+    }
+
+    public async redirect(url: string) {
+        this.response.redirect(await this.redirectUrl(url));
     }
 }

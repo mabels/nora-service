@@ -1,7 +1,13 @@
 
-import { Injectable } from '@andrei-tatar/ts-ioc';
+import { Inject } from '@andrei-tatar/ts-ioc';
+import { getClassFactory } from '@andrei-tatar/ts-ioc/inject';
 import { Subject } from 'rxjs';
+import { container } from '../container';
+import { CloudstoreService } from './cloudstore.service';
+import { ConfigService } from './config.service';
+import { NodePersistService } from './node-persist.service';
 import { PersistService } from './persist-service';
+import { PostgressService } from './postgress.service';
 import { User } from './user';
 // import { Injectable } from '@andrei-tatar/ts-ioc';
 
@@ -16,28 +22,54 @@ import { User } from './user';
 //   incrementNoderedTokenVersion(uid: string): Promise<void>;
 // }
 
-@Injectable()
 export class UserRepository  {
     private userBlocked = new Subject<string>();
 
     readonly userBlocked$ = this.userBlocked.asObservable();
 
     constructor(
-        private persist: PersistService,
+        @Inject('ConfigService')
+        private readonly configSrv: ConfigService
     ) {
-      console.log('UserRepository', persist);
+    }
+
+    private _persistSrv?: PersistService;
+    async persistSrv(): Promise<PersistService> {
+        if (!this._persistSrv) {
+            let cfactory: any;
+            let sb = (await this.configSrv.init()).storageBackend;
+            if (!sb) {
+            sb = 'cloudstore';
+            }
+            switch (sb) {
+            case 'cloudstore':
+                cfactory = getClassFactory(CloudstoreService);
+                break;
+            case 'node-persist':
+                cfactory = getClassFactory(NodePersistService);
+                break;
+            case 'postgres':
+            default:
+                cfactory = getClassFactory(PostgressService);
+                break;
+            }
+            this._persistSrv = cfactory(container);
+        }
+        return this._persistSrv;
     }
 
     async createUserRecordIfNotExists(uid: string) {
+        const persist = await this.persistSrv();
         try {
-            return await this.persist.getUid(uid);
+            return await persist.getUid(uid);
         } catch (e) {
-            return await this.persist.setUid(uid);
+            return await persist.setUid(uid);
         }
     }
 
     async getUser(uid: string) {
-        return await this.persist.getUid(uid);
+        const persist = await this.persistSrv();
+        return await persist.getUid(uid);
 //        const [user] = await this.nodePersist.query<User>(`SELECT * FROM appuser WHERE uid = $1`, uid);
 //        if (!user) { throw new Error('user does not exist'); }
     }
@@ -71,10 +103,11 @@ export class UserRepository  {
     }
 
     async incrementNoderedTokenVersion(uid: string): Promise<User> {
+        const persist = await this.persistSrv();
         const user = await this.getUser(uid);
-        return user ? this.persist.setUid(uid, {
+        return user ? persist.setUid(uid, {
             ...user,
             noderedversion: user.noderedversion + 1
-        }) : this.persist.setUid(uid);
+        }) : persist.setUid(uid);
     }
 }

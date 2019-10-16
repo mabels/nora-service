@@ -1,16 +1,9 @@
 import 'reflect-metadata';
 
-import { createServer } from 'http';
-import { port } from './config';
+import { getClassFactory } from '@andrei-tatar/ts-ioc/inject';
 import { container } from './container';
-import { app } from './http/app';
-import { initWebSocketListener } from './socket';
+import { MainService } from './services/main.service';
 
-
-import * as express from 'express';
-const base = express();
-base.use(app);
-
-const server = createServer(base);
-initWebSocketListener(server, container);
-server.listen(port, () => console.log(`listening on ${port}`));
+(async function() {
+  await getClassFactory(MainService)(container).start();
+})();

@@ -1,8 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
-import { jwtCookieName } from '../../config';
+import { Config } from '../../services/config';
 import { JwtService } from '../../services/jwt.service';
 import { UserToken } from '../controllers/login';
-import { NotAuthorizedError } from './exception';
 
 declare module 'express' {
     export interface Request {
@@ -10,10 +9,10 @@ declare module 'express' {
     }
 }
 
-export function authMiddleware() {
+export function authMiddleware(config: Config) {
     return async (req: Request, _res: Response, next: NextFunction) => {
         try {
-            let authToken = req.cookies[jwtCookieName];
+            let authToken = req.cookies[config.jwtCookieName];
             if (!authToken) {
                 const authHeader = req.header('Authorization');
                 if (authHeader) {
@@ -35,11 +34,14 @@ export function authMiddleware() {
     };
 }
 
-export function authFilter({ scope, uid, redirectToLogin = false }: { scope?: string, uid?: string, redirectToLogin?: boolean } = {}) {
-    return () => (req: Request, res: Response, next: NextFunction) => {
+export function authFilter({ redirectToLogin = false }: { scope?: string, redirectToLogin?: boolean } = {}) {
+    return () => async (req: Request, res: Response, next: NextFunction) => {
+        throw Error('needs help');
+        /*
+        const config: Config = undefined;
         if (!req.token ||
-            scope && req.token.scope !== scope ||
-            uid !== void 0 && req.token.uid !== uid) {
+            config.appScope && req.token.scope !== config.appScope ||
+            config.uid !== void 0 && req.token.uid !== uid) {
             if (redirectToLogin) {
                 const redirect = Buffer.from(req.originalUrl).toString('base64');
                 return res.redirect('/login?redirect=' + redirect);
@@ -48,6 +50,7 @@ export function authFilter({ scope, uid, redirectToLogin = false }: { scope?: st
             }
         }
         next();
+        */
     };
 }
 

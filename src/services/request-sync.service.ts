@@ -1,8 +1,8 @@
 import fetch from 'node-fetch';
 
 import { Inject } from '@andrei-tatar/ts-ioc';
-import { googleProjectApiKey } from '../config';
 import { delay } from '../util';
+import { ConfigService } from './config.service';
 import { UserRepository } from './user.repository';
 
 export class RequestSyncService {
@@ -10,13 +10,17 @@ export class RequestSyncService {
     constructor(
         @Inject('uid')
         private uid: string,
+        @Inject('ConfigService')
+        private configSrv: ConfigService,
         private userRepo: UserRepository,
     ) {
     }
 
     async requestSync() {
         if (!await this.userRepo.isUserLinked(this.uid)) { return; }
-
+        const {
+            googleProjectApiKey
+        } = await this.configSrv.init();
         while (true) {
             const response = await fetch(`https://homegraph.googleapis.com/v1/devices:requestSync?key=${googleProjectApiKey}`, {
                 method: 'post',

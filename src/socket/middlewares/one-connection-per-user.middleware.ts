@@ -1,7 +1,7 @@
 import { Socket } from 'socket.io';
-import { userAdminUid } from '../../config';
+import { Config } from '../../services/config';
 
-export function oneConnectionPerUserMiddleware() {
+export function oneConnectionPerUserMiddleware(config: Config) {
     const connectedUsers: {
         [userId: string]: {
             [group: string]: boolean;
@@ -18,7 +18,7 @@ export function oneConnectionPerUserMiddleware() {
                 userConnections = connectedUsers[userId] = {};
             }
 
-            if (Object.keys(userConnections).length >= 3 && userId !== userAdminUid) {
+            if (Object.keys(userConnections).length >= 3 && userId !== config.userAdminUid) {
                 throw new Error('too many active connections');
             }
             if (userConnections[group]) {

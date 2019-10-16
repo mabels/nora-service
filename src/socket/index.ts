@@ -2,13 +2,14 @@ import { Server } from 'http';
 import * as createSocketServer from 'socket.io';
 
 import { Container } from '@andrei-tatar/ts-ioc';
+import { Config } from '../services/config';
 import { ConnectionHandler } from './connectionhandler';
 import { registerBindedEvents } from './decorators/bindevent';
 import { authenticationMiddleware } from './middlewares/authentication.middleware';
 import { childContainerMiddleware } from './middlewares/childcontainer.middleware';
 import { oneConnectionPerUserMiddleware } from './middlewares/one-connection-per-user.middleware';
 
-export function initWebSocketListener(server: Server, container: Container) {
+export function initWebSocketListener(server: Server, container: Container, config: Config) {
     const io = createSocketServer(server, {
         serveClient: false,
         pingInterval: 10000,
@@ -16,7 +17,7 @@ export function initWebSocketListener(server: Server, container: Container) {
     });
     io.use(childContainerMiddleware(container));
     io.use(authenticationMiddleware());
-    io.use(oneConnectionPerUserMiddleware());
+    io.use(oneConnectionPerUserMiddleware(config));
     io.on('connect', socket => {
         try {
             const instance = socket.container.resolve(ConnectionHandler);

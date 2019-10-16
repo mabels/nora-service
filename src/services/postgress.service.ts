@@ -1,21 +1,31 @@
+import { Inject } from '@andrei-tatar/ts-ioc';
 import { Pool } from 'pg';
-import { postgressConnectionString } from '../config';
+import { ConfigService } from './config.service';
 import { PersistService } from './persist-service';
 import { User } from './user';
 
 export class PostgressService implements PersistService {
   readonly HOUR = 3600000;
 
-  private pool = new Pool({
-    connectionString: postgressConnectionString,
-    ssl: true,
-    max: 5,
-    idleTimeoutMillis: 4 * this.HOUR,
-    connectionTimeoutMillis: 2000,
-  });
+  @Inject('ConfigService')
+  private readonly configSrv: ConfigService;
+
+  private _pool?: Pool;
+  private async pool() {
+    if (!this._pool) {
+      this._pool = new Pool({
+      connectionString: (await this.configSrv.init()).postgressConnectionString,
+      ssl: true,
+      max: 5,
+      idleTimeoutMillis: 4 * this.HOUR,
+      connectionTimeoutMillis: 2000,
+    });
+    }
+    return this._pool;
+  }
 
   async query<T = any>(query: string, ...values: any[]): Promise<T[]> {
-    return (this.pool.query(query, values) as unknown) as Promise<T[]>;
+    return (await this.pool()).query(query, values) as unknown as Promise<T[]>;
   }
 
   async setUid(
