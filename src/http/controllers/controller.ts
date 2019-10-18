@@ -53,9 +53,9 @@ export abstract class Controller {
         if (typeof process.env.FUNCTION_TARGET === 'string') {
             absPath = path.posix.join(`/${process.env.FUNCTION_TARGET}`, url);
         }
-        console.log('redirectUrl:', url, absPath,
-            baseUrl,
-            JSON.stringify(process.env));
+        // console.log('redirectUrl:', url, absPath,
+        //     baseUrl,
+        //     JSON.stringify(process.env));
         return absPath;
     }
 

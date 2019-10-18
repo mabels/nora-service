@@ -1,9 +1,9 @@
 import { Inject, Lazy } from '@andrei-tatar/ts-ioc';
 import { JwtService } from './jwt.service';
+import { Token } from './user-token';
 import { UserRepository } from './user.repository';
 
-interface NoderedToken {
-    readonly uid: string;
+interface NoderedToken extends Token {
     readonly scope: 'node-red';
     readonly version: number;
 }

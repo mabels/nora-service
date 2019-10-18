@@ -82,7 +82,7 @@ export class ReportStateService {
             'iat': now,
             'exp': now + 3600,
         };
-        const token = await this.jwtService.sign(jwt, { algorithm: 'RS256' });
+        const token = await this.jwtService.sign(jwt/*, { algorithm: 'RS256' }*/);
 
         const response = await fetch('https://accounts.google.com/o/oauth2/token', {
             method: 'post',

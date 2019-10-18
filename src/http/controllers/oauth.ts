@@ -1,15 +1,14 @@
 import * as crypto from 'crypto';
 import { JwtService } from '../../services/jwt.service';
+import { UserToken } from '../../services/user-token';
 import { UserRepository } from '../../services/user.repository';
 import { Http } from '../decorators/http';
 import { Param } from '../decorators/param';
 import { BadRequestError, NotAuthorizedError } from '../middlewares/exception';
 import { Controller } from './controller';
-import { UserToken } from './login';
-interface AuthToken {
+
+interface AuthToken extends UserToken {
   exp: number;
-  scope: string;
-  uid: string;
 }
 
 @Http.controller('/oauth')

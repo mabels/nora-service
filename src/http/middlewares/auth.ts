@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import { Config } from '../../services/config';
 import { JwtService } from '../../services/jwt.service';
-import { UserToken } from '../controllers/login';
+import { UserToken } from '../../services/user-token';
 
 declare module 'express' {
     export interface Request {

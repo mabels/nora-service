@@ -49,11 +49,11 @@ container.register({ token: PostgressService, useClass: PostgressService });
 container.register({ token: CloudstoreService, useClass: CloudstoreService });
 container.register({ token: NodePersistService, useClass: NodePersistService });
 
-container.register({ token: UserRepository, useClass: UserRepository });
-container.register({ token: JwtService, useClass: JwtService });
-container.register({ token: NoderedTokenService, useClass: NoderedTokenService });
-
 container.register({ token: FirebaseService, useClass: FirebaseService });
+container.register({ token: UserRepository, useClass: UserRepository });
+container.register({ token: NoderedTokenService, useClass: NoderedTokenService });
+container.register({ token: JwtService, useClass: JwtService });
+
 container.register({ token: ValidationService, useClass: ValidationService });
 
 container.register({ token: MainService, useClass: MainService });

@@ -9,6 +9,7 @@ import { UserRepository } from '../../services/user.repository';
 import { Http } from '../decorators/http';
 import { Param } from '../decorators/param';
 import { Controller } from './controller';
+import { UserToken } from '../../services/user-token';
 
 @Http.controller('/login')
 export class LoginController extends Controller {
@@ -79,11 +80,4 @@ export class LoginController extends Controller {
             return await this.redirect(`/login${query ? '?' + query : ''}`);
         }
     }
-}
-
-export interface UserToken {
-    uid: string;
-    exp: number;
-    scope: string;
-    nodered?: string;
 }

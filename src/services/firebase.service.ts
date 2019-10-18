@@ -1,5 +1,6 @@
 import { Inject } from '@andrei-tatar/ts-ioc';
 import * as admin from 'firebase-admin';
+import { Token } from '../services/user-token';
 import { Config } from './config';
 import { ConfigService } from './config.service';
 
@@ -31,6 +32,16 @@ export class FirebaseService {
             }
         }
         return this._config;
+    }
+
+    async sign<T extends Token>(payload: T): Promise<string> {
+    // admin.auth().createProviderConfig()
+       if (!payload.uid) {
+          throw Error('sign !uid not implement' + JSON.stringify(payload));
+       }
+       const x = admin.auth().createCustomToken(payload.uid, payload);
+       console.log('sign:', JSON.stringify(payload, undefined, 2), x);
+       return x;
     }
 
     async verifyToken(token: string) {
