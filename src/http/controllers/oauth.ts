@@ -1,15 +1,15 @@
 import * as crypto from 'crypto';
+import * as admin from 'firebase-admin';
+import { FirebaseService } from '../../services/firebase.service';
 import { JwtService } from '../../services/jwt.service';
-import { UserToken } from '../../services/user-token';
+import { Token } from '../../services/user-token';
 import { UserRepository } from '../../services/user.repository';
 import { Http } from '../decorators/http';
 import { Param } from '../decorators/param';
 import { BadRequestError, NotAuthorizedError } from '../middlewares/exception';
 import { Controller } from './controller';
 
-interface AuthToken extends UserToken {
-  exp: number;
-}
+type SessionToken = admin.auth.SessionCookieOptions & Token;
 
 @Http.controller('/oauth')
 export class OauthController extends Controller {
@@ -18,6 +18,7 @@ export class OauthController extends Controller {
 
   constructor(
     private jwtService: JwtService,
+    private firebaseService: FirebaseService,
     private userRepo: UserRepository,
   ) {
     super();
@@ -43,24 +44,30 @@ export class OauthController extends Controller {
     @Param.fromQuery('auth') auth: boolean = false,
   ) {
     const config = await this.config();
+    console.log(`getAuthCode:config:`, config);
+
     if (clientId !== config.oauthClientId) {
-      throw new BadRequestError('invalid client_id');
+       throw new BadRequestError(`invalid client_id:${clientId}!=${config.oauthClientId}`);
     }
 
-    if (!redirectUri || !redirectUri.startsWith(`https://oauth-redirect.googleusercontent.com/r/${config.projectId}`)) {
-      throw new BadRequestError('invalid redirect_uri');
+    if (!redirectUri ||
+        !redirectUri.startsWith(`https://oauth-redirect.googleusercontent.com/r/${config.projectId || config.oauthClientId}`)) {
+       throw new BadRequestError('invalid redirect_uri');
     }
-
-    if (responseType !== 'code') {
-      throw new BadRequestError('response_type must be "code"');
+    switch (responseType) {
+      case 'code':
+      case 'token':
+        break;
+      default:
+        throw Error(`unknown response Type:${responseType}`);
     }
 
     if (!confirm || !this.request.token || this.request.token.scope !== 'app-user') {
       const redirectPath = `/oauth?confirm=true&` +
         `client_id=${encodeURIComponent(clientId)}&` +
         `redirect_uri=${encodeURIComponent(redirectUri)}&` +
-        `response_type=${encodeURIComponent(responseType)}&` +
-        `state=${encodeURIComponent(state)}`;
+         `response_type=${encodeURIComponent(responseType)}&` +
+         `state=${encodeURIComponent(state)}`;
       const encoded = Buffer.from(redirectPath).toString('base64');
 
       return await this.redirect(`/login?redirect=${encoded}`);
@@ -72,19 +79,19 @@ export class OauthController extends Controller {
         `response_type=${encodeURIComponent(responseType)}&` +
         `state=${encodeURIComponent(state)}`;
 
-      const redirectYes = `/oauth?confirm=true&auth=true&${parms}`;
+      const redirectYes = await this.redirectUrl(`/oauth?confirm=true&auth=true&${parms}`);
       const encodedYes = Buffer.from(redirectYes).toString('base64');
-      const redirectNo = `/oauth?${parms}`;
+      const redirectNo = await this.redirectUrl(`/oauth?${parms}`);
       const encodedNo = Buffer.from(redirectNo).toString('base64');
       return await this.redirect(`/oauth/auth?yes=${encodedYes}&no=${encodedNo}`);
     }
 
-    const authToken: AuthToken = {
-      exp: Math.round(new Date().getTime() / 1000) + 600, // 10 min
+    const authToken: SessionToken = {
+      expiresIn: Math.round(new Date().getTime() / 1000) + 600, // 10 min
       scope: 'google-home-authcode',
       uid: this.request.token.uid,
     };
-    const authCode = await this.jwtService.sign(authToken);
+    const authCode = await this.firebaseService.signSession(authToken);
     return await this.redirect(`${redirectUri}?state=${state}&code=${authCode}`);
   }
 
@@ -104,7 +111,7 @@ export class OauthController extends Controller {
 
     switch (grantType) {
       case 'authorization_code':
-        const authToken = await this.jwtService.verify<AuthToken>(code);
+        const authToken = await this.jwtService.verify<SessionToken>(code);
         if (authToken.scope !== 'google-home-authcode') {
           throw new BadRequestError('invalid_scope');
         }
@@ -132,9 +139,9 @@ export class OauthController extends Controller {
   }
 
   private async generateAccessToken(uid: string) {
-    const user: UserToken = {
+    const user: SessionToken = {
       uid,
-      exp: Math.round(new Date().getTime() / 1000) + this.expireTimeSeconds, // 60 min,
+      expiresIn: Math.round(new Date().getTime() / 1000) + this.expireTimeSeconds, // 60 min,
       scope: 'google-home-auth',
     };
     const token = await this.jwtService.sign(user);

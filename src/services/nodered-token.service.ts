@@ -1,5 +1,5 @@
 import { Inject, Lazy } from '@andrei-tatar/ts-ioc';
-import { JwtService } from './jwt.service';
+import { FirebaseService } from './firebase.service';
 import { Token } from './user-token';
 import { UserRepository } from './user.repository';
 
@@ -10,8 +10,8 @@ interface NoderedToken extends Token {
 
 export class NoderedTokenService {
     constructor(
-        @Inject(JwtService)
-        private jwtService: Lazy<JwtService>,
+        @Inject(FirebaseService)
+        private fireBaseService: Lazy<FirebaseService>,
         @Inject(UserRepository)
         private userRepo: Lazy<UserRepository>
     ) {
@@ -23,11 +23,11 @@ export class NoderedTokenService {
             scope: 'node-red',
             version: await this.userRepo.value.getNodeRedTokenVersion(uid),
         };
-        return this.jwtService.value.sign(token);
+        return this.fireBaseService.value.sign(token);
     }
 
     async validateToken(token: string) {
-        const decoded = await this.jwtService.value.verify<NoderedToken>(token);
+        const decoded = await this.fireBaseService.value.verifyToken(token);
         if (decoded.scope !== 'node-red') {
             throw new Error('invalid scope');
         }

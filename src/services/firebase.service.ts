@@ -27,11 +27,25 @@ export class FirebaseService {
                     })
                 });
             } else {
-                console.log(`FireBaseService:fromGoogle`);
-                admin.initializeApp();
+                const param: admin.AppOptions = {};
+                if (this._config.serviceAccountIssuer) {
+                    param.serviceAccountId = this._config.serviceAccountIssuer;
+                }
+                console.log(`FireBaseService:fromGoogle:`, param);
+                admin.initializeApp(param);
             }
         }
         return this._config;
+    }
+
+
+    async signSession(payload: admin.auth.SessionCookieOptions & Token): Promise<string> {
+        if (!payload.uid) {
+            throw Error('sign !uid not implement' + JSON.stringify(payload));
+        }
+        const x = admin.auth().createSessionCookie(payload.uid, payload);
+        console.log('signSession:', JSON.stringify(payload, undefined, 2), x);
+        return x;
     }
 
     async sign<T extends Token>(payload: T): Promise<string> {
@@ -39,9 +53,15 @@ export class FirebaseService {
        if (!payload.uid) {
           throw Error('sign !uid not implement' + JSON.stringify(payload));
        }
-       const x = admin.auth().createCustomToken(payload.uid, payload);
-       console.log('sign:', JSON.stringify(payload, undefined, 2), x);
-       return x;
+    //    if (payload.exp) {
+        //  const x = admin.auth().(payload.uid, payload);
+        //  console.log('sign:', JSON.stringify(payload, undefined, 2), x);
+        //  return x;
+    //    } else {
+         const x = admin.auth().createCustomToken(payload.uid, payload);
+         console.log('sign:', JSON.stringify(payload, undefined, 2), x);
+         return x;
+    //    }
     }
 
     async verifyToken(token: string) {
@@ -52,10 +72,6 @@ export class FirebaseService {
                 throw new Error('Only test user can login with e-mail/password');
             }
         }
-        return {
-            uid: decoded.uid,
-            email: decoded.email as string,
-            name: decoded.name as string,
-        };
+        return decoded;
     }
 }

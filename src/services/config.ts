@@ -4,7 +4,7 @@ export interface Config {
   readonly oauthClientId: string;
   readonly oauthClientSecret: string;
   readonly jwtCookieName: string;
-  readonly jwtSecret: string;
+  readonly jwtSecret?: string;
   readonly projectId?: string;
   readonly googleProjectApiKey?: string;
   readonly postgressConnectionString?: string;

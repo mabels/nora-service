@@ -34,10 +34,10 @@ export class CloudstoreService implements PersistService {
     const document = this.firestore.doc(`uid/${uid}`);
     const got = await document.get();
     if (got.exists) {
-      console.log('GetUid', got.data());
+      // console.log('GetUid', uid, got.data());
       return got.data() as User;
     } else {
-      console.log('Uid not found', uid);
+      // console.log('Uid not found', uid);
       throw Error(`Uid:${uid} not found`);
     }
   }

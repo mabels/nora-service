@@ -67,9 +67,17 @@ export class UserRepository  {
         }
     }
 
-    async getUser(uid: string) {
+    async getUser(uid: string): Promise<User | undefined> {
         const persist = await this.persistSrv();
-        return await persist.getUid(uid);
+        try {
+            // console.log(`getUser:pre:`, uid);
+            const us = await persist.getUid(uid);
+            // console.log(`getUser:post:`, uid, us);
+            return us;
+        } catch (e) {
+            // console.log(`getUser:not:`, uid, e);
+            return undefined;
+        }
 //        const [user] = await this.nodePersist.query<User>(`SELECT * FROM appuser WHERE uid = $1`, uid);
 //        if (!user) { throw new Error('user does not exist'); }
     }

@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import { Config } from '../../services/config';
-import { JwtService } from '../../services/jwt.service';
+import { FirebaseService } from '../../services/firebase.service';
+// import { JwtService } from '../../services/jwt.service';
 import { UserToken } from '../../services/user-token';
 
 declare module 'express' {
@@ -10,9 +11,10 @@ declare module 'express' {
 }
 
 export function authMiddleware(config: Config) {
+    console.log('authMiddleware:setup:', config.jwtCookieName);
     return async (req: Request, _res: Response, next: NextFunction) => {
         try {
-            let authToken = req.cookies[config.jwtCookieName];
+            let authToken = req.query['token'] || req.cookies[config.jwtCookieName];
             if (!authToken) {
                 const authHeader = req.header('Authorization');
                 if (authHeader) {
@@ -23,12 +25,16 @@ export function authMiddleware(config: Config) {
                 }
             }
 
+            // console.log('authMiddleware', authToken, req.query);
             if (authToken) {
-                const jwt = req.container.resolve(JwtService);
-                const token = await jwt.verify<UserToken>(authToken);
-                req.token = token;
+                const fbservice = req.container.resolve(FirebaseService);
+                console.log('authMiddleware:token:pre:', authToken);
+                const token = await fbservice.verifyToken(authToken);
+                console.log('authMiddleware:token:pos:', authToken, token);
+                req.token = token as any;
             }
         } catch (err) {
+            console.error('authMiddleware:error:', err);
         }
         next();
     };

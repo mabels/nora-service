@@ -2,7 +2,7 @@ import { Inject, Lazy } from '@andrei-tatar/ts-ioc';
 import { FulfillPayload, FulfillResponse, Input, Intent } from '../../google';
 import { Http } from '../decorators/http';
 import { Param } from '../decorators/param';
-import { authFilter } from '../middlewares/auth';
+// import { authFilter } from '../middlewares/auth';
 import { DisconnectService } from '../services/disconnect.service';
 import { ExecuteService } from '../services/execute.service';
 import { QueryService } from '../services/query.service';
@@ -10,7 +10,7 @@ import { SyncService } from '../services/sync.service';
 import { Controller } from './controller';
 
 @Http.controller('/smarthome')
-@Http.filter(authFilter({ scope: 'google-home-auth' }))
+// @Http.filter(authFilter({ scope: 'google-home-auth' }))
 export class SmartHomeController extends Controller {
 
     constructor(
@@ -27,6 +27,7 @@ export class SmartHomeController extends Controller {
         @Param.fromBody('inputs') inputs: Input[],
         @Param.fromBody('requestId') requestId: string,
     ) {
+        console.log('smarthome', requestId, inputs);
         let payload: FulfillPayload;
         for (const input of inputs) {
             console.info(`executing ${input.intent} for ${this.request.token.uid}`);

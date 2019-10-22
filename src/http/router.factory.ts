@@ -12,7 +12,7 @@ import { Http } from './decorators/http';
 import { containerMiddleware, destroyContainerMiddleware } from './middlewares/container';
 import { exceptionMiddleware } from './middlewares/exception';
 
-export function routerFactory(config: Config) {
+export function routerFactory(config: Config): express.Router {
   const app = express.Router();
   app.use(cors());
   app.use(bodyParser.json());

@@ -1,5 +1,4 @@
 import { Container } from '@andrei-tatar/ts-ioc';
-import { getClassFactory } from '@andrei-tatar/ts-ioc/inject';
 
 import { ConfigEnvService } from './config.env.service';
 import { ConfigFireBaseService } from './config.firebase.service';
@@ -11,19 +10,19 @@ export function factoryConfigService(
 ): (..._: any[]) => ConfigService {
   return (..._: any[]) => {
     // let ur: (c: Container) => UserRepository;
-    let cfactory: any;
-    if (typeof process.env.ENTRY_POINT === 'string') {
-        cfactory = getClassFactory(ConfigFireBaseService);
+    // console.log('factoryConfigService:', process.env);
+    let csrv: ConfigService;
+    if (typeof process.env.ENTRY_POINT === 'string' ||
+        typeof process.env.FUNCTION_TARGET === 'string') {
+        csrv = container.resolve(ConfigFireBaseService);
     } else {
       try {
         require.resolve('../../config_local');
-        cfactory = getClassFactory(ConfigLocalService);
+        csrv = container.resolve(ConfigLocalService);
       } catch (e) {
-        cfactory = getClassFactory(ConfigEnvService);
+        csrv = container.resolve(ConfigEnvService);
       }
     }
-    const cfgsrv: ConfigService = cfactory(container);
-    // console.log('UserRepository', sb, psrv, cfactory);
-    return cfgsrv;
+    return csrv;
   };
 }

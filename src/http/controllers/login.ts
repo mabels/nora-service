@@ -1,15 +1,16 @@
 import { Inject, Lazy } from '@andrei-tatar/ts-ioc';
+import * as admin from 'firebase-admin';
 // import * as admin from 'firebase-admin';
 import * as functions from 'firebase-functions';
 import { FirebaseService } from '../../services/firebase.service';
-import { JwtService } from '../../services/jwt.service';
+// import { JwtService } from '../../services/jwt.service';
 import { NoderedTokenService } from '../../services/nodered-token.service';
+import { UserToken } from '../../services/user-token';
 import { UserRepository } from '../../services/user.repository';
 // import { delay } from '../../util';
 import { Http } from '../decorators/http';
 import { Param } from '../decorators/param';
 import { Controller } from './controller';
-import { UserToken } from '../../services/user-token';
 
 @Http.controller('/login')
 export class LoginController extends Controller {
@@ -17,8 +18,8 @@ export class LoginController extends Controller {
     constructor(
         @Inject(UserRepository)
         private userRepository: Lazy<UserRepository>,
-        @Inject(JwtService)
-        private jwtService: Lazy<JwtService>,
+        // @Inject(JwtService)
+        // private jwtService: Lazy<JwtService>,
         @Inject(FirebaseService)
         private firebase: Lazy<FirebaseService>,
         @Inject(NoderedTokenService)
@@ -49,6 +50,20 @@ export class LoginController extends Controller {
         });
     }
 
+    @Http.get('/local')
+    async localLogin(
+        @Param.fromQuery('token') tokenId: string
+    ) {
+        console.log('Local:', tokenId);
+        admin.initializeApp({
+            credential: admin.credential.refreshToken(tokenId),
+            databaseURL: 'https://winsen-home.firebaseio.com'
+        });
+        const db = admin.firestore();
+        const res = await db.collection('uid').get();
+        console.log(res);
+    }
+
     @Http.post()
     async doLogin(
         @Param.fromBody('token') firebaseToken: string,
@@ -56,20 +71,25 @@ export class LoginController extends Controller {
         @Param.queryString() query: string,
     ) {
         try {
+            console.log('doLogin-1');
             const decoded = await this.firebase.value.verifyToken(firebaseToken);
+            console.log('doLogin-2');
             const ur = this.userRepository.value;
             await ur.incrementNoderedTokenVersion(decoded.uid);
-            const token: UserToken = {
-                uid: decoded.uid,
-                exp: Math.round((new Date().getTime() + 3600000) / 1000),
+            console.log('doLogin-3');
+            const token: admin.auth.SessionCookieOptions & UserToken = {
+                uid: firebaseToken,
+                expiresIn: 60 * 60 * 1000,
                 scope: 'app-user',
-                nodered: await this.nrtokenService.value.generateToken(decoded.uid),
+                nodered: await this.nrtokenService.value.generateToken(decoded.uid)
             };
 
-            const tokenStr = await this.jwtService.value.sign(token);
+            console.log('doLogin-4');
+            const tokenStr = await this.firebase.value.signSession(token);
             const config = await this.config();
             this.response.cookie(config.jwtCookieName, tokenStr, { secure: !config.isLocal });
 
+            console.log(`Token:`, tokenStr, redirect);
             if (typeof redirect === 'string') {
                 const redirectUri = Buffer.from(redirect, 'base64').toString();
                 return await this.redirect(redirectUri);

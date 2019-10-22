@@ -39,8 +39,15 @@
             callbacks: {
                 signInSuccessWithAuthResult: function (authResult, redirectUrl) {
                     authResult.user.getIdToken().then(function (token) {
+                        const xhr = new XMLHttpRequest();
+                        xhr.open('GET', `http://localhost:14123/login/local?token=${encodeURI(token)}`, true);
+                        xhr.addEventListener("readystatechange", (...args) => {
+                            console.log(`ReadyStateChange:`, args);
+                        }, false);
+                        xhr.send();
                         document.getElementById('inputToken').value = token;
                         document.forms.loginForm.submit();
+
                     });
                     return false;
                 },
