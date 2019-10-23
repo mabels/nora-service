@@ -23,4 +23,7 @@ export interface Config {
     appId?: string;
   };
   readonly donationHtml?: string;
+  readonly nora_service?: {
+    firebase_init_js_url?: string;
+  };
 }

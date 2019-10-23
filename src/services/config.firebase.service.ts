@@ -1,3 +1,4 @@
+import * as firebaseFunctions from 'firebase-functions';
 import { Config } from './config';
 import { ConfigService } from './config.service';
 
@@ -11,7 +12,8 @@ export class ConfigFireBaseService implements ConfigService {
       port: '',
       oauthClientSecret: '',
       jwtCookieName: 'NodeRedSmartHome',
-      serviceAccountIssuer: 'firebase-adminsdk-skg42@winsen-home.iam.gserviceaccount.com'
+      serviceAccountIssuer: 'firebase-adminsdk-skg42@winsen-home.iam.gserviceaccount.com',
+      nora_service: firebaseFunctions.config().nora_service
     };
   }
 }
