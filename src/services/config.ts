@@ -13,6 +13,14 @@ export interface Config {
   readonly userAdminUid?: string;
   readonly storageBackend?: string;
   readonly baseUrl?: string;
-  readonly authClientConfig?: string;
+  readonly authClientConfig?: {
+    apiKey?: string;
+    authDomain?: string;
+    databaseURL?: string;
+    projectId?: string;
+    storageBucket?: string;
+    messagingSenderId?: string;
+    appId?: string;
+  };
   readonly donationHtml?: string;
 }

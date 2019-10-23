@@ -24,7 +24,6 @@ export function authMiddleware(config: Config) {
                     }
                 }
             }
-
             // console.log('authMiddleware', authToken, req.query);
             if (authToken) {
                 const fbservice = req.container.resolve(FirebaseService);

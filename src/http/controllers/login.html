@@ -11,11 +11,15 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
         crossorigin="anonymous">
 
-    <link type="text/css" rel="stylesheet" href="https://cdn.firebase.com/libs/firebaseui/4.1.0/firebaseui.css" />
+    <link type="text/css" rel="stylesheet" 
+          href="https://cdn.firebase.com/libs/firebaseui/4.2.0/firebaseui.css" />
 
-    <script src="https://www.gstatic.com/firebasejs/6.4.2/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/6.4.2/firebase-auth.js"></script>
-    <script src="https://cdn.firebase.com/libs/firebaseui/4.1.0/firebaseui.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.2.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.2.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.2.1/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.2.1/firebase-messaging.js"></script>
+
+    <script src="https://cdn.firebase.com/libs/firebaseui/4.2.0/firebaseui.js"></script>
 
 
     {{scriptFireBaseInitJs}}
@@ -38,15 +42,31 @@
             ],
             callbacks: {
                 signInSuccessWithAuthResult: function (authResult, redirectUrl) {
-                    authResult.user.getIdToken().then(function (token) {
-                        const xhr = new XMLHttpRequest();
-                        xhr.open('GET', `http://localhost:14123/login/local?token=${encodeURI(token)}`, true);
-                        xhr.addEventListener("readystatechange", (...args) => {
-                            console.log(`ReadyStateChange:`, args);
-                        }, false);
-                        xhr.send();
-                        document.getElementById('inputToken').value = token;
-                        document.forms.loginForm.submit();
+                    authResult.user.getIdToken().then(async function (token) {
+                        // const xhr = new XMLHttpRequest();
+                        // xhr.open('GET', `http://localhost:14123/login/local?token=${encodeURI(token)}`, true);
+                        // xhr.addEventListener("readystatechange", (...args) => {
+                        //     console.log(`ReadyStateChange:`, args);
+                        // }, false);
+                        // xhr.send();
+                        // console.log('xxx', authResult);
+                        try {
+                            const qs = await firebase.firestore().collection('uid').get();
+                            console.log("QS:", qs);
+                            qs.forEach(function(doc) {
+                                // doc.data() is never undefined for query doc snapshots
+                                console.log(doc.id, " => ", doc.data());
+                            });
+                        } catch (e) {
+                            console.log('ERROR:firestore:', e);
+                        }
+                        // debugger;
+
+//                        const db = admin.firestore();
+//                        const res = await db.collection('uid').get();
+//                        console.log(res);
+                        // document.getElementById('inputToken').value = token;
+                        // document.forms.loginForm.submit();
 
                     });
                     return false;

@@ -55,10 +55,11 @@ export class LoginController extends Controller {
         @Param.fromQuery('token') tokenId: string
     ) {
         console.log('Local:', tokenId);
-        admin.initializeApp({
-            credential: admin.credential.refreshToken(tokenId),
-            databaseURL: 'https://winsen-home.firebaseio.com'
-        });
+        // admin.initializeApp({
+        //     credential: admin.credential.refreshToken(tokenId),
+        //     databaseURL: 'https://winsen-home.firebaseio.com'
+        // });
+        this.firebase.value.getAdmin(tokenId);
         const db = admin.firestore();
         const res = await db.collection('uid').get();
         console.log(res);
