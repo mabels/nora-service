@@ -14,10 +14,10 @@
     <link type="text/css" rel="stylesheet"
           href="https://cdn.firebase.com/libs/firebaseui/4.2.0/firebaseui.css" />
 
-    <script src="https://www.gstatic.com/firebasejs/7.2.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/7.2.1/firebase-auth.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/7.2.1/firebase-firestore.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/7.2.1/firebase-messaging.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.2.2/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.2.2/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.2.2/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.2.2/firebase-messaging.js"></script>
 
     <script src="https://cdn.firebase.com/libs/firebaseui/4.2.0/firebaseui.js"></script>
 
@@ -31,18 +31,21 @@
         }
 
         var uiConfig = {
+            // forceSameDevice: false,
+            // signInSuccessUrl: '/login',
             signInOptions: [
                 firebase.auth.GoogleAuthProvider.PROVIDER_ID,
                 // firebase.auth.FacebookAuthProvider.PROVIDER_ID,
                 // firebase.auth.TwitterAuthProvider.PROVIDER_ID,
-                firebase.auth.GithubAuthProvider.PROVIDER_ID,
+                // firebase.auth.GithubAuthProvider.PROVIDER_ID,
                 // firebase.auth.EmailAuthProvider.PROVIDER_ID,
                 // firebase.auth.PhoneAuthProvider.PROVIDER_ID,
                 // firebaseui.auth.AnonymousAuthProvider.PROVIDER_ID
             ],
             callbacks: {
                 signInSuccessWithAuthResult: function (authResult, redirectUrl) {
-
+                    debugger;
+                    console.log('signInSuccessWithAuthResult', redirectUrl, authResult);
 
                     // authResult.user.getToken().then(function (...args) {
                     //     console.log('userToken:', args);
@@ -52,10 +55,10 @@
                         // document.getElementById('inputToken').value = token;
                         // document.forms.loginForm.submit();
 
-//  const credential = firebase.auth.GoogleAuthProvider.credential(token);
+ const credential = firebase.auth.GoogleAuthProvider.credential(token);
 //  const signed = await firebase.auth().signInWithCredential(credential);
-  // const signed = firebase.auth(app).signInWithCustomToken(tokenStr);
-//  console.log('Local:', tokenStr, signed)
+//   const signed = firebase.auth(app).signInWithCustomToken(tokenStr);
+ console.log('Local:', token, credential)
  const db = firebase.firestore();
  const qs = await db.collection('uid').get();
  qs.forEach(function(doc) {
@@ -93,11 +96,30 @@
                         // document.getElementById('inputToken').value = token;
                         // document.forms.loginForm.submit();
 
-                    });
+                    }).catch(console.error);
                     return false;
                 },
             }
         };
+
+        firebase.auth().onAuthStateChanged(function (user) {
+              console.log("got user: ",user);
+        if (user) {
+          user.getIdToken().then(async function (token) {
+              try {
+              console.log("token retrieved: ",token);
+              console.log('refreshToken:', user.refreshToken);
+              const credential = firebase.auth.GoogleAuthProvider.credential(token);
+              const signed = await firebase.auth().signInWithCredential(credential);
+              // Send token to your backend via HTTPS
+              console.log('sigend in:', signed, user.refreshToken);
+              } catch (e) {
+                  console.error(e);
+              }
+
+           });
+         }
+     });
 
         var ui = new firebaseui.auth.AuthUI(firebase.auth());
         ui.start('#firebaseui-auth-container', uiConfig);
@@ -110,8 +132,7 @@
             <h1 class="h3 mb-3 font-weight-normal"><strong>NO</strong>de-<strong>R</strong>ed home <strong>A</strong>utomation</h1>
             <h1 class="h4 mb-3 font-weight-normal">Select sign in method</h1>
             <input type="hidden" id="inputToken" name="token">
-            <div id="firebaseui-auth-container">
-            </div>
+            <div id="firebaseui-auth-container"></div>
         </form>
     </div>
 </body>

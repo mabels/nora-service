@@ -1,0 +1,23 @@
+{
+"port": "14123",
+"oauthClientId": "CfgoauthClientId",
+"oauthClientSecret": "CfgoauthClientSecret",
+"jwtCookieName": "CfgjwtCookieName",
+"jwtSecret": "CfgjwtSecret",
+"projectId": "winsen-home",
+"storageBackend": "node-persist",
+"googleProjectApiKey": "CfggoogleProjectApiKey",
+"postgressConnectionString": "CfgpostgressConnectionString",
+"serviceAccountIssuer": "winsen-home@appspot.gserviceaccount.com",
+"serviceAccountPrivateKey": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCrdDsynFywY7jr\n61qqkbE0B6jfAQ+2Kx4G6VvgVyuXutAm30IvT8rnivr03x5ZTuRQjyUp1aeD1seI\ncscduuv867rXKsASGRppr7wrcaVscR91J/C6+0LzRJk2yYBzBep64RCXoRkDFjGk\nSTkgvRAvCdAJoLYnlmWKW6rh7coU0YaP1X879sDIxSJRWQ5e1aa8PHGF8jZoBLVO\nHWYjFyMCOpyQcZqyBDpsYWRgG1ZlPKuBWZtFP5jT4HTYdGMWWfhoE7gjKsla6rrC\nVF6NIEDQaHcybjDEGEjRnKNfs3uOGrhGYyCV+Zmw7esAOzAK4pkUDRK5D7z+w3Uh\niQXzr0TtAgMBAAECggEAANpVKQ1KEL6OPu4ux0ZuQToAhwt0To2sWpBymo0UdG7D\ndk4KAD4/XiN82Bb8CamwzQ3JO4oKiUdaOr2HbAhwABQUG9nklrJ1RS1QnE62afGu\nHGEUe3mgfaFLudAKyYewAOh5sqdkfnVvzcdnd1g5amJ8HHAmN9AxtRx7nyAVr0DR\nenhQrlQgroeQJW8UKUlKriKY0OvhIZkLYVnoPP0ShTSrRlgX+Ruk+ExIH7v3hhJw\npzMxVgnYONsTdChRpl/Se4yhDxJmicOV93Ef8UVq2iAqaYE2VHfAfRQvTws4hK9H\nOxmkxO+b6fjaUmn1/RFBTT5XEESZ/N7IvG4djU1XKQKBgQDaonOsH6HZpjPil9vC\nef4oZ8Y/HkjYbBrQ0rAh5cVe9xeCJOWRDvPRC9gVMXUlNeyGl8AcmjP9LsuINRi5\npoqvdZWXiHgW9WK0UIkItXwYGO6puiKvXJ6rqlhbUROKqc7vTZ2ELEya4wssw72G\noPPgLIbFNXf+tFHnfPvxHYRpcwKBgQDIwZGbosOeX6BsfNi01ZDYTS00Wo0OS9+z\ne/yCW7OGktdW4EOLDJdq/i3izTQf4NBcKh0ADqItJ/0ff2nytVQb5Q4j+u0dEJ/L\nhuzM5LVWnx5JzWZVrhXrB1Ouv65reBZz3WLEysC+vZP8EEsWi4IQdrnjzz4FYWVM\nS+54PR+AHwKBgBXGPhzzXYwuqFY155Ybzjs58p2Qp5KeWaFYimAl4R1PIJE+mXpz\n8cZtFo0tysv07eSNsn1mwizB/1VGbHr44jENVeOsnME0mSr6Jluur3g663IN7qxm\nXgscwQX/MiIKPWjJ4xkpzEtUt2Uy7Wo+F2vJI3b6l0PPs6SJZxIhbXGPAoGBAIag\ncHHrc72IKT+3dWfHdEvpbXAXbVJyBUEK22nb7wdG/8uNtx3PQteIPuNCczsRewjj\nYPFB3vXjRDbULguKGC5gq9vrEQmVtWM6RyCcGxNMv3YEnSTGCoLDNhYRCvmc3Ymz\no+GOijUfUtcNYh1rTryVsdEYkGHxT4obvX66lp5HAoGAUYz9jBxHhC7kYs5e7gd1\n8VYPwCtSOnX5EPcDGj5LVRBvFOXEpSRP52Pn5h9WyESEXLgvUCNOXW2ztGkR/0nZ\nEqhTaoEfdturXj8Ahob3Qv414WuSLvJc5bJowUm/BI0lbV1UwcsI3pSzV6bRMllJ\nfV5TTvHC8j/D6Pw28Gz20qA=\n-----END PRIVATE KEY-----\n",
+"userAdminUid": "CfgUserAdminUid",
+"authClientConfig": {
+    "apiKey": "AIzaSyDSwqhByneL3wpp3Ek6VdrUA-29nZO96co",
+    "authDomain": "winsen-home.firebaseapp.com",
+    "databaseURL": "https://winsen-home.firebaseio.com",
+    "projectId": "winsen-home",
+    "storageBucket": "",
+    "messagingSenderId": "206453594509",
+    "appId": "1:206453594509:web:c643e10cafe0c336"
+  }
+}
