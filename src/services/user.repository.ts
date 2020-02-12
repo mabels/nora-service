@@ -1,6 +1,6 @@
 import { Injectable } from '@andrei-tatar/ts-ioc';
 import { Subject } from 'rxjs';
-import { PostgressService } from './postgress.service';
+import { PostgresService } from './postgres.service';
 
 @Injectable()
 export class UserRepository {
@@ -9,7 +9,7 @@ export class UserRepository {
     readonly userBlocked$ = this.userBlocked.asObservable();
 
     constructor(
-        private postgress: PostgressService,
+        private postgress: PostgresService,
     ) {
     }
 

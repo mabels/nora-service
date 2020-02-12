@@ -1,8 +1,9 @@
+import { Inject } from '@andrei-tatar/ts-ioc';
 import fetch from 'node-fetch';
 
-import { Inject } from '@andrei-tatar/ts-ioc';
-import { googleProjectApiKey } from '../config';
+import { Config } from '../config';
 import { delay } from '../util';
+import { ConfigService } from './config.service';
 import { UserRepository } from './user.repository';
 
 export class RequestSyncService {
@@ -11,6 +12,8 @@ export class RequestSyncService {
         @Inject('uid')
         private uid: string,
         private userRepo: UserRepository,
+        @Inject(ConfigService)
+        private config: Config
     ) {
     }
 
@@ -19,8 +22,8 @@ export class RequestSyncService {
         if (!await this.userRepo.isUserLinked(this.uid)) { return; }
 
         while (true) {
-            console.log(`fetch: https://homegraph.googleapis.com/v1/devices:requestSync?key=${googleProjectApiKey}`, this.uid);
-            const response = await fetch(`https://homegraph.googleapis.com/v1/devices:requestSync?key=${googleProjectApiKey}`, {
+            console.log(`fetch: https://homegraph.googleapis.com/v1/devices:requestSync?key=${this.config.googleProjectApiKey}`, this.uid);
+            const response = await fetch(`https://homegraph.googleapis.com/v1/devices:requestSync?key=${this.config.googleProjectApiKey}`, {
                 method: 'post',
                 body: JSON.stringify({ agentUserId: this.uid }),
                 headers: { 'content-type': 'application/json' },

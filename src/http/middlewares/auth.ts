@@ -1,5 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
-import { jwtCookieName } from '../../config';
+import { IncomingMessage } from 'http';
+
+import { Config } from '../../config';
 import { JwtService } from '../../services/jwt.service';
 import { UserToken } from '../controllers/login';
 import { NotAuthorizedError } from './exception';
@@ -10,10 +12,17 @@ declare module 'express' {
     }
 }
 
-export function authMiddleware() {
+declare module 'socket.io' {
+    export interface Socket {
+        uid: string;
+        req: IncomingMessage;
+    }
+}
+
+export function authMiddleware(config: Config) {
     return async (req: Request, _res: Response, next: NextFunction) => {
         try {
-            let authToken = req.cookies[jwtCookieName];
+            let authToken = req.cookies[config.jwtCookieName.val];
             if (!authToken) {
                 const authHeader = req.header('Authorization');
                 if (authHeader) {

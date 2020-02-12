@@ -1,123 +1,100 @@
-import * as functions from 'firebase-functions';
-import * as fs from 'fs';
+import { FirebaseOptions } from '@firebase/app-types';
+import { ServiceAccount } from 'firebase-admin';
+import { PoolConfig } from 'pg';
 
-function getCfg(key: string) {
-   const nora = functions.config().nora;
-   const ret = process.env[key];
-   if (typeof nora === 'object') {
-     const tmp = nora[key.toLowerCase()];
-     if (typeof tmp === 'string') {
-       return tmp;
-     }
-   }
-   return ret;
+export type ConfigSrc = 'Env' | 'Firebase' | 'Local' | 'Default';
+
+export interface ConfigValue<T, V = string> {
+  val: T;
+  src: ConfigSrc;
+  set(src: ConfigSrc, val?: T | V);
 }
 
-export const isLocal = getCfg('NODE_ENV') !== 'production';
-const local: any = {
-  fireBase: {},
-  serviceSockets: [
-    {
-      port: parseInt(getCfg('PORT'), 10) || 9999,
-      address: getCfg('ADDRESS'),
-      useHttp2: (getCfg('USE_HTTP2') || 'f').toLowerCase().startsWith('t')
-    }
-  ]
-};
-try {
-  Object.assign(local, isLocal ? require('./config_local') : {});
-} catch (_) {
-  console.warn('./config_local not loaded');
+export interface StringConfigTls {
+  readonly key: string;
+  readonly cert: string;
 }
 
-const secureCookieStr = getCfg('SECURE_COOKIE');
-export const secureCookie = !(typeof secureCookieStr === 'string'
-    ? secureCookieStr.startsWith('F') || secureCookieStr.startsWith('f') || parseInt(secureCookieStr, 10) === 0
-    : isLocal);
-
-export const appTitle = (isLocal ? local.appTitle : getCfg('APPTITLE')) || 'NORA';
-
-function fileOrEnv(key: string, keyFile: string) {
-  if (getCfg(key)) {
-    return getCfg(key);
-  }
-  if (typeof getCfg(keyFile) === 'string') {
-    return fs.readFileSync(getCfg('keyFile'));
-  }
-  return;
+export interface ConfigTls extends ConfigValue<StringConfigTls, StringConfigTls> {
+  readonly key: ConfigValue<string>;
+  readonly cert: ConfigValue<string>;
 }
 
-let tls = {
-  key: fileOrEnv('TLS_KEY', 'TLS_KEY_FILE'),
-  cert: fileOrEnv('TLS_CERT', 'TLS_CERT_FILE')
-};
-if (!(tls.key && tls.cert)) {
-  tls = undefined;
+export interface ServiceSocket {
+  readonly port: number; // 9999
+  readonly address: string;
+  readonly useHttp2: boolean;
+  readonly tls?: StringConfigTls;
 }
-export const serviceSockets = isLocal ? local.serviceSockets : [
-  {
-    port: isLocal ? local.port : parseInt(getCfg('PORT'), 10),
-    address: isLocal ? local.address : getCfg('ADDRESS'),
-    useHttp2: ((isLocal ? local.useHttp2 : getCfg('USE_HTTP2')) || 'f').toLowerCase().startsWith('t'),
-    tls
-  }
-];
-export const oauthClientId = isLocal ? local.oauthClientId : getCfg('OAUTH_ID');
-export const oauthClientSecret = isLocal ? local.oauthClientSecret : getCfg('OAUTH_SECRET');
-export const jwtCookieName = isLocal ? local.jwtCookieName : getCfg('JWT_COOKIE');
-export const googleProjectApiKey = isLocal ? local.googleProjectApiKey : getCfg('PROJECT_API_KEY');
-export const serviceAccount = {
-    project_id: isLocal ? local.projectId : getCfg('PROJECT_ID'),
-    client_email: isLocal ? local.serviceAccountClientEmail
-                          : (getCfg('SERVICE_ACCOUNT_CLIENT_EMAIL') || getCfg('SERVICE_ACCOUNT_ISSUER')),
-    private_key: isLocal ? local.serviceAccountPrivateKey
-                         : (getCfg('SERVICE_ACCOUNT_PRIVATE_KEY') || getCfg('SERVICE_ACCOUNT_KEY'))
-};
-const serviceAccountJsonFileName = isLocal ? local.serviceAccountJson : getCfg('SERVICE_ACCOUNT_JSON');
-if (typeof serviceAccountJsonFileName === 'string') {
-    Object.assign(serviceAccount, JSON.parse(fs.readFileSync(serviceAccountJsonFileName).toString()));
+
+export interface ConfigServiceSocket extends ConfigValue<ServiceSocket, ServiceSocket> {
+  readonly port: ConfigValue<number>; // 9999
+  readonly address: ConfigValue<string>;
+  readonly useHttp2: ConfigValue<boolean>;
+  readonly tls: ConfigTls;
 }
-export const oauthProjectId = isLocal ? local.projectId : getCfg('OAUTH_PROJECT_ID') || serviceAccount.project_id;
-export const jwtSecret = isLocal ? local.jwtSecret : getCfg('JWT_SECRET') || serviceAccount.private_key;
 
-export const noraServiceUrl = isLocal ? local.noraServiceUrl : getCfg('NORA_SERVICE_URL') || 'node-red';
+export type ConfigServiceSockets = ConfigServiceSocket[];
 
-let ssl = true;
-if (isLocal && typeof local.postgresSsl === 'boolean') {
-    ssl = local.postgresSsl;
-} else if (typeof getCfg('POSTGRES_SSL') === 'string') {
-    const sslString = getCfg('POSTGRES_SSL');
-    if (sslString.startsWith('F') || sslString.startsWith('f') || parseInt(sslString, 10) === 0) {
-        ssl = false;
-    }
+export interface ConfigServiceAccount extends ConfigValue<ServiceAccount, ServiceAccount> {
+  readonly projectId: ConfigValue<string>;
+  readonly clientEmail: ConfigValue<string>;
+  readonly privateKey: ConfigValue<string>;
 }
-export const postgres = {
-    connectionString: isLocal ? local.postgresConnectionString : (getCfg('POSTGRES_CONNECTIONSTRING') || getCfg('DATABASE_URL')),
-    ssl: ssl,
-    max: (isLocal ? local.postgresMax : ~~getCfg('POSTGRES_MAX')) || 5,
-    idleTimeoutMillis: (isLocal ? local.postgresIdleTimeoutMills : ~~getCfg('POSTGRES_IDLETIMEOUTMILLS')) || 4 * this.HOUR,
-    connectionTimeoutMillis: (isLocal ? local.postgressConnectionTimeoutMills : ~~getCfg('CONNECTIONTIMEOUTMILLIS')) || 2000
-};
 
-export const userAdminUid = isLocal ? local.userAdminUid : getCfg('USER_ADMIN_UID');
-export const fireBase = isLocal
-    ? local.fireBase
-    : {
-          apiKey: getCfg('FIREBASE_APIKEY') || 'AIzaSyD8tzIdGqx18PHSBqfOZ258FCch5Xk8y38',
-          authDomain: getCfg('FIREBASE_AUTHDOMAIN') || 'node-red-home-automation-82192.firebaseapp.com',
-          // tslint:disable-next-line:max-line-length
-          databaseURL: getCfg('FIREBASE_DATABASEURL') || 'https://node-red-home-automation-82192.firebaseio.com',
-          projectId: getCfg('FIREBASE_PROJECID') || 'node-red-home-automation-82192',
-          // tslint:disable-next-line:max-line-length
-          storageBucket: getCfg('FIREBASE_STORAGEBUCKET') || 'node-red-home-automation-82192.appspot.com',
-          messagingSenderId: getCfg('FIREBASE_MESSAGINGSENDERID') || '350438145283',
-          remoteInitUrl: getCfg('FIREBASE_REMOTEINITURL') || '/login/init.js'
-      };
+export interface StringPoolConfig {
+  readonly connectionString?: string;
+  readonly ssl?: string;
+  readonly max?: string;
+  readonly idleTimeoutMillis?: string;
+  readonly connectionTimeoutMillis?: string;
+}
 
-fireBase.jsBaseUrl = fireBase.jsBaseUrl || getCfg('FIREBASE_JSBASEURL') || 'https://www.gstatic.com/firebasejs/5.6.0';
+export interface ConfigPostgres extends ConfigValue<PoolConfig, StringPoolConfig> {
+  readonly connectionString: ConfigValue<string>;
+  readonly ssl: ConfigValue<boolean>;
+  readonly max: ConfigValue<number>; // 5
+  readonly idleTimeoutMillis: ConfigValue<number>; // 4 * 3600 * 1000
+  readonly connectionTimeoutMillis: ConfigValue<number>; // 2000
+}
 
-const tmpPleaForDonation = isLocal ? local.pleaForDonation : getCfg('PLEA_FOR_DONATION');
-export const pleaForDonation = typeof tmpPleaForDonation === 'string' ? tmpPleaForDonation :
-  `<h1 class="h6 mt-3 font-weight-normal">
-	  Do you like ${appTitle} and find it useful? Consider donating
-    <a href="https://paypal.me/andreitatar">Paypal Me</a></h1>`;
+export interface ConfigFirebase extends ConfigValue<FirebaseOptions, FirebaseOptions> {
+  readonly apiKey: ConfigValue<string>; // 'AIzaSyD8tzIdGqx18PHSBqfOZ258FCch5Xk8y38',
+  readonly authDomain: ConfigValue<string>; // 'node-red-home-automation-82192.firebaseapp.com',
+  readonly databaseURL: ConfigValue<string>; // 'https://node-red-home-automation-82192.firebaseio.com',
+  readonly projectId: ConfigValue<string>; // 'node-red-home-automation-82192',
+  readonly storageBucket: ConfigValue<string>; // 'node-red-home-automation-82192.appspot.com',
+  readonly messagingSenderId: ConfigValue<string>; // '350438145283',
+  readonly remoteInitUrl: ConfigValue<string>; // '/login/init.js'
+  readonly jsBaseUrl: ConfigValue<string>; // 'https://www.gstatic.com/firebasejs/5.6.0';
+}
+
+export interface Config {
+
+  readonly serviceSockets: ConfigServiceSockets;
+  readonly serviceAccount: ConfigServiceAccount;
+
+  readonly postgres: ConfigPostgres;
+  readonly fireBase: ConfigFirebase;
+
+  readonly isLocal: ConfigValue<boolean>;
+  readonly secureCookie: ConfigValue<boolean>;
+  readonly appTitle: ConfigValue<string>;
+
+  readonly oauthClientId: ConfigValue<string>;
+  readonly oauthClientSecret: ConfigValue<string>;
+  readonly oauthProjectId: ConfigValue<string>;
+
+  readonly jwtCookieName: ConfigValue<string>;
+  readonly googleProjectApiKey: ConfigValue<string>;
+
+  readonly jwtSecret: ConfigValue<string>;
+
+  readonly noraServiceUrl: ConfigValue<string>; // 'node-red'
+
+  readonly userAdminUid: ConfigValue<string>;
+
+  readonly pleaForDonation: ConfigValue<string>; // `<h1 class="h6 mt-3 font-weight-normal">
+                                    // Do you like ${appTitle} and find it useful? Consider donating
+                                    // <a href="https://paypal.me/andreitatar">Paypal Me</a></h1>`
+}

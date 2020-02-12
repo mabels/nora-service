@@ -1,7 +1,8 @@
+import { Inject, Lazy } from '@andrei-tatar/ts-ioc';
 import * as functions from 'firebase-functions';
 
-import { Inject, Lazy } from '@andrei-tatar/ts-ioc';
-import * as config from '../../config';
+import { Config } from '../../config';
+import { ConfigService } from '../../services/config.service';
 import { DevicesRepository } from '../../services/devices.repository';
 import { JwtService } from '../../services/jwt.service';
 import { NoderedTokenService } from '../../services/nodered-token.service';
@@ -17,6 +18,7 @@ export class HomeController extends Controller {
         @Inject(NoderedTokenService) private nrtokenService: Lazy<NoderedTokenService>,
         @Inject(JwtService) private jwtService: Lazy<JwtService>,
         @Inject(DevicesRepository) private devices: Lazy<DevicesRepository>,
+        @Inject(ConfigService) private config: Config,
     ) {
         super();
     }
@@ -40,17 +42,17 @@ export class HomeController extends Controller {
 	// console.log('RenderTop:', userDevices, userDevicesHtml, token);
 	return await this.renderTemplate('home', {
 		token, userDevicesJson: userDevicesHtml,
-		appTitle: config.appTitle,
-		fireBase: config.fireBase,
-		pleaForDonation: config.pleaForDonation
+		appTitle: this.config.appTitle,
+		fireBase: this.config.fireBase,
+		pleaForDonation: this.config.pleaForDonation
 	});
     }
 
     @Http.get('/privacy')
     async getPrivacyPolicy() {
 	return await this.renderTemplate('home-privacy', {
-	  appTitle: config.appTitle,
-	  fireBase: config.fireBase
+	  appTitle: this.config.appTitle,
+	  fireBase: this.config.fireBase
 	});
     }
 
@@ -67,8 +69,8 @@ export class HomeController extends Controller {
     @Http.get('/terms')
     async getTermsOfService() {
 	return await this.renderTemplate('home-tos', {
-	  appTitle: config.appTitle,
-	  fireBase: config.fireBase
+	  appTitle: this.config.appTitle,
+	  fireBase: this.config.fireBase
 	});
     }
 
@@ -86,7 +88,7 @@ export class HomeController extends Controller {
         };
 
         const tokenStr = await this.jwtService.value.sign(newToken);
-        this.response.cookie(config.jwtCookieName, tokenStr, { secure: config.secureCookie });
+        this.response.cookie(this.config.jwtCookieName.val, tokenStr, { secure: this.config.secureCookie.val });
         return this.response.redirect('/');
     }
 }

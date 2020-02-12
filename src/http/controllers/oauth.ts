@@ -1,5 +1,7 @@
+import { Inject } from '@andrei-tatar/ts-ioc';
 import * as crypto from 'crypto';
-import { jwtSecret, oauthClientId, oauthClientSecret, oauthProjectId, appTitle, fireBase } from '../../config';
+
+import { Config } from '../../config';
 import { JwtService } from '../../services/jwt.service';
 import { UserRepository } from '../../services/user.repository';
 import { Http } from '../decorators/http';
@@ -7,6 +9,8 @@ import { Param } from '../decorators/param';
 import { BadRequestError, NotAuthorizedError } from '../middlewares/exception';
 import { Controller } from './controller';
 import { UserToken } from './login';
+import { ConfigService } from '../../services/config.service';
+
 interface AuthToken {
   exp: number;
   scope: string;
@@ -21,6 +25,7 @@ export class OauthController extends Controller {
   constructor(
     private jwtService: JwtService,
     private userRepo: UserRepository,
+    @Inject(ConfigService) private config: Config
   ) {
     super();
   }
@@ -33,9 +38,9 @@ export class OauthController extends Controller {
     const yesLink = Buffer.from(yes, 'base64').toString();
     const noLink = Buffer.from(no, 'base64').toString();
     return this.renderTemplate('oauth', {
-	yesLink, noLink,
-	appTitle,
-	fireBase
+        yesLink, noLink,
+        appTitle: this.config.appTitle,
+        fireBase: this.config.fireBase
     });
   }
 
@@ -48,11 +53,11 @@ export class OauthController extends Controller {
     @Param.fromQuery('confirm') confirm: boolean = false,
     @Param.fromQuery('auth') auth: boolean = false,
   ) {
-    if (clientId !== oauthClientId) {
+    if (clientId !== this.config.oauthClientId.val) {
       throw new BadRequestError('invalid client_id');
     }
 
-    if (!redirectUri || !redirectUri.startsWith(`https://oauth-redirect.googleusercontent.com/r/${oauthProjectId}`)) {
+    if (!redirectUri || !redirectUri.startsWith(`https://oauth-redirect.googleusercontent.com/r/${this.config.oauthProjectId}`)) {
       throw new BadRequestError('invalid redirect_uri');
     }
 
@@ -102,7 +107,7 @@ export class OauthController extends Controller {
     @Param.fromBody('code') code: string,
     @Param.fromBody('refresh_token') refreshToken: string,
   ) {
-    if (clientId !== oauthClientId || clientSecret !== oauthClientSecret) {
+    if (clientId !== this.config.oauthClientId.val || clientSecret !== this.config.oauthClientSecret.val) {
       throw new Error('invalid client id or secret');
     }
 
@@ -147,7 +152,7 @@ export class OauthController extends Controller {
 
   private async generateRefreshToken(uid: string) {
     // tslint:disable-next-line: deprecation
-    const cipher = crypto.createCipher('aes-256-ctr', jwtSecret);
+    const cipher = crypto.createCipher('aes-256-ctr', this.config.jwtSecret.val);
     const refresh = await this.userRepo.getRefreshToken(uid);
     let crypted = cipher.update(`${refresh}:${uid}`, 'utf8', 'base64');
     crypted += cipher.final('base64');
@@ -156,7 +161,7 @@ export class OauthController extends Controller {
 
   private async generateAccessTokenFromRefreshToken(refreshToken: string) {
     // tslint:disable-next-line: deprecation
-    const decipher = crypto.createDecipher('aes-256-ctr', jwtSecret);
+    const decipher = crypto.createDecipher('aes-256-ctr', this.config.jwtSecret.val);
     let dec = decipher.update(refreshToken, 'base64', 'utf8');
     dec += decipher.final('utf8');
     const parts = dec.split(':');

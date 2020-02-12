@@ -1,6 +1,12 @@
 import { Container } from '@andrei-tatar/ts-ioc';
 import { Socket } from 'socket.io';
 
+declare module 'socket.io' {
+    export interface Socket {
+        container: Container;
+    }
+}
+
 export function childContainerMiddleware(container: Container) {
     return (socket: Socket, next: (err?: any) => void) => {
         socket.container = container.createChild();
@@ -19,8 +25,3 @@ export function childContainerMiddleware(container: Container) {
     };
 }
 
-declare module 'socket.io' {
-    export interface Socket {
-        container: Container;
-    }
-}

@@ -1,5 +1,8 @@
 import { Inject, Lazy } from '@andrei-tatar/ts-ioc';
-import * as config from '../../config';
+
+import { Config } from '../../config';
+
+import { ConfigService } from '../../services/config.service';
 import { FirebaseService } from '../../services/firebase.service';
 import { JwtService } from '../../services/jwt.service';
 import { NoderedTokenService } from '../../services/nodered-token.service';
@@ -20,6 +23,8 @@ export class LoginController extends Controller {
         private firebase: Lazy<FirebaseService>,
         @Inject(NoderedTokenService)
         private nrtokenService: Lazy<NoderedTokenService>,
+        @Inject(ConfigService)
+        private config: Config,
     ) {
         super();
     }
@@ -34,7 +39,7 @@ export class LoginController extends Controller {
         };
         return {
             contentType: 'text/javascript; charset=utf-8',
-            body: `(${templateInitJs.toString()})(firebase, ${JSON.stringify(config.fireBase, null, 2)});`,
+            body: `(${templateInitJs.toString()})(firebase, ${JSON.stringify(this.config.fireBase, null, 2)});`,
         };
     }
 
@@ -44,8 +49,8 @@ export class LoginController extends Controller {
     ) {
         return await this.renderTemplate('login', {
             query: query ? '?' + query : '',
-            appTitle: config.appTitle,
-	    fireBase: config.fireBase
+            appTitle: this.config.appTitle,
+            fireBase: this.config.fireBase
         });
     }
 
@@ -67,8 +72,8 @@ export class LoginController extends Controller {
             };
 
             const tokenStr = await this.jwtService.value.sign(token);
-            this.response.cookie(config.jwtCookieName, tokenStr, {
-                secure: config.secureCookie,
+            this.response.cookie(this.config.jwtCookieName.val, tokenStr, {
+                secure: this.config.secureCookie.val,
             });
 
             if (typeof redirect === 'string') {

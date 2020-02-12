@@ -1,26 +1,30 @@
-import 'reflect-metadata';
-
+import * as functions from 'firebase-functions';
 import * as http from 'http';
 import * as https from 'https';
 import * as process from 'process';
-import { serviceSockets } from './config';
+import 'reflect-metadata';
+
+import { Config } from './config';
 import { container } from './container';
-import { app } from './http/app';
+import { appFactory } from './http/app.factory';
+import { ConfigService } from './services/config.service';
 import { initWebSocketListener } from './socket';
-import * as functions from 'firebase-functions';
 
 const  fireBaseExports: any = {};
 export = fireBaseExports;
 
+const config = container.resolve<Config>(ConfigService);
+const app = appFactory(config);
+
 if (typeof process.env.FIREBASE_CONFIG === 'undefined') {
-  serviceSockets.forEach(srv => {
-    const server = srv.tls ? https.createServer(srv.tls, app) : http.createServer(app);
-    initWebSocketListener(server, container);
+  config.serviceSockets.forEach(srv => {
+    const server = srv.tls.val ? https.createServer(srv.tls.val, app) : http.createServer(app);
+    initWebSocketListener(config, server, container);
     server.listen({
       port: srv.port,
       address: srv.address
     }, () =>
-      console.log(`listening ${srv.tls ? 'https' : 'http'} on ${srv.address ? '['+srv.address+'] ': ''}${srv.port}`)
+      console.log(`listening ${srv.tls ? 'https' : 'http'} on ${srv.address ? '[' + srv.address + '] ' : ''}${srv.port}`)
     );
   });
 } else {

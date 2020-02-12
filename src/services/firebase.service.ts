@@ -1,15 +1,14 @@
+import { Inject } from '@andrei-tatar/ts-ioc';
 import * as admin from 'firebase-admin';
-import { serviceAccount } from '../config';
+
+import { Config } from '../config';
+import { ConfigService } from './config.service';
 
 export class FirebaseService {
 
-    constructor() {
+    constructor(@Inject(ConfigService) config: Config) {
         admin.initializeApp({
-            credential: admin.credential.cert({
-                projectId: serviceAccount.project_id,
-                clientEmail: serviceAccount.client_email,
-                privateKey: serviceAccount.private_key,
-            }),
+            credential: admin.credential.cert(config.serviceAccount.val)
         });
     }
 

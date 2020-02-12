@@ -1,9 +1,10 @@
+import { Inject } from '@andrei-tatar/ts-ioc';
 import fetch from 'node-fetch';
 
-import { Inject } from '@andrei-tatar/ts-ioc';
-import { serviceAccount } from '../config';
+import { Config } from '../config';
 import { StateChanges } from '../models';
 import { delay } from '../util';
+import { ConfigService } from './config.service';
 import { JwtService } from './jwt.service';
 import { UserRepository } from './user.repository';
 
@@ -20,6 +21,8 @@ export class ReportStateService {
         private uid: string,
         private jwtService: JwtService,
         private userRepo: UserRepository,
+        @Inject(ConfigService)
+        private config: Config
     ) {}
 
     async reportState(stateChanges: StateChanges, requestId?: string, tries = 3) {
@@ -76,13 +79,13 @@ export class ReportStateService {
     private async getToken() {
         const now = Math.round(new Date().getTime() / 1000);
         const jwt = {
-            iss: serviceAccount.client_email,
+            iss: this.config.serviceAccount.val.clientEmail,
             scope: 'https://www.googleapis.com/auth/homegraph',
             aud: 'https://accounts.google.com/o/oauth2/token',
             iat: now,
             exp: now + 3600,
         };
-        const token = await this.jwtService.sign(jwt, serviceAccount.private_key, { algorithm: 'RS256' });
+        const token = await this.jwtService.sign(jwt, this.config.serviceAccount.val.privateKey, { algorithm: 'RS256' });
 
         console.log('fetch: https://accounts.google.com/o/oauth2/token');
         const response = await fetch('https://accounts.google.com/o/oauth2/token', {
