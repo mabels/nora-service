@@ -21,7 +21,7 @@ export class RequestSyncService {
 
         while (true) {
             // tslint:disable-next-line:max-line-length
-            const response = await this.fetch.run(`https://homegraph.googleapis.com/v1/devices:requestSync?key=${this.config.googleProjectApiKey}`, {
+            const response = await this.fetch.run(`https://homegraph.googleapis.com/v1/devices:requestSync?key=${this.config.googleProjectApiKey.val}`, {
                 method: 'post',
                 body: JSON.stringify({ agentUserId: this.uid }),
                 headers: { 'content-type': 'application/json' },
