@@ -8,7 +8,11 @@ export class FirebaseService {
 
     constructor(@Inject(ConfigService) config: Config) {
         admin.initializeApp({
-            credential: admin.credential.cert(config.serviceAccount.val)
+            credential: admin.credential.cert({
+                clientEmail: config.serviceAccount.client_email.val,
+                projectId: config.serviceAccount.project_id.val,
+                privateKey: config.serviceAccount.private_key.val
+            })
         });
     }
 

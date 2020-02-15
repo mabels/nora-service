@@ -42,12 +42,16 @@ export function envConfigFactory(cfg: Config, env: { [key: string]: string }, fi
         cfg.serviceSockets[0].tls.key.set(...readFile(getCfg('TLS_KEY_FILE')));
         cfg.serviceSockets[0].tls.cert.set(...readFile(getCfg('TLS_CERT_FILE')));
 
-        cfg.serviceAccount.projectId.set(...getCfg('PROJECT_ID'));
-        cfg.serviceAccount.clientEmail.set(...getCfg('SERVICE_ACCOUNT_CLIENT_EMAIL'));
-        cfg.serviceAccount.clientEmail.set(...getCfg('SERVICE_ACCOUNT_ISSUER'));
-        cfg.serviceAccount.privateKey.set(...getCfg('SERVICE_ACCOUNT_PRIVATE_KEY'));
-        cfg.serviceAccount.privateKey.set(...getCfg('SERVICE_ACCOUNT_KEY'));
+        cfg.serviceAccount.project_id.set(...getCfg('PROJECT_ID'));
+        cfg.serviceAccount.client_email.set(...getCfg('SERVICE_ACCOUNT_CLIENT_EMAIL'));
+        cfg.serviceAccount.client_email.set(...getCfg('SERVICE_ACCOUNT_ISSUER'));
+        cfg.serviceAccount.private_key.set(...getCfg('SERVICE_ACCOUNT_PRIVATE_KEY'));
+        cfg.serviceAccount.private_key.set(...getCfg('SERVICE_ACCOUNT_KEY'));
 
+        const [src, serviceAccountJsonFileName] = getCfg('SERVICE_ACCOUNT_JSON');
+        if (typeof serviceAccountJsonFileName === 'string') {
+          cfg.serviceAccount.set(src, JSON.parse(fs.readFileSync(serviceAccountJsonFileName).toString()));
+        }
         cfg.postgres.connectionString.set(...getCfg('POSTGRES_CONNECTIONSTRING'));
         cfg.postgres.connectionString.set(...getCfg('DATABASE_URL'));
         cfg.postgres.ssl.set(...getCfg('POSTGRES_SSL'));

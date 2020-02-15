@@ -1,5 +1,5 @@
 import { FirebaseOptions } from '@firebase/app-types';
-import { ServiceAccount } from 'firebase-admin';
+// import { ServiceAccount } from 'firebase-admin';
 import { PoolConfig } from 'pg';
 
 export type ConfigSrc = 'Env' | 'Firebase' | 'Local' | 'Default';
@@ -36,10 +36,16 @@ export interface ConfigServiceSocket extends ConfigValue<ServiceSocket, ServiceS
 
 export type ConfigServiceSockets = ConfigServiceSocket[];
 
-export interface ConfigServiceAccount extends ConfigValue<ServiceAccount, ServiceAccount> {
-  readonly projectId: ConfigValue<string>;
-  readonly clientEmail: ConfigValue<string>;
-  readonly privateKey: ConfigValue<string>;
+export interface StringServiceAccount {
+  readonly project_id?: string;
+  readonly client_email?: string;
+  readonly private_key?: string;
+}
+
+export interface ConfigServiceAccount extends ConfigValue<StringServiceAccount, StringServiceAccount> {
+  readonly project_id: ConfigValue<string>;
+  readonly client_email: ConfigValue<string>;
+  readonly private_key: ConfigValue<string>;
 }
 
 export interface StringPoolConfig {

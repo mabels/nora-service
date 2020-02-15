@@ -77,13 +77,13 @@ export class ReportStateService {
     private async getToken() {
         const now = Math.round(new Date().getTime() / 1000);
         const jwt = {
-            iss: this.config.serviceAccount.val.clientEmail,
+            iss: this.config.serviceAccount.val.client_email,
             scope: 'https://www.googleapis.com/auth/homegraph',
             aud: 'https://accounts.google.com/o/oauth2/token',
             iat: now,
             exp: now + 3600,
         };
-        const token = await this.jwtService.sign(jwt, this.config.serviceAccount.val.privateKey, { algorithm: 'RS256' });
+        const token = await this.jwtService.sign(jwt, this.config.serviceAccount.val.private_key, { algorithm: 'RS256' });
 
         const response = await this.fetch.run('https://accounts.google.com/o/oauth2/token', {
             method: 'post',

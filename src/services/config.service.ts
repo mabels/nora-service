@@ -1,4 +1,4 @@
-import { ServiceAccount } from 'firebase-admin';
+// import { ServiceAccount } from 'firebase-admin';
 import * as functions from 'firebase-functions';
 import { PoolConfig } from 'pg';
 
@@ -16,6 +16,7 @@ import {
     StringConfigTls,
     StringPoolConfig,
     StringConfigFirebase,
+    StringServiceAccount,
 } from '../config';
 import { envConfigFactory } from './env.config';
 import { localConfigFactory } from './local.config.factory';
@@ -113,23 +114,23 @@ class FirebaseDefault implements ConfigFirebase {
 
 class ServiceAccountDefault implements ConfigServiceAccount {
     constructor(
-        public projectId = cvalString('project_id'),
-        public clientEmail = cvalString('client_email'),
-        public privateKey = cvalString('private_key'),
+        public project_id = cvalString('project_id'),
+        public client_email = cvalString('client_email'),
+        public private_key = cvalString('private_key'),
     ) {}
-    public get val(): ServiceAccount {
+    public get val(): StringServiceAccount {
         return {
-            projectId: this.projectId.val,
-            clientEmail: this.clientEmail.val,
-            privateKey: this.privateKey.val,
+            project_id: this.project_id.val,
+            client_email: this.client_email.val,
+            private_key: this.private_key.val,
         };
     }
 
     src: ConfigSrc;
-    set(src: ConfigSrc, val?: ServiceAccount) {
-        this.projectId.set(src, val?.projectId);
-        this.clientEmail.set(src, val?.clientEmail);
-        this.privateKey.set(src, val?.privateKey);
+    set(src: ConfigSrc, val?: StringServiceAccount) {
+        this.project_id.set(src, val?.project_id);
+        this.client_email.set(src, val?.client_email);
+        this.private_key.set(src, val?.private_key);
     }
 }
 
