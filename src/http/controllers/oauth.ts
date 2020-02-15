@@ -3,7 +3,7 @@ import * as crypto from 'crypto';
 
 import { JwtService } from '../../services/jwt.service';
 import { LogService } from '../../services/log-service';
-import { UserRepository } from '../../services/user.repository';
+import { UserRepository, UserRepositoryFactory } from '../../services/user.repository';
 import { Http } from '../decorators/http';
 import { Param } from '../decorators/param';
 import { BadRequestError, NotAuthorizedError } from '../middlewares/exception';
@@ -22,8 +22,8 @@ export class OauthController extends Controller {
   readonly expireTimeSeconds = 3600;
 
   constructor(
-    private jwtService: JwtService,
-    private userRepo: UserRepository,
+    @Inject(JwtService) private jwtService: JwtService,
+    @Inject(UserRepositoryFactory) private userRepo: UserRepository,
     @Inject(LogService) private log: LogService
   ) {
     super();
