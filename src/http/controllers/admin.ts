@@ -12,8 +12,7 @@ import { Controller } from './controller';
 export class AdminController extends Controller {
 
     constructor(
-        @Inject(DevicesRepository)
-        private devices: DevicesRepository,
+        @Inject(DevicesRepository) private devices: DevicesRepository,
         @Inject(ConfigService) config: Config
     ) {
         super();

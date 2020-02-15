@@ -18,10 +18,8 @@ export class ReportStateService {
 
     constructor(
         @Inject('uid') private uid: string,
-        @Inject(JwtService)
-        private jwtService: JwtService,
-        @Inject(UserRepositoryFactory)
-        private userRepo: UserRepository,
+        @Inject(JwtService) private jwtService: JwtService,
+        @Inject(UserRepositoryFactory) private userRepo: UserRepository,
         @Inject(ConfigService) private config: Config,
         @Inject(FetchService) private fetch: FetchService
     ) {}

@@ -221,8 +221,10 @@ export class ConfigService implements Config {
     public readonly oauthClientSecret = cvalString('oauthClientSecret');
     public readonly jwtCookieName = cvalString('auth:nora');
     public readonly googleProjectApiKey = cvalString('googleProjectApiKey');
-    public readonly oauthProjectId = cvalString(this.serviceAccount.projectId.val);
-    public readonly jwtSecret = cvalString(this.serviceAccount.privateKey.val);
+
+    public readonly oauthProjectId = cvalString('');
+    public readonly jwtSecret = cvalString('');
+
     public readonly noraServiceUrl = cvalString('node-red');
 
     public readonly userAdminUid = cvalString('userAdminUid');
@@ -233,6 +235,12 @@ export class ConfigService implements Config {
 }
 
 export function fixRefs(src: Config) {
+    if (!src.oauthProjectId.val.length) {
+        src.oauthProjectId.set(this.serviceAccount.projectId.src, this.serviceAccount.projectId.val);
+    }
+    if (!src.jwtSecret.val.length) {
+        src.jwtSecret.set(this.serviceAccount.privateKey.src, this.serviceAccount.privateKey.val);
+    }
     return src;
 }
 

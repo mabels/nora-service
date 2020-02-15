@@ -1,6 +1,7 @@
 import { Inject, Lazy } from '@andrei-tatar/ts-ioc';
 
 import { FulfillPayload, FulfillResponse, Input, Intent } from '../../google';
+import { LogService } from '../../services/log-service';
 import { Http } from '../decorators/http';
 import { Param } from '../decorators/param';
 import { authFilter } from '../middlewares/auth';
@@ -9,7 +10,6 @@ import { ExecuteService } from '../services/execute.service';
 import { QueryService } from '../services/query.service';
 import { SyncService } from '../services/sync.service';
 import { Controller } from './controller';
-import { LogService } from '../../services/log-service';
 
 @Http.controller('/smarthome')
 @Http.filter(authFilter({ scope: 'google-home-auth' }))
