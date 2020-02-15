@@ -237,10 +237,10 @@ export class ConfigService implements Config {
 
 export function fixRefs(src: Config) {
     if (!src.oauthProjectId.val.length) {
-        src.oauthProjectId.set(this.serviceAccount.projectId.src, this.serviceAccount.projectId.val);
+        src.oauthProjectId.set(src.serviceAccount.project_id.src, src.serviceAccount.project_id.val);
     }
     if (!src.jwtSecret.val.length) {
-        src.jwtSecret.set(this.serviceAccount.privateKey.src, this.serviceAccount.privateKey.val);
+        src.jwtSecret.set(src.serviceAccount.private_key.src, src.serviceAccount.private_key.val);
     }
     return src;
 }
