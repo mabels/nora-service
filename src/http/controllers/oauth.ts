@@ -1,15 +1,14 @@
 import { Inject } from '@andrei-tatar/ts-ioc';
 import * as crypto from 'crypto';
 
-import { Config } from '../../config';
 import { JwtService } from '../../services/jwt.service';
+import { LogService } from '../../services/log-service';
 import { UserRepository } from '../../services/user.repository';
 import { Http } from '../decorators/http';
 import { Param } from '../decorators/param';
 import { BadRequestError, NotAuthorizedError } from '../middlewares/exception';
 import { Controller } from './controller';
 import { UserToken } from './login';
-import { ConfigService } from '../../services/config.service';
 
 interface AuthToken {
   exp: number;
@@ -25,7 +24,7 @@ export class OauthController extends Controller {
   constructor(
     private jwtService: JwtService,
     private userRepo: UserRepository,
-    @Inject(ConfigService) private config: Config
+    @Inject(LogService) private log: LogService
   ) {
     super();
   }
@@ -39,8 +38,8 @@ export class OauthController extends Controller {
     const noLink = Buffer.from(no, 'base64').toString();
     return this.renderTemplate('oauth', {
         yesLink, noLink,
-        appTitle: this.config.appTitle,
-        fireBase: this.config.fireBase
+        appTitle: this.config.appTitle.val,
+        fireBase: this.config.fireBase.val
     });
   }
 
@@ -73,7 +72,7 @@ export class OauthController extends Controller {
         `state=${encodeURIComponent(state)}`;
       const encoded = Buffer.from(redirectPath).toString('base64');
 
-      return this.response.redirect(`/login?redirect=${encoded}`);
+      return this.redirect(`/login?redirect=${encoded}`);
     }
 
     if (!auth) {
@@ -86,7 +85,7 @@ export class OauthController extends Controller {
       const encodedYes = Buffer.from(redirectYes).toString('base64');
       const redirectNo = `/oauth?${parms}`;
       const encodedNo = Buffer.from(redirectNo).toString('base64');
-      return this.response.redirect(`/oauth/auth?yes=${encodedYes}&no=${encodedNo}`);
+      return this.redirect(`/oauth/auth?yes=${encodedYes}&no=${encodedNo}`);
     }
 
     const authToken: AuthToken = {
@@ -95,7 +94,7 @@ export class OauthController extends Controller {
       uid: this.request.token.uid,
     };
     const authCode = await this.jwtService.sign(authToken);
-    return this.response.redirect(`${redirectUri}?state=${state}&code=${authCode}`);
+    return this.redirect(`${redirectUri}?state=${state}&code=${authCode}`);
   }
 
 
@@ -119,7 +118,7 @@ export class OauthController extends Controller {
         }
 
         await this.userRepo.updateUserLinked(authToken.uid, true);
-        console.info(`user ${authToken.uid} linked to google home`);
+        this.log.info(`user ${authToken.uid} linked to google home`);
 
         return {
           token_type: 'Bearer',

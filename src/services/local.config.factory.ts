@@ -4,13 +4,14 @@ import { Config } from '../config';
 
 export function localConfigFactory(src: Config, fname = './config.local.json') {
   if (!fs.existsSync(fname)) {
-    return;
+    return src;
   }
   const read = JSON.parse(fs.readFileSync(fname).toString('utf-8'));
   const my = 'Local';
   src.isLocal.set(my, read.isLocal || true);
   src.secureCookie.set(my, read.secureCookie || false);
   src.appTitle.set(my, read.appTitle);
+  src.redirectBaseUrl.set(my, read.redirectBaseUrl);
 
   src.serviceSockets[0].address.set(my, read.serviceSocket?.address);
   src.serviceSockets[0].port.set(my, read.serviceSocket?.port);

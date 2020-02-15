@@ -2,7 +2,7 @@ import { Inject } from '@andrei-tatar/ts-ioc';
 
 import { Config } from '../../config';
 import { ConfigService } from '../../services/config.service';
-import { DevicesRepository } from '../../services/devices.repository';
+import { DevicesRepository } from "../../services/devices.repository";
 import { Http } from '../decorators/http';
 import { Param } from '../decorators/param';
 import { authFilter } from '../middlewares/auth';
@@ -12,6 +12,7 @@ import { Controller } from './controller';
 export class AdminController extends Controller {
 
     constructor(
+        @Inject(DevicesRepository)
         private devices: DevicesRepository,
         @Inject(ConfigService) config: Config
     ) {

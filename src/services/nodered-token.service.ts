@@ -1,9 +1,9 @@
-import { Inject, Injectable } from '@andrei-tatar/ts-ioc';
+import { Inject } from '@andrei-tatar/ts-ioc';
 
 import { Config } from '../config';
-import { JwtService } from './jwt.service';
-import { UserRepository } from './user.repository';
 import { ConfigService } from './config.service';
+import { JwtService } from './jwt.service';
+import { UserRepository, UserRepositoryFactory } from './user.repository';
 
 interface NoderedToken {
     uid: string;
@@ -11,10 +11,11 @@ interface NoderedToken {
     version: number;
 }
 
-@Injectable()
 export class NoderedTokenService {
     constructor(
+        @Inject(JwtService)
         private jwtService: JwtService,
+        @Inject(UserRepositoryFactory)
         private userRepo: UserRepository,
         @Inject(ConfigService)
         private config: Config
@@ -22,6 +23,9 @@ export class NoderedTokenService {
     }
 
     async generateToken(uid: string) {
+        console.log('generateToken', uid);
+        console.log('userRepo', this.userRepo);
+        console.log('jwtSerivce', this.jwtService);
         const token: NoderedToken = {
             uid: uid,
             scope: this.config.noraServiceUrl.val,

@@ -1,12 +1,12 @@
-import { Injectable } from '@andrei-tatar/ts-ioc';
+import { Inject } from '@andrei-tatar/ts-ioc';
 import { QueryDevice, QueryDevices, QueryInput, QueryPayload } from '../../google';
 import { Device } from '../../models';
 import { DevicesRepository } from '../../services/devices.repository';
 
-@Injectable()
 export class QueryService {
 
     constructor(
+        @Inject(DevicesRepository)
         private devices: DevicesRepository,
     ) {
     }

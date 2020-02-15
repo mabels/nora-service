@@ -9,6 +9,7 @@ import { ExecuteService } from '../services/execute.service';
 import { QueryService } from '../services/query.service';
 import { SyncService } from '../services/sync.service';
 import { Controller } from './controller';
+import { LogService } from '../../services/log-service';
 
 @Http.controller('/smarthome')
 @Http.filter(authFilter({ scope: 'google-home-auth' }))
@@ -19,6 +20,8 @@ export class SmartHomeController extends Controller {
         @Inject(QueryService) private queryService: Lazy<QueryService>,
         @Inject(ExecuteService) private executeService: Lazy<ExecuteService>,
         @Inject(DisconnectService) private disconnectService: Lazy<DisconnectService>,
+        @Inject(LogService) private log: LogService,
+
     ) {
         super();
     }
@@ -28,10 +31,10 @@ export class SmartHomeController extends Controller {
         @Param.fromBody('inputs') inputs: Input[],
         @Param.fromBody('requestId') requestId: string,
     ) {
-        console.log('FulFill:', JSON.stringify(this.request.body));
+        this.log.info('FulFill:', JSON.stringify(this.request.body));
         let payload: FulfillPayload;
         for (const input of inputs) {
-            console.info(`executing ${input.intent} for ${this.request.token.uid}`);
+            this.log.info(`executing ${input.intent} for ${this.request.token.uid}`);
             switch (input.intent) {
                 case Intent.Sync:
                     payload = this.syncService.value.sync(requestId);

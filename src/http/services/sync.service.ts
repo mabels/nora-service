@@ -3,7 +3,7 @@ import { uniq } from 'lodash';
 import { Inject } from '@andrei-tatar/ts-ioc';
 import { DeviceTypes, SyncDevice, SyncPayload, Traits } from '../../google';
 import { Devices, StateChanges } from '../../models';
-import { DevicesRepository } from '../../services/devices.repository';
+import { DevicesRepository } from "../../services/devices.repository";
 import { ReportStateService } from '../../services/report-state.service';
 import { delay } from '../../util';
 

@@ -1,12 +1,12 @@
 import { Inject } from '@andrei-tatar/ts-ioc';
-import fetch from 'node-fetch';
 
 import { Config } from '../config';
+import { FetchService } from '../http/services/fetch.service';
 import { StateChanges } from '../models';
 import { delay } from '../util';
 import { ConfigService } from './config.service';
 import { JwtService } from './jwt.service';
-import { UserRepository } from './user.repository';
+import { UserRepository, UserRepositoryFactory } from './user.repository';
 
 interface GoogleToken {
     token: string;
@@ -17,12 +17,13 @@ export class ReportStateService {
     private static token: Promise<GoogleToken>;
 
     constructor(
-        @Inject('uid')
-        private uid: string,
+        @Inject('uid') private uid: string,
+        @Inject(JwtService)
         private jwtService: JwtService,
+        @Inject(UserRepositoryFactory)
         private userRepo: UserRepository,
-        @Inject(ConfigService)
-        private config: Config
+        @Inject(ConfigService) private config: Config,
+        @Inject(FetchService) private fetch: FetchService
     ) {}
 
     async reportState(stateChanges: StateChanges, requestId?: string, tries = 3) {
@@ -71,8 +72,7 @@ export class ReportStateService {
             },
         };
         const url = `https://homegraph.googleapis.com/v1/devices:reportStateAndNotification`;
-        console.log(`fetch: ${url}:`, JSON.stringify(fetchOptions, null, 2));
-        const response = await fetch(url, fetchOptions);
+        const response = await this.fetch.run(url, fetchOptions);
         return { url, fetchOptions, response };
     }
 
@@ -87,8 +87,7 @@ export class ReportStateService {
         };
         const token = await this.jwtService.sign(jwt, this.config.serviceAccount.val.privateKey, { algorithm: 'RS256' });
 
-        console.log('fetch: https://accounts.google.com/o/oauth2/token');
-        const response = await fetch('https://accounts.google.com/o/oauth2/token', {
+        const response = await this.fetch.run('https://accounts.google.com/o/oauth2/token', {
             method: 'post',
             body: `grant_type=${encodeURIComponent('urn:ietf:params:oauth:grant-type:jwt-bearer')}&assertion=${encodeURIComponent(token)}`,
             headers: {

@@ -3,68 +3,70 @@ import * as fs from 'fs';
 import { Config, ConfigSrc } from '../config';
 
 function readFile(getCfg: [ConfigSrc, string?]): [ConfigSrc, string?] {
-  if (typeof getCfg[1] === 'string') {
-    return [getCfg[0], fs.readFileSync(getCfg[1]).toString()];
-  }
-  return getCfg;
+    if (typeof getCfg[1] === 'string') {
+        return [getCfg[0], fs.readFileSync(getCfg[1]).toString()];
+    }
+    return getCfg;
 }
 
-export function envConfigFactory(cfg: Config, env: { [key: string]: string },
-    fireBaseEnv?: { [key: string]: string }) {
-  [
-    (k: string): [ConfigSrc, string?] => (['Env', env[k]]),
-    (k: string): [ConfigSrc, string?] => (['Firebase', fireBaseEnv[k.toLowerCase()]])
-  ].forEach(getCfg => {
+export function envConfigFactory(cfg: Config, env: { [key: string]: string }, fireBaseEnv: { [key: string]: string }) {
+    if (typeof process.env.FIREBASE_CONFIG !== 'undefined') {
+      cfg.userRepositoryBackend.set('Env', 'fb');
+    }
+    [
+        (k: string): [ConfigSrc, string?] => ['Env', env[k]],
+        (k: string): [ConfigSrc, string?] => ['Firebase', fireBaseEnv[k.toLowerCase()]],
+    ].forEach(getCfg => {
+        cfg.secureCookie.set(...getCfg('SECURE_COOKIE'));
+        cfg.appTitle.set(...getCfg('APPTITLE'));
+        cfg.redirectBaseUrl.set(...getCfg('REDIRECTBASEURL'));
+        cfg.userRepositoryBackend.set(...getCfg('USER_REPOSITORY_BACKEND'));
 
-  cfg.secureCookie.set(...getCfg('SECURE_COOKIE'));
-  cfg.appTitle.set(...getCfg('APPTITLE'));
+        cfg.oauthClientId.set(...getCfg('OAUTH_ID'));
+        cfg.oauthClientSecret.set(...getCfg('OAUTH_SECRET'));
+        cfg.jwtCookieName.set(...getCfg('JWT_COOKIE'));
+        cfg.googleProjectApiKey.set(...getCfg('PROJECT_API_KEY'));
+        cfg.oauthProjectId.set(...getCfg('OAUTH_PROJECT_ID'));
+        cfg.jwtSecret.set(...getCfg('JWT_SECRET'));
+        cfg.noraServiceUrl.set(...getCfg('NORA_SERVICE_URL'));
+        cfg.userAdminUid.set(...getCfg('USER_ADMIN_UID'));
+        cfg.pleaForDonation.set(...getCfg('PLEA_FOR_DONATION'));
 
-  cfg.oauthClientId.set(...getCfg('OAUTH_ID'));
-  cfg.oauthClientSecret.set(...getCfg('OAUTH_SECRET'));
-  cfg.jwtCookieName.set(...getCfg('JWT_COOKIE'));
-  cfg.googleProjectApiKey.set(...getCfg('PROJECT_API_KEY'));
-  cfg.oauthProjectId.set(...getCfg('OAUTH_PROJECT_ID'));
-  cfg.jwtSecret.set(...getCfg('JWT_SECRET'));
-  cfg.noraServiceUrl.set(...getCfg('NORA_SERVICE_URL'));
-  cfg.userAdminUid.set(...getCfg('USER_ADMIN_UID'));
-  cfg.pleaForDonation.set(...getCfg('PLEA_FOR_DONATION'));
+        cfg.serviceSockets[0].port.set(...getCfg('PORT'));
+        cfg.serviceSockets[0].address.set(...getCfg('ADDRESS'));
+        cfg.serviceSockets[0].useHttp2.set(...getCfg('USE_HTTP2'));
 
+        cfg.serviceSockets[0].tls.key.set(...getCfg('TLS_KEY'));
+        cfg.serviceSockets[0].tls.cert.set(...getCfg('TLS_CERT'));
 
-  cfg.serviceSockets[0].port.set(...getCfg('PORT'));
-  cfg.serviceSockets[0].address.set(...getCfg('ADDRESS'));
-  cfg.serviceSockets[0].useHttp2.set(...getCfg('USE_HTTP2'));
+        cfg.serviceSockets[0].tls.key.set(...readFile(getCfg('TLS_KEY_FILE')));
+        cfg.serviceSockets[0].tls.cert.set(...readFile(getCfg('TLS_CERT_FILE')));
 
-  cfg.serviceSockets[0].tls.key.set(...getCfg('TLS_KEY'));
-  cfg.serviceSockets[0].tls.cert.set(...getCfg('TLS_CERT'));
+        cfg.serviceAccount.projectId.set(...getCfg('PROJECT_ID'));
+        cfg.serviceAccount.clientEmail.set(...getCfg('SERVICE_ACCOUNT_CLIENT_EMAIL'));
+        cfg.serviceAccount.clientEmail.set(...getCfg('SERVICE_ACCOUNT_ISSUER'));
+        cfg.serviceAccount.privateKey.set(...getCfg('SERVICE_ACCOUNT_PRIVATE_KEY'));
+        cfg.serviceAccount.privateKey.set(...getCfg('SERVICE_ACCOUNT_KEY'));
 
-  cfg.serviceSockets[0].tls.key.set(...readFile(getCfg('TLS_KEY_FILE')));
-  cfg.serviceSockets[0].tls.cert.set(...readFile(getCfg('TLS_CERT_FILE')));
+        cfg.postgres.connectionString.set(...getCfg('POSTGRES_CONNECTIONSTRING'));
+        cfg.postgres.connectionString.set(...getCfg('DATABASE_URL'));
+        cfg.postgres.ssl.set(...getCfg('POSTGRES_SSL'));
+        cfg.postgres.max.set(...getCfg('POSTGRES_MAX'));
+        cfg.postgres.idleTimeoutMillis.set(...getCfg('POSTGRES_IDLETIMEOUTMILLS'));
+        cfg.postgres.connectionTimeoutMillis.set(...getCfg('CONNECTIONTIMEOUTMILLIS'));
 
-  cfg.serviceAccount.projectId.set(...getCfg('PROJECT_ID'));
-  cfg.serviceAccount.clientEmail.set(...getCfg('SERVICE_ACCOUNT_CLIENT_EMAIL'));
-  cfg.serviceAccount.clientEmail.set(...getCfg('SERVICE_ACCOUNT_ISSUER'));
-  cfg.serviceAccount.privateKey.set(...getCfg('SERVICE_ACCOUNT_PRIVATE_KEY'));
-  cfg.serviceAccount.privateKey.set(...getCfg('SERVICE_ACCOUNT_KEY'));
+        cfg.fireBase.apiKey.set(...getCfg('FIREBASE_APIKEY'));
+        cfg.fireBase.authDomain.set(...getCfg('FIREBASE_AUTHDOMAIN'));
+        cfg.fireBase.databaseURL.set(...getCfg('FIREBASE_DATABASEURL'));
+        cfg.fireBase.projectId.set(...getCfg('FIREBASE_PROJECID'));
+        cfg.fireBase.storageBucket.set(...getCfg('FIREBASE_STORAGEBUCKET'));
+        cfg.fireBase.messagingSenderId.set(...getCfg('FIREBASE_MESSAGINGSENDERID'));
+        cfg.fireBase.remoteInitUrl.set(...getCfg('FIREBASE_REMOTEINITURL'));
+        cfg.fireBase.jsBaseUrl.set(...getCfg('FIREBASE_JSBASEURL'));
+        cfg.fireBase.uiBaseUrl.set(...getCfg('FIREBASE_UIBASEURL'));
+    });
 
-    cfg.postgres.connectionString.set(...getCfg('POSTGRES_CONNECTIONSTRING'));
-    cfg.postgres.connectionString.set(...getCfg('DATABASE_URL'));
-    cfg.postgres.ssl.set(...getCfg('POSTGRES_SSL'));
-    cfg.postgres.max.set(...getCfg('POSTGRES_MAX'));
-    cfg.postgres.idleTimeoutMillis.set(...getCfg('POSTGRES_IDLETIMEOUTMILLS'));
-    cfg.postgres.connectionTimeoutMillis.set(...getCfg('CONNECTIONTIMEOUTMILLIS'));
-
-    cfg.fireBase.apiKey.set(...getCfg('FIREBASE_APIKEY'));
-    cfg.fireBase.authDomain.set(...getCfg('FIREBASE_AUTHDOMAIN'));
-    cfg.fireBase.databaseURL.set(...getCfg('FIREBASE_DATABASEURL'));
-    cfg.fireBase.projectId.set(...getCfg('FIREBASE_PROJECID'));
-    cfg.fireBase.storageBucket.set(...getCfg('FIREBASE_STORAGEBUCKET'));
-    cfg.fireBase.messagingSenderId.set(...getCfg('FIREBASE_MESSAGINGSENDERID'));
-    cfg.fireBase.remoteInitUrl.set(...getCfg('FIREBASE_REMOTEINITURL'));
-    cfg.fireBase.jsBaseUrl.set(...getCfg('FIREBASE_JSBASEURL'));
-
-});
-
-  return cfg;
+    return cfg;
 }
 
 /*

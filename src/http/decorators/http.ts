@@ -1,3 +1,5 @@
+// import 'reflect-metadata';
+
 import { IRouterHandler, IRouterMatcher, NextFunction, Request, Response, Router } from 'express';
 import { Controller } from '../controllers/controller';
 import { Param } from './param';

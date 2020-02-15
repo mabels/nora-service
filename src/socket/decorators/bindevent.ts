@@ -36,12 +36,10 @@ export function registerBindedEvents(target, socket: Socket) {
         };
         if (event.once) {
             socket.once(event.event, (...args: any[]) => {
-                // console.log('ONCE:', event.event, ...args);
                 handler(...args);
             });
         } else {
             socket.on(event.event, (...args: any[]) => {
-                // console.log('ON:', event.event, ...args);
                 handler(...args);
             });
         }

@@ -1,13 +1,10 @@
 import { Inject, Lazy } from '@andrei-tatar/ts-ioc';
 
-import { Config } from '../../config';
-
-import { ConfigService } from '../../services/config.service';
 import { FirebaseService } from '../../services/firebase.service';
 import { JwtService } from '../../services/jwt.service';
+import { LogService } from '../../services/log-service';
 import { NoderedTokenService } from '../../services/nodered-token.service';
-import { UserRepository } from '../../services/user.repository';
-import { delay } from '../../util';
+import { UserRepository, UserRepositoryFactory } from '../../services/user.repository';
 import { Http } from '../decorators/http';
 import { Param } from '../decorators/param';
 import { Controller } from './controller';
@@ -15,16 +12,11 @@ import { Controller } from './controller';
 @Http.controller('/login')
 export class LoginController extends Controller {
     constructor(
-        @Inject(UserRepository)
-        private userRepository: Lazy<UserRepository>,
-        @Inject(JwtService)
-        private jwtService: Lazy<JwtService>,
-        @Inject(FirebaseService)
-        private firebase: Lazy<FirebaseService>,
-        @Inject(NoderedTokenService)
-        private nrtokenService: Lazy<NoderedTokenService>,
-        @Inject(ConfigService)
-        private config: Config,
+        @Inject(UserRepositoryFactory) private userRepository: Lazy<UserRepository>,
+        @Inject(JwtService) private jwtService: Lazy<JwtService>,
+        @Inject(FirebaseService) private firebase: Lazy<FirebaseService>,
+        @Inject(NoderedTokenService) private nrtokenService: Lazy<NoderedTokenService>,
+        @Inject(LogService) private log: LogService,
     ) {
         super();
     }
@@ -39,7 +31,7 @@ export class LoginController extends Controller {
         };
         return {
             contentType: 'text/javascript; charset=utf-8',
-            body: `(${templateInitJs.toString()})(firebase, ${JSON.stringify(this.config.fireBase, null, 2)});`,
+            body: `(${templateInitJs.toString()})(firebase, ${JSON.stringify(this.config.fireBase.val, null, 2)});`,
         };
     }
 
@@ -49,8 +41,11 @@ export class LoginController extends Controller {
     ) {
         return await this.renderTemplate('login', {
             query: query ? '?' + query : '',
-            appTitle: this.config.appTitle,
-            fireBase: this.config.fireBase
+            appTitle: this.config.appTitle.val,
+            loginUrl: this.absUrl('/login'),
+            termsUrl: this.absUrl('/terms'),
+            privacyUrl: this.absUrl('/privacy'),
+            fireBase: this.config.fireBase.val
         });
     }
 
@@ -60,7 +55,7 @@ export class LoginController extends Controller {
         @Param.fromQuery('redirect') redirect: string,
         @Param.queryString() query: string,
     ) {
-        await delay(500);
+        // await delay(500);
         try {
             const decoded = await this.firebase.value.verifyToken(firebaseToken);
             await this.userRepository.value.createUserRecordIfNotExists(decoded.uid);
@@ -78,12 +73,12 @@ export class LoginController extends Controller {
 
             if (typeof redirect === 'string') {
                 const redirectUri = Buffer.from(redirect, 'base64').toString();
-                return this.response.redirect(redirectUri);
+                return this.redirect(redirectUri);
             }
-            return this.response.redirect('/');
+            return this.redirect('/');
         } catch (err) {
-            console.warn('login: ', err);
-            return this.response.redirect(`/login${query ? '?' + query : ''}`);
+            this.log.error('login: ', err);
+            return this.redirect(`/login${query ? '?' + query : ''}`);
         }
     }
 }

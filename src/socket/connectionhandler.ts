@@ -16,7 +16,9 @@ export class ConnectionHandler implements Destroyable {
         @Inject('socket') socket: Socket,
         @Inject('group') private group: string,
         @Inject('notify') notify: boolean,
+        @Inject(DevicesRepository)
         private userDevices: DevicesRepository,
+        @Inject(ValidationService)
         private validation: ValidationService,
     ) {
         userDevices.stateChanges$.pipe(

@@ -58,7 +58,13 @@ export interface ConfigPostgres extends ConfigValue<PoolConfig, StringPoolConfig
   readonly connectionTimeoutMillis: ConfigValue<number>; // 2000
 }
 
-export interface ConfigFirebase extends ConfigValue<FirebaseOptions, FirebaseOptions> {
+export type StringConfigFirebase = FirebaseOptions & {
+  remoteInitUrl?: string,
+  jsBaseUrl?: string,
+  uiBaseUrl?: string
+};
+
+export interface ConfigFirebase extends ConfigValue<StringConfigFirebase, StringConfigFirebase> {
   readonly apiKey: ConfigValue<string>; // 'AIzaSyD8tzIdGqx18PHSBqfOZ258FCch5Xk8y38',
   readonly authDomain: ConfigValue<string>; // 'node-red-home-automation-82192.firebaseapp.com',
   readonly databaseURL: ConfigValue<string>; // 'https://node-red-home-automation-82192.firebaseio.com',
@@ -67,6 +73,7 @@ export interface ConfigFirebase extends ConfigValue<FirebaseOptions, FirebaseOpt
   readonly messagingSenderId: ConfigValue<string>; // '350438145283',
   readonly remoteInitUrl: ConfigValue<string>; // '/login/init.js'
   readonly jsBaseUrl: ConfigValue<string>; // 'https://www.gstatic.com/firebasejs/5.6.0';
+  readonly uiBaseUrl: ConfigValue<string>; // /module/firebaseui/dist
 }
 
 export interface Config {
@@ -80,6 +87,8 @@ export interface Config {
   readonly isLocal: ConfigValue<boolean>;
   readonly secureCookie: ConfigValue<boolean>;
   readonly appTitle: ConfigValue<string>;
+  readonly redirectBaseUrl: ConfigValue<string>;
+  readonly userRepositoryBackend: ConfigValue<'pg' | 'fb'>;
 
   readonly oauthClientId: ConfigValue<string>;
   readonly oauthClientSecret: ConfigValue<string>;

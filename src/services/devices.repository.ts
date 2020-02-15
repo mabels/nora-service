@@ -4,6 +4,7 @@ import { filter, map } from 'rxjs/operators';
 
 import { Inject } from '@andrei-tatar/ts-ioc';
 import { AllStates, Device, Devices, StateChanges } from '../models';
+import { LogService } from './log-service';
 import { ReportStateService } from './report-state.service';
 import { RequestSyncService } from './request-sync.service';
 
@@ -43,7 +44,11 @@ export class DevicesRepository {
     constructor(
         @Inject('uid')
         private uid: string,
+        @Inject(LogService)
+        private log: LogService,
+        @Inject(ReportStateService)
         private reportStateService: ReportStateService,
+        @Inject(RequestSyncService)
         private requestSyncService: RequestSyncService,
     ) {
     }
@@ -123,7 +128,7 @@ export class DevicesRepository {
             if (!device) { continue; }
 
             const deviceChanges = typeof changes === 'function' ? changes(device) : changes;
-            console.log('updateDevicesState:', id, device, deviceChanges);
+            this.log.info('updateDevicesState:', id, device, deviceChanges);
             for (const key of Object.keys(deviceChanges)) {
                 const newValue = deviceChanges[key];
                 device.state[key] = newValue;

@@ -1,12 +1,12 @@
 import { uniq } from 'lodash';
 
-import { Injectable } from '@andrei-tatar/ts-ioc';
+import { Inject } from '@andrei-tatar/ts-ioc';
 import {
   ExecuteCommandTypes, ExecuteInput, ExecutePayload,
   ExecuteStatus
 } from '../../google';
 import { CommandExecution, ExecutePayloadCommand } from '../../google/execute';
-import { DevicesRepository } from '../../services/devices.repository';
+import { DevicesRepository } from "../../services/devices.repository";
 
 interface ResponseState {
   offlineDeviceIds: string[];
@@ -16,10 +16,10 @@ interface ResponseState {
   wrongPinDeviceIds: string[];
 }
 
-@Injectable()
 export class ExecuteService {
 
   constructor(
+    @Inject(DevicesRepository)
     private devices: DevicesRepository,
   ) {
   }

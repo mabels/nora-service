@@ -1,4 +1,3 @@
-import { FirebaseOptions } from '@firebase/app-types';
 import { ServiceAccount } from 'firebase-admin';
 import * as functions from 'firebase-functions';
 import { PoolConfig } from 'pg';
@@ -16,6 +15,7 @@ import {
     ServiceSocket,
     StringConfigTls,
     StringPoolConfig,
+    StringConfigFirebase,
 } from '../config';
 import { envConfigFactory } from './env.config';
 import { localConfigFactory } from './local.config.factory';
@@ -24,7 +24,7 @@ function cvalBoolean(t?: boolean): ConfigValue<boolean> {
     return {
         val: false,
         src: 'Default',
-        set: (src: ConfigSrc, val?: string | boolean) => {
+        set: function(src: ConfigSrc, val?: string | boolean) {
             this.src = src;
             this.val = false;
             if (val === 'string') {
@@ -45,7 +45,7 @@ function cvalString(t?: string): ConfigValue<string> {
     return {
         val: typeof t === 'string' ? t : '',
         src: 'Default',
-        set: (src: ConfigSrc, val?: string) => {
+        set: function(src: ConfigSrc, val?: string) {
             this.src = src;
             if (typeof val !== 'undefined') {
                 this.val = '' + val;
@@ -58,11 +58,12 @@ function cvalNumber(t?: number | string): ConfigValue<number> {
     return {
         val: typeof t === 'number' ? t : 0,
         src: 'Default',
-        set: (src: ConfigSrc, val?: string) => {
+        set: function(src: ConfigSrc, val?: string) {
             this.src = src;
             if (typeof val === 'number') {
                 this.val = val;
-            } else {
+            }
+            if (typeof val === 'string') {
                 this.val = ~~val;
             }
         },
@@ -79,9 +80,10 @@ class FirebaseDefault implements ConfigFirebase {
         public messagingSenderId = cvalString('350438145283'),
         public remoteInitUrl = cvalString('/login/init.js'),
         public jsBaseUrl = cvalString('https://www.gstatic.com/firebasejs/5.6.0'),
+        public uiBaseUrl = cvalString('../module/firebaseui/dist'),
     ) {}
 
-    public get val(): FirebaseOptions {
+    public get val(): StringConfigFirebase {
         return {
             apiKey: this.apiKey.val,
             authDomain: this.authDomain.val,
@@ -91,10 +93,11 @@ class FirebaseDefault implements ConfigFirebase {
             messagingSenderId: this.messagingSenderId.val,
             remoteInitUrl: this.remoteInitUrl.val,
             jsBaseUrl: this.jsBaseUrl.val,
+            uiBaseUrl: this.uiBaseUrl.val,
         };
     }
     public src: ConfigSrc;
-    public set(src: ConfigSrc, val?: FirebaseOptions) {
+    public set(src: ConfigSrc, val?: StringConfigFirebase) {
         this.apiKey.set(src, val?.apiKey);
         this.authDomain.set(src, val?.authDomain);
         this.databaseURL.set(src, val?.databaseURL);
@@ -103,7 +106,9 @@ class FirebaseDefault implements ConfigFirebase {
         this.messagingSenderId.set(src, val?.messagingSenderId);
         this.remoteInitUrl.set(src, val?.remoteInitUrl);
         this.jsBaseUrl.set(src, val?.jsBaseUrl);
+        this.uiBaseUrl.set(src, val?.uiBaseUrl);
     }
+
 }
 
 class ServiceAccountDefault implements ConfigServiceAccount {
@@ -165,13 +170,13 @@ export class TlsDefault implements ConfigTls {
         this.cert.set(src, val?.cert);
     }
     public get val(): StringConfigTls {
-        if (typeof this.key.val === 'string' && typeof this.cert.val === 'string') {
+        if (typeof this.key.val === 'string' && this.key.val.length &&
+            typeof this.cert.val === 'string' && this.cert.val.length) {
             return {
                 key: this.key.val,
                 cert: this.cert.val
             };
         }
-        return;
     }
 }
 
@@ -209,6 +214,8 @@ export class ConfigService implements Config {
     public readonly isLocal = cvalBoolean(false);
     public readonly secureCookie = cvalBoolean(false);
     public readonly appTitle = cvalString('NORA');
+    public readonly redirectBaseUrl = cvalString('');
+    public readonly userRepositoryBackend = cvalString('pg') as ConfigValue<'pg' | 'fb'>;
 
     public readonly oauthClientId = cvalString('oauthClientId');
     public readonly oauthClientSecret = cvalString('oauthClientSecret');
@@ -221,7 +228,7 @@ export class ConfigService implements Config {
     public readonly userAdminUid = cvalString('userAdminUid');
 
     public readonly pleaForDonation = cvalString(`<h1 class="h6 mt-3 font-weight-normal">
-                                        Do you like ${this.appTitle} and find it useful? Consider donating
+                                        Do you like ${this.appTitle.val} and find it useful? Consider donating
                                         <a href="https://paypal.me/andreitatar">Paypal Me</a></h1>`);
 }
 
@@ -232,5 +239,5 @@ export function fixRefs(src: Config) {
 export function configFactory(): Config {
     return fixRefs(envConfigFactory(localConfigFactory(new ConfigService()),
       process?.env || {},
-      process.env.FIREBASE_CONFIG !== 'undefined' ? functions.config().nora : undefined));
+      (typeof process.env.FIREBASE_CONFIG !== 'undefined' && functions.config().nora) || {}));
 }
