@@ -1,6 +1,7 @@
 export type BaseDevice = Device | DeviceWithAck | DeviceWithPin;
 
 interface Device {
+    id: string;
     name: string;
     roomHint?: string;
     nicknames?: string[];

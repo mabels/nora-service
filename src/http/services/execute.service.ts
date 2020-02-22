@@ -1,12 +1,11 @@
 import { uniq } from 'lodash';
 
-import { Inject } from '@andrei-tatar/ts-ioc';
 import {
   ExecuteCommandTypes, ExecuteInput, ExecutePayload,
   ExecuteStatus
 } from '../../google';
 import { CommandExecution, ExecutePayloadCommand } from '../../google/execute';
-import { DevicesRepository } from "../../services/devices.repository";
+import { Devices } from '../../models/devices';
 
 interface ResponseState {
   offlineDeviceIds: string[];
@@ -18,13 +17,9 @@ interface ResponseState {
 
 export class ExecuteService {
 
-  constructor(
-    @Inject(DevicesRepository)
-    private devices: DevicesRepository,
-  ) {
-  }
+  constructor() { }
 
-  execute(input: ExecuteInput, requestId?: string): ExecutePayload {
+  public async execute(devices: Devices, input: ExecuteInput, requestId?: string): Promise<ExecutePayload> {
     const state: ResponseState = {
       offlineDeviceIds: [],
       successDeviceIds: [],
@@ -37,12 +32,12 @@ export class ExecuteService {
       for (const execution of command.execution) {
         let deviceIds = command.devices.map(d => d.id);
 
-        if (!this.devices.isUserOnline) {
+        if (!devices.isUserOnline) {
           state.offlineDeviceIds.push(...deviceIds);
           continue;
         }
 
-        deviceIds = this.filterDevices(execution, deviceIds, state);
+        deviceIds = (await this.filterDevices(devices, execution, deviceIds, state)).map(d => d.id);
 
         switch (execution.command) {
           case ExecuteCommandTypes.Brightness:
@@ -51,11 +46,11 @@ export class ExecuteService {
           case ExecuteCommandTypes.ThermostatTemperatureSetRange:
           case ExecuteCommandTypes.ThermostatSetMode:
           case ExecuteCommandTypes.OpenClose:
-            this.devices.updateDevicesState(deviceIds, execution.params, updateOptions);
+            devices.updateDevicesState(deviceIds, execution.params, updateOptions);
             break;
           case ExecuteCommandTypes.ColorAbsolute:
             if (execution.params.color.spectrumHSV) {
-              this.devices.updateDevicesState(deviceIds, {
+              devices.updateDevicesState(deviceIds, {
                 color: {
                   spectrumHsv: execution.params.color.spectrumHSV,
                 }
@@ -63,19 +58,19 @@ export class ExecuteService {
             }
             break;
           case ExecuteCommandTypes.LockUnlock:
-            this.devices.updateDevicesState(deviceIds, {
+            devices.updateDevicesState(deviceIds, {
               isLocked: execution.params.lock,
             }, updateOptions);
             break;
           case ExecuteCommandTypes.ActivateScene:
             const deactivate: boolean = typeof execution.params.deactivate === 'boolean' ? execution.params.deactivate : false;
-            this.devices.activateScenes(deviceIds, deactivate);
+            await devices.activateScenes(deviceIds, deactivate);
             break;
           case ExecuteCommandTypes.SetVolume:
-            this.devices.updateDevicesState(deviceIds, { currentVolume: execution.params.volumeLevel }, updateOptions);
+            devices.updateDevicesState(deviceIds, { currentVolume: execution.params.volumeLevel }, updateOptions);
             break;
           case ExecuteCommandTypes.TemperatureRelative:
-            this.devices.updateDevicesState(deviceIds, device => {
+            devices.updateDevicesState(deviceIds, device => {
               if (device.type === 'thermostat') {
                 const { thermostatTemperatureRelativeDegree, thermostatTemperatureRelativeWeight } = execution.params;
                 const change = thermostatTemperatureRelativeDegree || (thermostatTemperatureRelativeWeight / 2);
@@ -87,7 +82,7 @@ export class ExecuteService {
             }, updateOptions);
             break;
           case ExecuteCommandTypes.VolumeRelative:
-            this.devices.updateDevicesState(deviceIds, device => {
+            devices.updateDevicesState(deviceIds, device => {
               if (device.type === 'speaker' && 'currentVolume' in device.state) {
                 const relativeStepSize = device.relativeVolumeStep || execution.params.volumeRelativeLevel;
                 const delta = execution.params.relativeSteps * relativeStepSize;
@@ -140,11 +135,12 @@ export class ExecuteService {
     }
   }
 
-  private filterDevices(execution: CommandExecution, deviceIds: string[], state: ResponseState) {
-    return deviceIds.filter(deviceId => {
-      const device = this.devices.getDevice(deviceId);
+  private async filterDevices(devices: Devices, execution: CommandExecution, deviceIds: string[], state: ResponseState) {
+    return (await Promise.all(deviceIds
+      .map(deviceId => devices.getDevice(deviceId))))
+      .filter(device => {
       if (!device || !device.state.online) {
-        state.offlineDeviceIds.push(deviceId);
+        state.offlineDeviceIds.push(device.id);
         return false;
       }
 
@@ -152,18 +148,18 @@ export class ExecuteService {
         switch (device.twoFactor) {
           case 'ack':
             if (!execution.challenge || !execution.challenge.ack) {
-              state.needAckDeviceIds.push(deviceId);
+              state.needAckDeviceIds.push(device.id);
               return false;
             }
             break;
           case 'pin':
             if (!execution.challenge || !execution.challenge.pin) {
-              state.needPinDeviceIds.push(deviceId);
+              state.needPinDeviceIds.push(device.id);
               return false;
             }
 
             if (execution.challenge.pin !== device.pin) {
-              state.wrongPinDeviceIds.push(deviceId);
+              state.wrongPinDeviceIds.push(device.id);
               return false;
             }
             break;

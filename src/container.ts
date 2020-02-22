@@ -10,7 +10,7 @@ import { FetchService } from './http/services/fetch.service';
 import { QueryService } from './http/services/query.service';
 import { SyncService } from './http/services/sync.service';
 import { configFactory, ConfigService } from './services/config.service';
-import { DevicesRepository } from "./services/devices.repository";
+import { DevicesRepository } from './services/devices.repository';
 import { FirebaseService } from './services/firebase.service';
 import { JwtService } from './services/jwt.service';
 import { LogService } from './services/log-service';

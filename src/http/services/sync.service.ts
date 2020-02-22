@@ -1,38 +1,30 @@
 import { uniq } from 'lodash';
 
-import { Inject } from '@andrei-tatar/ts-ioc';
 import { DeviceTypes, SyncDevice, SyncPayload, Traits } from '../../google';
-import { Devices, StateChanges } from '../../models';
-import { DevicesRepository } from "../../services/devices.repository";
+import { Devices } from '../../models/devices';
 import { ReportStateService } from '../../services/report-state.service';
-import { delay } from '../../util';
 
 export class SyncService {
 
     constructor(
-        @Inject('uid')
-        private uid: string,
-        private devices: DevicesRepository,
         private reportStateService: ReportStateService,
     ) {
     }
 
-    sync(requestId: string): SyncPayload {
-        const devices = this.devices.getAllDevices();
-        this.reportState(requestId, devices);
-        const syncDevices = this.devicesToSync(devices);
+    async sync(devices: Devices, requestId: string): Promise<SyncPayload> {
+        // this.reportState(requestId, devices);
+        const syncDevices = await this.devicesToSync(devices);
         return {
-            agentUserId: this.uid,
+            agentUserId: devices.uid,
             devices: syncDevices,
         };
     }
 
-    private devicesToSync(devices: Devices) {
-        const syncDevices: SyncDevice[] = [];
-        for (const id of Object.keys(devices)) {
-            const device = devices[id];
+    private async devicesToSync(devices: Devices) {
+        return (await devices.get()).map(device => {
+            // const device = devices[id];
             const sync: SyncDevice = {
-                id,
+                id: device.id,
                 type: null,
                 traits: [],
                 name: {
@@ -98,24 +90,23 @@ export class SyncService {
                     sync.traits.push(Traits.LockUnlock);
                     break;
             }
-            syncDevices.push(sync);
-        }
-        return syncDevices;
+            return sync;
+        });
     }
 
-    private async reportState(requestId: string, devices: Devices) {
-        const stateChanges: StateChanges = {};
-        const ids = Object.keys(devices);
-        for (const id of ids) {
-            stateChanges[id] = devices[id].state;
-        }
-        if (ids.length) {
-            try {
-                await delay(3000);
-                await this.reportStateService.reportState(stateChanges, requestId);
-            } catch (err) {
-                console.warn(`reportState failed (uid: ${this.uid})`, err);
-            }
-        }
-    }
+    // private async reportState(uid: string, requestId: string, devices: Devices) {
+    //     const stateChanges: StateChanges = {};
+    //     const ids = Object.keys(devices);
+    //     for (const id of ids) {
+    //         stateChanges[id] = devices[id].state;
+    //     }
+    //     if (ids.length) {
+    //         try {
+    //             await delay(3000);
+    //             await this.reportStateService.reportState(stateChanges, requestId);
+    //         } catch (err) {
+    //             console.warn(`reportState failed (uid: ${uid})`, err);
+    //         }
+    //     }
+    // }
 }

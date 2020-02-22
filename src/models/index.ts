@@ -8,16 +8,10 @@ import { SpeakerDevice } from './speaker';
 import { SwitchDevice } from './switch';
 import { ThermostatDevice } from './thermostat';
 
-export interface Devices {
-    [id: string]: Device;
-}
-
 export type Device = SwitchDevice | LightDevice | LightDeviceWithBrightness |
     LightDeviceWithColor | SceneDevice | OutletDevice | ThermostatDevice |
     SpeakerDevice | BlindsDevice | GarageDevice | LockDevice;
 
 export type AllStates = Device['state'];
 
-export interface StateChanges {
-    [deviceId: string]: Partial<AllStates>;
-}
+export type StateChanges = Map<string, Partial<AllStates>>;

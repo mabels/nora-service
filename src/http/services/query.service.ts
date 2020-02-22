@@ -1,24 +1,19 @@
-import { Inject } from '@andrei-tatar/ts-ioc';
 import { QueryDevice, QueryDevices, QueryInput, QueryPayload } from '../../google';
 import { Device } from '../../models';
-import { DevicesRepository } from '../../services/devices.repository';
+import { Devices } from '../../models/devices';
 
 export class QueryService {
 
-    constructor(
-        @Inject(DevicesRepository)
-        private devices: DevicesRepository,
-    ) {
-    }
+    constructor() { }
 
-    query(input: QueryInput): QueryPayload {
+    public async query(devices: Devices, input: QueryInput): Promise<QueryPayload> {
         const queryIds = input.payload.devices.map(d => d.id);
-        const userDevices = this.devices.getDevicesById(queryIds);
-        const devices: QueryDevices = {};
-        for (const [index, device] of userDevices.entries()) {
+        const userDevices = await devices.getDevicesById(queryIds);
+        const queryDevices: QueryDevices = {};
+        userDevices.forEach((device, index) => {
             const id = queryIds[index];
             if (!device) {
-                devices[id] = { online: false };
+                queryDevices[id] = { online: false };
             } else {
                 const state: QueryDevice = {
                     online: device.state.online,
@@ -26,8 +21,8 @@ export class QueryService {
                 this.updateQueryState(state, device);
                 devices[id] = state;
             }
-        }
-        return { devices };
+        });
+        return { devices: queryDevices };
     }
 
     private updateQueryState(state: QueryDevice, device: Device) {

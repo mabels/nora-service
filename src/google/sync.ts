@@ -11,7 +11,7 @@ export interface SyncPayload extends FulfillPayload {
 }
 
 export interface SyncDevice {
-    id: string;
+    readonly id: string;
     type: DeviceTypes;
     traits: Traits[];
     name: {
