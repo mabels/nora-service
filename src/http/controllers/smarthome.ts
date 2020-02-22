@@ -30,7 +30,7 @@ export class SmartHomeController extends Controller {
     private async storeFirebase(uid: string, requestId: string, inputs: Input[]) {
         const batch = this.firebase.firestore.batch();
         const doc = this.firebase.firestore.doc(`fulfill/${uid}`);
-        batch.create(doc, {uid, requestId, inputs });
+        batch.set(doc, {uid, requestId, inputs });
         return batch.commit();
     }
 
@@ -40,7 +40,11 @@ export class SmartHomeController extends Controller {
         @Param.fromBody('requestId') requestId: string,
     ) {
         this.log.info('FulFill:', JSON.stringify(this.request.body));
-        await this.storeFirebase(this.request.token.uid, requestId, inputs);
+        setImmediate(() => {
+            this.storeFirebase(this.request.token.uid, requestId, inputs)
+            .then()
+            .catch(e => console.log(`FirebaseStore:`, e));
+        });
         let payload: FulfillPayload;
         for (const input of inputs) {
             this.log.info(`executing ${input.intent} for ${this.request.token.uid}`);
