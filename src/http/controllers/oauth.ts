@@ -1,5 +1,5 @@
 import { Inject } from '@andrei-tatar/ts-ioc';
-import * as crypto from 'crypto';
+import crypto from 'crypto';
 
 import { JwtService } from '../../services/jwt.service';
 import { LogService } from '../../services/log-service';
