@@ -114,9 +114,9 @@ class FirebaseDefault implements ConfigFirebase {
 
 class ServiceAccountDefault implements ConfigServiceAccount {
     constructor(
-        public project_id = cvalString('project_id'),
-        public client_email = cvalString('client_email'),
-        public private_key = cvalString('private_key'),
+        public project_id = cvalString(),
+        public client_email = cvalString(),
+        public private_key = cvalString(),
     ) {}
     public get val(): StringServiceAccount {
         return {
@@ -218,13 +218,14 @@ export class ConfigService implements Config {
     public readonly redirectBaseUrl = cvalString('');
     public readonly userRepositoryBackend = cvalString('pg') as ConfigValue<'pg' | 'fb'>;
 
-    public readonly oauthClientId = cvalString('oauthClientId');
-    public readonly oauthClientSecret = cvalString('oauthClientSecret');
+    // public readonly oauthClientId = cvalString('oauthClientId');
+    // public readonly oauthClientSecret = cvalString('oauthClientSecret');
+
     public readonly jwtCookieName = cvalString('auth:nora');
     public readonly googleProjectApiKey = cvalString('googleProjectApiKey');
 
-    public readonly oauthProjectId = cvalString('');
-    public readonly jwtSecret = cvalString('');
+    // public readonly oauthProjectId = cvalString('');
+    // public readonly jwtSecret = cvalString('');
 
     public readonly noraServiceUrl = cvalString('node-red');
 
@@ -236,12 +237,12 @@ export class ConfigService implements Config {
 }
 
 export function fixRefs(src: Config) {
-    if (!src.oauthProjectId.val.length) {
-        src.oauthProjectId.set(src.serviceAccount.project_id.src, src.serviceAccount.project_id.val);
-    }
-    if (!src.jwtSecret.val.length) {
-        src.jwtSecret.set(src.serviceAccount.private_key.src, src.serviceAccount.private_key.val);
-    }
+    // if (!src.oauthProjectId.val.length) {
+    //     src.oauthProjectId.set(src.serviceAccount.project_id.src, src.serviceAccount.project_id.val);
+    // }
+    // if (!src.jwtSecret.val.length) {
+    //     src.jwtSecret.set(src.serviceAccount.private_key.src, src.serviceAccount.private_key.val);
+    // }
     return src;
 }
 

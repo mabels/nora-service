@@ -22,12 +22,12 @@ export function envConfigFactory(cfg: Config, env: { [key: string]: string }, fi
         cfg.redirectBaseUrl.set(...getCfg('REDIRECTBASEURL'));
         cfg.userRepositoryBackend.set(...getCfg('USER_REPOSITORY_BACKEND'));
 
-        cfg.oauthClientId.set(...getCfg('OAUTH_ID'));
-        cfg.oauthClientSecret.set(...getCfg('OAUTH_SECRET'));
+        // cfg.oauthClientId.set(...getCfg('OAUTH_ID'));
+        // cfg.oauthClientSecret.set(...getCfg('OAUTH_SECRET'));
         cfg.jwtCookieName.set(...getCfg('JWT_COOKIE'));
         cfg.googleProjectApiKey.set(...getCfg('PROJECT_API_KEY'));
-        cfg.oauthProjectId.set(...getCfg('OAUTH_PROJECT_ID'));
-        cfg.jwtSecret.set(...getCfg('JWT_SECRET'));
+        // cfg.oauthProjectId.set(...getCfg('OAUTH_PROJECT_ID'));
+        // cfg.jwtSecret.set(...getCfg('JWT_SECRET'));
         cfg.noraServiceUrl.set(...getCfg('NORA_SERVICE_URL'));
         cfg.userAdminUid.set(...getCfg('USER_ADMIN_UID'));
         cfg.pleaForDonation.set(...getCfg('PLEA_FOR_DONATION'));

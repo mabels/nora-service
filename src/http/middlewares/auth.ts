@@ -35,7 +35,7 @@ export function authMiddleware(config: Config) {
 
             if (authToken) {
                 const jwt = req.container.resolve(JwtService);
-                const token = await jwt.verify<UserToken>(authToken);
+                const token = await jwt.verify<UserToken>(authToken, config.serviceAccount.private_key.val);
                 req.token = token;
             }
         } catch (err) {

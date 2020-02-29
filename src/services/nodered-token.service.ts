@@ -22,20 +22,20 @@ export class NoderedTokenService {
     ) {
     }
 
-    async generateToken(uid: string) {
+    async generateToken(uid: string, key: string) {
         console.log('generateToken', uid);
-        console.log('userRepo', this.userRepo);
-        console.log('jwtSerivce', this.jwtService);
+        // console.log('userRepo', this.userRepo);
+        // console.log('jwtSerivce', this.jwtService);
         const token: NoderedToken = {
             uid: uid,
             scope: this.config.noraServiceUrl.val,
             version: await this.userRepo.getNodeRedTokenVersion(uid),
         };
-        return this.jwtService.sign(token);
+        return this.jwtService.sign(token, key);
     }
 
-    async validateToken(token: string) {
-        const decoded = await this.jwtService.verify<NoderedToken>(token);
+    async validateToken(token: string, key: string) {
+        const decoded = await this.jwtService.verify<NoderedToken>(token, key);
         if (decoded.scope !== this.config.noraServiceUrl.val) {
             throw new Error(`invalid scope:${decoded.scope}`);
         }

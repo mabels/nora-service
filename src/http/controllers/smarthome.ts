@@ -1,7 +1,7 @@
 import { Inject, Lazy } from '@andrei-tatar/ts-ioc';
 
 import { FulfillPayload, FulfillResponse, Input, Intent } from '../../google';
-import { FirebaseService } from '../../services/firebase.service';
+import { AdminFirebaseService } from '../../services/firebase.service';
 import { LogService } from '../../services/log-service';
 import { Http } from '../decorators/http';
 import { Param } from '../decorators/param';
@@ -22,7 +22,7 @@ export class SmartHomeController extends Controller {
         @Inject(ExecuteService) private executeService: Lazy<ExecuteService>,
         @Inject(DisconnectService) private disconnectService: Lazy<DisconnectService>,
         @Inject(LogService) private log: LogService,
-        @Inject(FirebaseService) private firebase: FirebaseService
+        @Inject(AdminFirebaseService) private firebase: AdminFirebaseService
     ) {
         super();
     }

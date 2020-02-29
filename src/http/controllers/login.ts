@@ -1,6 +1,6 @@
 import { Inject, Lazy } from '@andrei-tatar/ts-ioc';
 
-import { FirebaseService } from '../../services/firebase.service';
+import { AdminFirebaseService } from '../../services/firebase.service';
 import { JwtService } from '../../services/jwt.service';
 import { LogService } from '../../services/log-service';
 import { NoderedTokenService } from '../../services/nodered-token.service';
@@ -14,7 +14,7 @@ export class LoginController extends Controller {
     constructor(
         @Inject(UserRepositoryFactory) private userRepository: Lazy<UserRepository>,
         @Inject(JwtService) private jwtService: Lazy<JwtService>,
-        @Inject(FirebaseService) private firebase: Lazy<FirebaseService>,
+        @Inject(AdminFirebaseService) private firebase: Lazy<AdminFirebaseService>,
         @Inject(NoderedTokenService) private nrtokenService: Lazy<NoderedTokenService>,
         @Inject(LogService) private log: LogService,
     ) {
@@ -52,29 +52,39 @@ export class LoginController extends Controller {
     @Http.post()
     async doLogin(
         @Param.fromBody('token') firebaseToken: string,
-        @Param.fromQuery('redirect') redirect: string,
+        // @Param.fromQuery('redirect') redirect: string,
         @Param.queryString() query: string,
     ) {
         // await delay(500);
         try {
             const decoded = await this.firebase.value.verifyToken(firebaseToken);
-            await this.userRepository.value.createUserRecordIfNotExists(decoded.uid);
-            const token: UserToken = {
-                uid: decoded.uid,
-                exp: Math.round((new Date().getTime() + 3600000) / 1000),
-                scope: 'app-user',
-                nodered: await this.nrtokenService.value.generateToken(decoded.uid),
-            };
-
-            const tokenStr = await this.jwtService.value.sign(token);
-            this.response.cookie(this.config.jwtCookieName.val, tokenStr, {
+            this.response.cookie('IDToken', firebaseToken, {
                 secure: this.config.secureCookie.val,
             });
+            await this.userRepository.value.createUserRecordIfNotExists(decoded.uid);
 
-            if (typeof redirect === 'string') {
-                const redirectUri = Buffer.from(redirect, 'base64').toString();
-                return this.redirect(redirectUri);
+            // Here we generate a long living token which works outside
+            // of firebase but the way of how google wants to use there api's
+            // it needs a private key on the serverside
+            if (this.config.serviceAccount.private_key.val) {
+                const token: UserToken = {
+                    uid: decoded.uid,
+                    exp: Math.round((new Date().getTime() + 3600000) / 1000),
+                    scope: 'app-user',
+                    nodered: await this.nrtokenService.value.generateToken(decoded.uid, this.config.serviceAccount.private_key.val),
+                };
+
+                const tokenStr = await this.jwtService.value.sign(token, this.config.serviceAccount.private_key.val);
+                this.response.cookie(this.config.jwtCookieName.val, tokenStr, {
+                    secure: this.config.secureCookie.val,
+                });
             }
+
+            // open Redirect Security on question
+            // if (typeof redirect === 'string') {
+            //     const redirectUri = Buffer.from(redirect, 'base64').toString();
+            //     return this.redirect(redirectUri);
+            // }
             return this.redirect('/');
         } catch (err) {
             this.log.error('login: ', err);

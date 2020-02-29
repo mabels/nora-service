@@ -1,8 +1,9 @@
 import { IncomingMessage } from 'http';
 import { Socket } from 'socket.io';
+import { Config } from '../../config';
 import { NoderedTokenService } from '../../services/nodered-token.service';
 
-export function authenticationMiddleware() {
+export function authenticationMiddleware(config: Config) {
     return async (socket: Socket, next: (err?: any) => void) => {
         try {
 
@@ -13,7 +14,7 @@ export function authenticationMiddleware() {
             }
 
             const tokenService = socket.container.resolve(NoderedTokenService);
-            socket.uid = await tokenService.validateToken(authToken);
+            socket.uid = await tokenService.validateToken(authToken, config.serviceAccount.private_key.val);
             next();
         } catch (err) {
             next(new Error('not authorized'));

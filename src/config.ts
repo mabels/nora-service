@@ -96,14 +96,14 @@ export interface Config {
   readonly redirectBaseUrl: ConfigValue<string>;
   readonly userRepositoryBackend: ConfigValue<'pg' | 'fb'>;
 
-  readonly oauthClientId: ConfigValue<string>;
-  readonly oauthClientSecret: ConfigValue<string>;
-  readonly oauthProjectId: ConfigValue<string>;
+  // readonly oauthClientId: ConfigValue<string>;
+  // readonly oauthClientSecret: ConfigValue<string>;
+  // readonly oauthProjectId: ConfigValue<string>;
 
   readonly jwtCookieName: ConfigValue<string>;
   readonly googleProjectApiKey: ConfigValue<string>;
 
-  readonly jwtSecret: ConfigValue<string>;
+  // readonly jwtSecret: ConfigValue<string>;
 
   readonly noraServiceUrl: ConfigValue<string>; // 'node-red'
 

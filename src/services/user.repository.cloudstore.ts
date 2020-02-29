@@ -1,9 +1,10 @@
-import { Firestore } from '@google-cloud/firestore';
-
+import { Inject } from '@andrei-tatar/ts-ioc';
+import { AdminFirebaseService } from './firebase.service';
 import { User, UserRepository } from './user.repository';
 
 export class UserRepositoryCloudStore implements UserRepository {
-    private readonly firestore = new Firestore();
+    @Inject(AdminFirebaseService)
+    private readonly firebaseService: AdminFirebaseService;
 
     private async setUid(uid: string, user: User = {
       uid,
@@ -11,13 +12,13 @@ export class UserRepositoryCloudStore implements UserRepository {
       noderedversion: 1,
       linked: false,
     }): Promise<User> {
-      const document = this.firestore.doc(`uid/${uid}`);
+      const document = this.firebaseService.firestore.doc(`uid/${uid}`);
       await document.set(user);
       return user;
     }
 
     private async getUid(uid: string): Promise<User> {
-      const document = this.firestore.doc(`uid/${uid}`);
+      const document = this.firebaseService.firestore.doc(`uid/${uid}`);
       const got = await document.get();
       if (got.exists) {
         // console.log('GetUid', uid, got.data());

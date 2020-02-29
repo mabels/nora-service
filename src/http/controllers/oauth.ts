@@ -52,11 +52,12 @@ export class OauthController extends Controller {
     @Param.fromQuery('confirm') confirm: boolean = false,
     @Param.fromQuery('auth') auth: boolean = false,
   ) {
-    if (clientId !== this.config.oauthClientId.val) {
+    if (clientId !== this.config.serviceAccount.project_id.val) {
       throw new BadRequestError('invalid client_id');
     }
 
-    if (!redirectUri || !redirectUri.startsWith(`https://oauth-redirect.googleusercontent.com/r/${this.config.oauthProjectId}`)) {
+    if (!redirectUri ||
+        !redirectUri.startsWith(`https://oauth-redirect.googleusercontent.com/r/${this.config.serviceAccount.project_id.val}`)) {
       throw new BadRequestError('invalid redirect_uri');
     }
 
@@ -93,7 +94,7 @@ export class OauthController extends Controller {
       scope: 'google-home-authcode',
       uid: this.request.token.uid,
     };
-    const authCode = await this.jwtService.sign(authToken);
+    const authCode = await this.jwtService.sign(authToken, this.config.serviceAccount.private_key.val);
     return this.redirect(`${redirectUri}?state=${state}&code=${authCode}`);
   }
 
@@ -106,13 +107,13 @@ export class OauthController extends Controller {
     @Param.fromBody('code') code: string,
     @Param.fromBody('refresh_token') refreshToken: string,
   ) {
-    if (clientId !== this.config.oauthClientId.val || clientSecret !== this.config.oauthClientSecret.val) {
+    if (clientId !== this.config.serviceAccount.project_id.val) {
       throw new Error('invalid client id or secret');
     }
 
     switch (grantType) {
       case 'authorization_code':
-        const authToken = await this.jwtService.verify<AuthToken>(code);
+        const authToken = await this.jwtService.verify<AuthToken>(code, this.config.serviceAccount.private_key.val);
         if (authToken.scope !== 'google-home-authcode') {
           throw new BadRequestError('invalid_scope');
         }
@@ -145,13 +146,13 @@ export class OauthController extends Controller {
       exp: Math.round(new Date().getTime() / 1000) + this.expireTimeSeconds, // 60 min,
       scope: 'google-home-auth',
     };
-    const token = await this.jwtService.sign(user);
+    const token = await this.jwtService.sign(user, this.config.serviceAccount.private_key.val);
     return token;
   }
 
   private async generateRefreshToken(uid: string) {
     // tslint:disable-next-line: deprecation
-    const cipher = crypto.createCipher('aes-256-ctr', this.config.jwtSecret.val);
+    const cipher = crypto.createCipher('aes-256-ctr', this.config.serviceAccount.private_key.val);
     const refresh = await this.userRepo.getRefreshToken(uid);
     let crypted = cipher.update(`${refresh}:${uid}`, 'utf8', 'base64');
     crypted += cipher.final('base64');
@@ -160,7 +161,7 @@ export class OauthController extends Controller {
 
   private async generateAccessTokenFromRefreshToken(refreshToken: string) {
     // tslint:disable-next-line: deprecation
-    const decipher = crypto.createDecipher('aes-256-ctr', this.config.jwtSecret.val);
+    const decipher = crypto.createDecipher('aes-256-ctr', this.config.serviceAccount.private_key.val);
     let dec = decipher.update(refreshToken, 'base64', 'utf8');
     dec += decipher.final('utf8');
     const parts = dec.split(':');

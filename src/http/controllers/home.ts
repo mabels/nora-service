@@ -41,6 +41,7 @@ export class HomeController extends Controller {
             token, userDevicesJson: userDevicesHtml,
             appTitle: this.config.appTitle.val,
             fireBase: this.config.fireBase.val,
+            idToken: this.request.cookies['IDToken'] || 'No Id Token',
             revokeUrl: this.absUrl('/revoke'),
             pleaForDonation: this.config.pleaForDonation.val
         });
@@ -82,10 +83,10 @@ export class HomeController extends Controller {
 
         const newToken = {
             ...this.request.token,
-            nodered: await this.nrtokenService.value.generateToken(uid),
+            nodered: await this.nrtokenService.value.generateToken(uid, this.config.serviceAccount.private_key.val),
         };
 
-        const tokenStr = await this.jwtService.value.sign(newToken);
+        const tokenStr = await this.jwtService.value.sign(newToken, this.config.serviceAccount.private_key.val);
         this.response.cookie(this.config.jwtCookieName.val, tokenStr, { secure: this.config.secureCookie.val });
         return this.redirect('/');
     }

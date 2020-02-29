@@ -11,7 +11,7 @@ import { QueryService } from './http/services/query.service';
 import { SyncService } from './http/services/sync.service';
 import { configFactory, ConfigService } from './services/config.service';
 import { DevicesRepository } from "./services/devices.repository";
-import { FirebaseService } from './services/firebase.service';
+import { AdminFirebaseService } from './services/firebase.service';
 import { JwtService } from './services/jwt.service';
 import { LogService } from './services/log-service';
 import { NoderedTokenService } from './services/nodered-token.service';
@@ -56,7 +56,7 @@ container.register({ token: UserRepositoryFactory, useFactory: () => userReposit
 container.register({ token: NoderedTokenService, useClass: NoderedTokenService });
 container.register({ token: JwtService, useClass: JwtService });
 container.register({ token: PostgresService, useClass: PostgresService });
-container.register({ token: FirebaseService, useClass: FirebaseService });
+container.register({ token: AdminFirebaseService, useClass: AdminFirebaseService });
 container.register({ token: ValidationService, useClass: ValidationService });
 
 export { container };

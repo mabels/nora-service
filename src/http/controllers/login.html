@@ -45,6 +45,7 @@
             },
             callbacks: {
                 signInSuccessWithAuthResult: function (authResult, redirectUrl) {
+
                     authResult.user.getIdToken().then(function (token) {
                         document.getElementById('inputToken').value = token;
                         document.forms.loginForm.submit();

@@ -20,7 +20,7 @@ export class WebSocketService {
             pingTimeout: 5000,
         });
         io.use(childContainerMiddleware(this.container));
-        io.use(authenticationMiddleware());
+        io.use(authenticationMiddleware(this.config));
         io.use(oneConnectionPerUserMiddleware(this.config));
         io.on('connect', socket => {
             try {

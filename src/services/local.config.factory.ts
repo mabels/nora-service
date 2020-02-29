@@ -25,13 +25,13 @@ export function localConfigFactory(src: Config, fname = './config.local.json') {
   src.serviceSockets[0].tls.cert.set(my, read.serviceSockets[0].tls?.cert);
   src.serviceSockets[0].tls.key.set(my, read.serviceSockets[0].tls?.key);
 
-  src.oauthClientId.set(my, read.oauthClientId);
-  src.oauthClientSecret.set(my, read.oauthClientSecret);
+  // src.oauthClientId.set(my, read.oauthClientId);
+  // src.oauthClientSecret.set(my, read.oauthClientSecret);
   src.jwtCookieName.set(my, read.jwtCookieName);
   src.googleProjectApiKey.set(my, read.googleProjectApiKey);
   src.serviceAccount.set(my, read.serviceAccount);
-  src.oauthProjectId.set(my, read.oauthProjectId);
-  src.jwtSecret.set(my, read.jwtSecret);
+  // src.oauthProjectId.set(my, read.oauthProjectId);
+  // src.jwtSecret.set(my, read.jwtSecret);
   src.noraServiceUrl.set(my, read.noraServiceUrl);
 
   src.postgres.set(my, read.postgres);
