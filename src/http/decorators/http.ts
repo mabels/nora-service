@@ -87,10 +87,10 @@ export class Http {
     }
 
     private static async requestHandler(
-        callControllerMethod: (req: Request) => Promise<any>,
+        callControllerMethod: (req: Request, res: Response) => Promise<any>,
         request: Request, response: Response, next: NextFunction) {
         try {
-            const result = await callControllerMethod(request);
+            const result = await callControllerMethod(request, response);
             if (result !== void 0) {
                 if (typeof result === 'string') {
                     response.contentType('html').send(result);

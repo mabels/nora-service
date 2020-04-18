@@ -683,6 +683,32 @@
                                         ],
                                         "type": "object"
                                     },
+                                    "spectrumHsv": {
+                                        "additionalProperties": false,
+                                        "properties": {
+                                            "hue": {
+                                                "maximum": 360,
+                                                "minimum": 0,
+                                                "type": "number"
+                                            },
+                                            "saturation": {
+                                                "maximum": 1,
+                                                "minimum": 0,
+                                                "type": "number"
+                                            },
+                                            "value": {
+                                                "maximum": 1,
+                                                "minimum": 0,
+                                                "type": "number"
+                                            }
+                                        },
+                                        "required": [
+                                            "hue",
+                                            "saturation",
+                                            "value"
+                                        ],
+                                        "type": "object"
+                                    },
                                     "temperature": {
                                         "maximum": 6000,
                                         "minimum": 2000,
@@ -809,6 +835,32 @@
                                             "b",
                                             "g",
                                             "r"
+                                        ],
+                                        "type": "object"
+                                    },
+                                    "spectrumHsv": {
+                                        "additionalProperties": false,
+                                        "properties": {
+                                            "hue": {
+                                                "maximum": 360,
+                                                "minimum": 0,
+                                                "type": "number"
+                                            },
+                                            "saturation": {
+                                                "maximum": 1,
+                                                "minimum": 0,
+                                                "type": "number"
+                                            },
+                                            "value": {
+                                                "maximum": 1,
+                                                "minimum": 0,
+                                                "type": "number"
+                                            }
+                                        },
+                                        "required": [
+                                            "hue",
+                                            "saturation",
+                                            "value"
                                         ],
                                         "type": "object"
                                     },
@@ -948,6 +1000,32 @@
                                             "b",
                                             "g",
                                             "r"
+                                        ],
+                                        "type": "object"
+                                    },
+                                    "spectrumHsv": {
+                                        "additionalProperties": false,
+                                        "properties": {
+                                            "hue": {
+                                                "maximum": 360,
+                                                "minimum": 0,
+                                                "type": "number"
+                                            },
+                                            "saturation": {
+                                                "maximum": 1,
+                                                "minimum": 0,
+                                                "type": "number"
+                                            },
+                                            "value": {
+                                                "maximum": 1,
+                                                "minimum": 0,
+                                                "type": "number"
+                                            }
+                                        },
+                                        "required": [
+                                            "hue",
+                                            "saturation",
+                                            "value"
                                         ],
                                         "type": "object"
                                     },

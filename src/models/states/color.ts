@@ -24,6 +24,23 @@ export interface ColorState extends State {
              */
             b: number;
         };
+        spectrumHsv?: {
+            /**
+             * @minimum 0
+             * @maximum 360
+             */
+            hue: number;
+            /**
+             * @minimum 0
+             * @maximum 1
+             */
+            saturation: number;
+            /**
+             * @minimum 0
+             * @maximum 1
+             */
+            value: number;
+        },
         HSV?: {
             /**
              * @minimum 0
