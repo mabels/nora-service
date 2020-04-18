@@ -1,0 +1,2893 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "additionalProperties": {
+        "anyOf": [
+            {
+                "additionalProperties": false,
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    },
+                    "nicknames": {
+                        "items": {
+                            "type": "string"
+                        },
+                        "type": "array"
+                    },
+                    "roomHint": {
+                        "type": "string"
+                    },
+                    "state": {
+                        "$ref": "#/definitions/OpenCloseState"
+                    },
+                    "type": {
+                        "enum": [
+                            "blinds"
+                        ],
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "name",
+                    "state",
+                    "type"
+                ],
+                "type": "object"
+            },
+            {
+                "additionalProperties": false,
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    },
+                    "nicknames": {
+                        "items": {
+                            "type": "string"
+                        },
+                        "type": "array"
+                    },
+                    "roomHint": {
+                        "type": "string"
+                    },
+                    "state": {
+                        "$ref": "#/definitions/OpenCloseState"
+                    },
+                    "twoFactor": {
+                        "enum": [
+                            "ack"
+                        ],
+                        "type": "string"
+                    },
+                    "type": {
+                        "enum": [
+                            "blinds"
+                        ],
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "name",
+                    "state",
+                    "twoFactor",
+                    "type"
+                ],
+                "type": "object"
+            },
+            {
+                "additionalProperties": false,
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    },
+                    "nicknames": {
+                        "items": {
+                            "type": "string"
+                        },
+                        "type": "array"
+                    },
+                    "pin": {
+                        "type": "string"
+                    },
+                    "roomHint": {
+                        "type": "string"
+                    },
+                    "state": {
+                        "$ref": "#/definitions/OpenCloseState"
+                    },
+                    "twoFactor": {
+                        "enum": [
+                            "pin"
+                        ],
+                        "type": "string"
+                    },
+                    "type": {
+                        "enum": [
+                            "blinds"
+                        ],
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "name",
+                    "pin",
+                    "state",
+                    "twoFactor",
+                    "type"
+                ],
+                "type": "object"
+            },
+            {
+                "additionalProperties": false,
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    },
+                    "nicknames": {
+                        "items": {
+                            "type": "string"
+                        },
+                        "type": "array"
+                    },
+                    "roomHint": {
+                        "type": "string"
+                    },
+                    "state": {
+                        "$ref": "#/definitions/OpenCloseState"
+                    },
+                    "type": {
+                        "enum": [
+                            "garage"
+                        ],
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "name",
+                    "state",
+                    "type"
+                ],
+                "type": "object"
+            },
+            {
+                "additionalProperties": false,
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    },
+                    "nicknames": {
+                        "items": {
+                            "type": "string"
+                        },
+                        "type": "array"
+                    },
+                    "roomHint": {
+                        "type": "string"
+                    },
+                    "state": {
+                        "$ref": "#/definitions/OpenCloseState"
+                    },
+                    "twoFactor": {
+                        "enum": [
+                            "ack"
+                        ],
+                        "type": "string"
+                    },
+                    "type": {
+                        "enum": [
+                            "garage"
+                        ],
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "name",
+                    "state",
+                    "twoFactor",
+                    "type"
+                ],
+                "type": "object"
+            },
+            {
+                "additionalProperties": false,
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    },
+                    "nicknames": {
+                        "items": {
+                            "type": "string"
+                        },
+                        "type": "array"
+                    },
+                    "pin": {
+                        "type": "string"
+                    },
+                    "roomHint": {
+                        "type": "string"
+                    },
+                    "state": {
+                        "$ref": "#/definitions/OpenCloseState"
+                    },
+                    "twoFactor": {
+                        "enum": [
+                            "pin"
+                        ],
+                        "type": "string"
+                    },
+                    "type": {
+                        "enum": [
+                            "garage"
+                        ],
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "name",
+                    "pin",
+                    "state",
+                    "twoFactor",
+                    "type"
+                ],
+                "type": "object"
+            },
+            {
+                "additionalProperties": false,
+                "properties": {
+                    "brightnessControl": {
+                        "enum": [
+                            false
+                        ],
+                        "type": "boolean"
+                    },
+                    "colorControlModel": {
+                        "enum": [
+                            "hsv",
+                            "none",
+                            "rgb"
+                        ],
+                        "type": "string"
+                    },
+                    "colorControlTemperature": {
+                        "additionalProperties": false,
+                        "properties": {
+                            "maxK": {
+                                "type": "number"
+                            },
+                            "minK": {
+                                "type": "number"
+                            }
+                        },
+                        "required": [
+                            "maxK",
+                            "minK"
+                        ],
+                        "type": "object"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "nicknames": {
+                        "items": {
+                            "type": "string"
+                        },
+                        "type": "array"
+                    },
+                    "roomHint": {
+                        "type": "string"
+                    },
+                    "state": {
+                        "$ref": "#/definitions/OnOffState"
+                    },
+                    "type": {
+                        "enum": [
+                            "light"
+                        ],
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "brightnessControl",
+                    "colorControlModel",
+                    "name",
+                    "state",
+                    "type"
+                ],
+                "type": "object"
+            },
+            {
+                "additionalProperties": false,
+                "properties": {
+                    "brightnessControl": {
+                        "enum": [
+                            false
+                        ],
+                        "type": "boolean"
+                    },
+                    "colorControlModel": {
+                        "enum": [
+                            "hsv",
+                            "none",
+                            "rgb"
+                        ],
+                        "type": "string"
+                    },
+                    "colorControlTemperature": {
+                        "additionalProperties": false,
+                        "properties": {
+                            "maxK": {
+                                "type": "number"
+                            },
+                            "minK": {
+                                "type": "number"
+                            }
+                        },
+                        "required": [
+                            "maxK",
+                            "minK"
+                        ],
+                        "type": "object"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "nicknames": {
+                        "items": {
+                            "type": "string"
+                        },
+                        "type": "array"
+                    },
+                    "roomHint": {
+                        "type": "string"
+                    },
+                    "state": {
+                        "$ref": "#/definitions/OnOffState"
+                    },
+                    "twoFactor": {
+                        "enum": [
+                            "ack"
+                        ],
+                        "type": "string"
+                    },
+                    "type": {
+                        "enum": [
+                            "light"
+                        ],
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "brightnessControl",
+                    "colorControlModel",
+                    "name",
+                    "state",
+                    "twoFactor",
+                    "type"
+                ],
+                "type": "object"
+            },
+            {
+                "additionalProperties": false,
+                "properties": {
+                    "brightnessControl": {
+                        "enum": [
+                            false
+                        ],
+                        "type": "boolean"
+                    },
+                    "colorControlModel": {
+                        "enum": [
+                            "hsv",
+                            "none",
+                            "rgb"
+                        ],
+                        "type": "string"
+                    },
+                    "colorControlTemperature": {
+                        "additionalProperties": false,
+                        "properties": {
+                            "maxK": {
+                                "type": "number"
+                            },
+                            "minK": {
+                                "type": "number"
+                            }
+                        },
+                        "required": [
+                            "maxK",
+                            "minK"
+                        ],
+                        "type": "object"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "nicknames": {
+                        "items": {
+                            "type": "string"
+                        },
+                        "type": "array"
+                    },
+                    "pin": {
+                        "type": "string"
+                    },
+                    "roomHint": {
+                        "type": "string"
+                    },
+                    "state": {
+                        "$ref": "#/definitions/OnOffState"
+                    },
+                    "twoFactor": {
+                        "enum": [
+                            "pin"
+                        ],
+                        "type": "string"
+                    },
+                    "type": {
+                        "enum": [
+                            "light"
+                        ],
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "brightnessControl",
+                    "colorControlModel",
+                    "name",
+                    "pin",
+                    "state",
+                    "twoFactor",
+                    "type"
+                ],
+                "type": "object"
+            },
+            {
+                "additionalProperties": false,
+                "properties": {
+                    "brightnessControl": {
+                        "enum": [
+                            true
+                        ],
+                        "type": "boolean"
+                    },
+                    "colorControlModel": {
+                        "enum": [
+                            "none"
+                        ],
+                        "type": "string"
+                    },
+                    "colorControlTemperature": {
+                        "additionalProperties": false,
+                        "properties": {
+                            "maxK": {
+                                "type": "number"
+                            },
+                            "minK": {
+                                "type": "number"
+                            }
+                        },
+                        "required": [
+                            "maxK",
+                            "minK"
+                        ],
+                        "type": "object"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "nicknames": {
+                        "items": {
+                            "type": "string"
+                        },
+                        "type": "array"
+                    },
+                    "roomHint": {
+                        "type": "string"
+                    },
+                    "state": {
+                        "additionalProperties": false,
+                        "properties": {
+                            "brightness": {
+                                "maximum": 100,
+                                "minimum": 0,
+                                "type": "number"
+                            },
+                            "on": {
+                                "type": "boolean"
+                            },
+                            "online": {
+                                "type": "boolean"
+                            }
+                        },
+                        "required": [
+                            "brightness",
+                            "on",
+                            "online"
+                        ],
+                        "type": "object"
+                    },
+                    "type": {
+                        "enum": [
+                            "light"
+                        ],
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "brightnessControl",
+                    "colorControlModel",
+                    "name",
+                    "state",
+                    "type"
+                ],
+                "type": "object"
+            },
+            {
+                "additionalProperties": false,
+                "properties": {
+                    "brightnessControl": {
+                        "enum": [
+                            true
+                        ],
+                        "type": "boolean"
+                    },
+                    "colorControlModel": {
+                        "enum": [
+                            "none"
+                        ],
+                        "type": "string"
+                    },
+                    "colorControlTemperature": {
+                        "additionalProperties": false,
+                        "properties": {
+                            "maxK": {
+                                "type": "number"
+                            },
+                            "minK": {
+                                "type": "number"
+                            }
+                        },
+                        "required": [
+                            "maxK",
+                            "minK"
+                        ],
+                        "type": "object"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "nicknames": {
+                        "items": {
+                            "type": "string"
+                        },
+                        "type": "array"
+                    },
+                    "roomHint": {
+                        "type": "string"
+                    },
+                    "state": {
+                        "additionalProperties": false,
+                        "properties": {
+                            "brightness": {
+                                "maximum": 100,
+                                "minimum": 0,
+                                "type": "number"
+                            },
+                            "on": {
+                                "type": "boolean"
+                            },
+                            "online": {
+                                "type": "boolean"
+                            }
+                        },
+                        "required": [
+                            "brightness",
+                            "on",
+                            "online"
+                        ],
+                        "type": "object"
+                    },
+                    "twoFactor": {
+                        "enum": [
+                            "ack"
+                        ],
+                        "type": "string"
+                    },
+                    "type": {
+                        "enum": [
+                            "light"
+                        ],
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "brightnessControl",
+                    "colorControlModel",
+                    "name",
+                    "state",
+                    "twoFactor",
+                    "type"
+                ],
+                "type": "object"
+            },
+            {
+                "additionalProperties": false,
+                "properties": {
+                    "brightnessControl": {
+                        "enum": [
+                            true
+                        ],
+                        "type": "boolean"
+                    },
+                    "colorControlModel": {
+                        "enum": [
+                            "none"
+                        ],
+                        "type": "string"
+                    },
+                    "colorControlTemperature": {
+                        "additionalProperties": false,
+                        "properties": {
+                            "maxK": {
+                                "type": "number"
+                            },
+                            "minK": {
+                                "type": "number"
+                            }
+                        },
+                        "required": [
+                            "maxK",
+                            "minK"
+                        ],
+                        "type": "object"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "nicknames": {
+                        "items": {
+                            "type": "string"
+                        },
+                        "type": "array"
+                    },
+                    "pin": {
+                        "type": "string"
+                    },
+                    "roomHint": {
+                        "type": "string"
+                    },
+                    "state": {
+                        "additionalProperties": false,
+                        "properties": {
+                            "brightness": {
+                                "maximum": 100,
+                                "minimum": 0,
+                                "type": "number"
+                            },
+                            "on": {
+                                "type": "boolean"
+                            },
+                            "online": {
+                                "type": "boolean"
+                            }
+                        },
+                        "required": [
+                            "brightness",
+                            "on",
+                            "online"
+                        ],
+                        "type": "object"
+                    },
+                    "twoFactor": {
+                        "enum": [
+                            "pin"
+                        ],
+                        "type": "string"
+                    },
+                    "type": {
+                        "enum": [
+                            "light"
+                        ],
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "brightnessControl",
+                    "colorControlModel",
+                    "name",
+                    "pin",
+                    "state",
+                    "twoFactor",
+                    "type"
+                ],
+                "type": "object"
+            },
+            {
+                "additionalProperties": false,
+                "properties": {
+                    "brightnessControl": {
+                        "enum": [
+                            true
+                        ],
+                        "type": "boolean"
+                    },
+                    "colorControlModel": {
+                        "enum": [
+                            "rgb"
+                        ],
+                        "type": "string"
+                    },
+                    "colorControlTemperature": {
+                        "additionalProperties": false,
+                        "properties": {
+                            "maxK": {
+                                "type": "number"
+                            },
+                            "minK": {
+                                "type": "number"
+                            }
+                        },
+                        "required": [
+                            "maxK",
+                            "minK"
+                        ],
+                        "type": "object"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "nicknames": {
+                        "items": {
+                            "type": "string"
+                        },
+                        "type": "array"
+                    },
+                    "roomHint": {
+                        "type": "string"
+                    },
+                    "state": {
+                        "additionalProperties": false,
+                        "properties": {
+                            "RGB": {
+                                "$ref": "#/definitions/ColorRGB"
+                            },
+                            "brightness": {
+                                "maximum": 100,
+                                "minimum": 0,
+                                "type": "number"
+                            },
+                            "on": {
+                                "type": "boolean"
+                            },
+                            "online": {
+                                "type": "boolean"
+                            },
+                            "temperatureK": {
+                                "maximum": 6000,
+                                "minimum": 2000,
+                                "type": "number"
+                            }
+                        },
+                        "required": [
+                            "RGB",
+                            "brightness",
+                            "on",
+                            "online",
+                            "temperatureK"
+                        ],
+                        "type": "object"
+                    },
+                    "type": {
+                        "enum": [
+                            "light"
+                        ],
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "brightnessControl",
+                    "colorControlModel",
+                    "name",
+                    "state",
+                    "type"
+                ],
+                "type": "object"
+            },
+            {
+                "additionalProperties": false,
+                "properties": {
+                    "brightnessControl": {
+                        "enum": [
+                            true
+                        ],
+                        "type": "boolean"
+                    },
+                    "colorControlModel": {
+                        "enum": [
+                            "rgb"
+                        ],
+                        "type": "string"
+                    },
+                    "colorControlTemperature": {
+                        "additionalProperties": false,
+                        "properties": {
+                            "maxK": {
+                                "type": "number"
+                            },
+                            "minK": {
+                                "type": "number"
+                            }
+                        },
+                        "required": [
+                            "maxK",
+                            "minK"
+                        ],
+                        "type": "object"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "nicknames": {
+                        "items": {
+                            "type": "string"
+                        },
+                        "type": "array"
+                    },
+                    "roomHint": {
+                        "type": "string"
+                    },
+                    "state": {
+                        "additionalProperties": false,
+                        "properties": {
+                            "RGB": {
+                                "$ref": "#/definitions/ColorRGB"
+                            },
+                            "brightness": {
+                                "maximum": 100,
+                                "minimum": 0,
+                                "type": "number"
+                            },
+                            "on": {
+                                "type": "boolean"
+                            },
+                            "online": {
+                                "type": "boolean"
+                            },
+                            "temperatureK": {
+                                "maximum": 6000,
+                                "minimum": 2000,
+                                "type": "number"
+                            }
+                        },
+                        "required": [
+                            "RGB",
+                            "brightness",
+                            "on",
+                            "online",
+                            "temperatureK"
+                        ],
+                        "type": "object"
+                    },
+                    "twoFactor": {
+                        "enum": [
+                            "ack"
+                        ],
+                        "type": "string"
+                    },
+                    "type": {
+                        "enum": [
+                            "light"
+                        ],
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "brightnessControl",
+                    "colorControlModel",
+                    "name",
+                    "state",
+                    "twoFactor",
+                    "type"
+                ],
+                "type": "object"
+            },
+            {
+                "additionalProperties": false,
+                "properties": {
+                    "brightnessControl": {
+                        "enum": [
+                            true
+                        ],
+                        "type": "boolean"
+                    },
+                    "colorControlModel": {
+                        "enum": [
+                            "rgb"
+                        ],
+                        "type": "string"
+                    },
+                    "colorControlTemperature": {
+                        "additionalProperties": false,
+                        "properties": {
+                            "maxK": {
+                                "type": "number"
+                            },
+                            "minK": {
+                                "type": "number"
+                            }
+                        },
+                        "required": [
+                            "maxK",
+                            "minK"
+                        ],
+                        "type": "object"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "nicknames": {
+                        "items": {
+                            "type": "string"
+                        },
+                        "type": "array"
+                    },
+                    "pin": {
+                        "type": "string"
+                    },
+                    "roomHint": {
+                        "type": "string"
+                    },
+                    "state": {
+                        "additionalProperties": false,
+                        "properties": {
+                            "RGB": {
+                                "$ref": "#/definitions/ColorRGB"
+                            },
+                            "brightness": {
+                                "maximum": 100,
+                                "minimum": 0,
+                                "type": "number"
+                            },
+                            "on": {
+                                "type": "boolean"
+                            },
+                            "online": {
+                                "type": "boolean"
+                            },
+                            "temperatureK": {
+                                "maximum": 6000,
+                                "minimum": 2000,
+                                "type": "number"
+                            }
+                        },
+                        "required": [
+                            "RGB",
+                            "brightness",
+                            "on",
+                            "online",
+                            "temperatureK"
+                        ],
+                        "type": "object"
+                    },
+                    "twoFactor": {
+                        "enum": [
+                            "pin"
+                        ],
+                        "type": "string"
+                    },
+                    "type": {
+                        "enum": [
+                            "light"
+                        ],
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "brightnessControl",
+                    "colorControlModel",
+                    "name",
+                    "pin",
+                    "state",
+                    "twoFactor",
+                    "type"
+                ],
+                "type": "object"
+            },
+            {
+                "additionalProperties": false,
+                "properties": {
+                    "brightnessControl": {
+                        "enum": [
+                            true
+                        ],
+                        "type": "boolean"
+                    },
+                    "colorControlModel": {
+                        "enum": [
+                            "hsv"
+                        ],
+                        "type": "string"
+                    },
+                    "colorControlTemperature": {
+                        "additionalProperties": false,
+                        "properties": {
+                            "maxK": {
+                                "type": "number"
+                            },
+                            "minK": {
+                                "type": "number"
+                            }
+                        },
+                        "required": [
+                            "maxK",
+                            "minK"
+                        ],
+                        "type": "object"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "nicknames": {
+                        "items": {
+                            "type": "string"
+                        },
+                        "type": "array"
+                    },
+                    "roomHint": {
+                        "type": "string"
+                    },
+                    "state": {
+                        "additionalProperties": false,
+                        "properties": {
+                            "HSV": {
+                                "$ref": "#/definitions/ColorHSV"
+                            },
+                            "brightness": {
+                                "maximum": 100,
+                                "minimum": 0,
+                                "type": "number"
+                            },
+                            "on": {
+                                "type": "boolean"
+                            },
+                            "online": {
+                                "type": "boolean"
+                            },
+                            "temperatureK": {
+                                "maximum": 6000,
+                                "minimum": 2000,
+                                "type": "number"
+                            }
+                        },
+                        "required": [
+                            "HSV",
+                            "brightness",
+                            "on",
+                            "online",
+                            "temperatureK"
+                        ],
+                        "type": "object"
+                    },
+                    "type": {
+                        "enum": [
+                            "light"
+                        ],
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "brightnessControl",
+                    "colorControlModel",
+                    "name",
+                    "state",
+                    "type"
+                ],
+                "type": "object"
+            },
+            {
+                "additionalProperties": false,
+                "properties": {
+                    "brightnessControl": {
+                        "enum": [
+                            true
+                        ],
+                        "type": "boolean"
+                    },
+                    "colorControlModel": {
+                        "enum": [
+                            "hsv"
+                        ],
+                        "type": "string"
+                    },
+                    "colorControlTemperature": {
+                        "additionalProperties": false,
+                        "properties": {
+                            "maxK": {
+                                "type": "number"
+                            },
+                            "minK": {
+                                "type": "number"
+                            }
+                        },
+                        "required": [
+                            "maxK",
+                            "minK"
+                        ],
+                        "type": "object"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "nicknames": {
+                        "items": {
+                            "type": "string"
+                        },
+                        "type": "array"
+                    },
+                    "roomHint": {
+                        "type": "string"
+                    },
+                    "state": {
+                        "additionalProperties": false,
+                        "properties": {
+                            "HSV": {
+                                "$ref": "#/definitions/ColorHSV"
+                            },
+                            "brightness": {
+                                "maximum": 100,
+                                "minimum": 0,
+                                "type": "number"
+                            },
+                            "on": {
+                                "type": "boolean"
+                            },
+                            "online": {
+                                "type": "boolean"
+                            },
+                            "temperatureK": {
+                                "maximum": 6000,
+                                "minimum": 2000,
+                                "type": "number"
+                            }
+                        },
+                        "required": [
+                            "HSV",
+                            "brightness",
+                            "on",
+                            "online",
+                            "temperatureK"
+                        ],
+                        "type": "object"
+                    },
+                    "twoFactor": {
+                        "enum": [
+                            "ack"
+                        ],
+                        "type": "string"
+                    },
+                    "type": {
+                        "enum": [
+                            "light"
+                        ],
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "brightnessControl",
+                    "colorControlModel",
+                    "name",
+                    "state",
+                    "twoFactor",
+                    "type"
+                ],
+                "type": "object"
+            },
+            {
+                "additionalProperties": false,
+                "properties": {
+                    "brightnessControl": {
+                        "enum": [
+                            true
+                        ],
+                        "type": "boolean"
+                    },
+                    "colorControlModel": {
+                        "enum": [
+                            "hsv"
+                        ],
+                        "type": "string"
+                    },
+                    "colorControlTemperature": {
+                        "additionalProperties": false,
+                        "properties": {
+                            "maxK": {
+                                "type": "number"
+                            },
+                            "minK": {
+                                "type": "number"
+                            }
+                        },
+                        "required": [
+                            "maxK",
+                            "minK"
+                        ],
+                        "type": "object"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "nicknames": {
+                        "items": {
+                            "type": "string"
+                        },
+                        "type": "array"
+                    },
+                    "pin": {
+                        "type": "string"
+                    },
+                    "roomHint": {
+                        "type": "string"
+                    },
+                    "state": {
+                        "additionalProperties": false,
+                        "properties": {
+                            "HSV": {
+                                "$ref": "#/definitions/ColorHSV"
+                            },
+                            "brightness": {
+                                "maximum": 100,
+                                "minimum": 0,
+                                "type": "number"
+                            },
+                            "on": {
+                                "type": "boolean"
+                            },
+                            "online": {
+                                "type": "boolean"
+                            },
+                            "temperatureK": {
+                                "maximum": 6000,
+                                "minimum": 2000,
+                                "type": "number"
+                            }
+                        },
+                        "required": [
+                            "HSV",
+                            "brightness",
+                            "on",
+                            "online",
+                            "temperatureK"
+                        ],
+                        "type": "object"
+                    },
+                    "twoFactor": {
+                        "enum": [
+                            "pin"
+                        ],
+                        "type": "string"
+                    },
+                    "type": {
+                        "enum": [
+                            "light"
+                        ],
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "brightnessControl",
+                    "colorControlModel",
+                    "name",
+                    "pin",
+                    "state",
+                    "twoFactor",
+                    "type"
+                ],
+                "type": "object"
+            },
+            {
+                "additionalProperties": false,
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    },
+                    "nicknames": {
+                        "items": {
+                            "type": "string"
+                        },
+                        "type": "array"
+                    },
+                    "roomHint": {
+                        "type": "string"
+                    },
+                    "state": {
+                        "$ref": "#/definitions/LockUnlockState"
+                    },
+                    "type": {
+                        "enum": [
+                            "lock"
+                        ],
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "name",
+                    "state",
+                    "type"
+                ],
+                "type": "object"
+            },
+            {
+                "additionalProperties": false,
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    },
+                    "nicknames": {
+                        "items": {
+                            "type": "string"
+                        },
+                        "type": "array"
+                    },
+                    "roomHint": {
+                        "type": "string"
+                    },
+                    "state": {
+                        "$ref": "#/definitions/LockUnlockState"
+                    },
+                    "twoFactor": {
+                        "enum": [
+                            "ack"
+                        ],
+                        "type": "string"
+                    },
+                    "type": {
+                        "enum": [
+                            "lock"
+                        ],
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "name",
+                    "state",
+                    "twoFactor",
+                    "type"
+                ],
+                "type": "object"
+            },
+            {
+                "additionalProperties": false,
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    },
+                    "nicknames": {
+                        "items": {
+                            "type": "string"
+                        },
+                        "type": "array"
+                    },
+                    "pin": {
+                        "type": "string"
+                    },
+                    "roomHint": {
+                        "type": "string"
+                    },
+                    "state": {
+                        "$ref": "#/definitions/LockUnlockState"
+                    },
+                    "twoFactor": {
+                        "enum": [
+                            "pin"
+                        ],
+                        "type": "string"
+                    },
+                    "type": {
+                        "enum": [
+                            "lock"
+                        ],
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "name",
+                    "pin",
+                    "state",
+                    "twoFactor",
+                    "type"
+                ],
+                "type": "object"
+            },
+            {
+                "additionalProperties": false,
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    },
+                    "nicknames": {
+                        "items": {
+                            "type": "string"
+                        },
+                        "type": "array"
+                    },
+                    "roomHint": {
+                        "type": "string"
+                    },
+                    "state": {
+                        "$ref": "#/definitions/OnOffState"
+                    },
+                    "type": {
+                        "enum": [
+                            "outlet"
+                        ],
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "name",
+                    "state",
+                    "type"
+                ],
+                "type": "object"
+            },
+            {
+                "additionalProperties": false,
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    },
+                    "nicknames": {
+                        "items": {
+                            "type": "string"
+                        },
+                        "type": "array"
+                    },
+                    "roomHint": {
+                        "type": "string"
+                    },
+                    "state": {
+                        "$ref": "#/definitions/OnOffState"
+                    },
+                    "twoFactor": {
+                        "enum": [
+                            "ack"
+                        ],
+                        "type": "string"
+                    },
+                    "type": {
+                        "enum": [
+                            "outlet"
+                        ],
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "name",
+                    "state",
+                    "twoFactor",
+                    "type"
+                ],
+                "type": "object"
+            },
+            {
+                "additionalProperties": false,
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    },
+                    "nicknames": {
+                        "items": {
+                            "type": "string"
+                        },
+                        "type": "array"
+                    },
+                    "pin": {
+                        "type": "string"
+                    },
+                    "roomHint": {
+                        "type": "string"
+                    },
+                    "state": {
+                        "$ref": "#/definitions/OnOffState"
+                    },
+                    "twoFactor": {
+                        "enum": [
+                            "pin"
+                        ],
+                        "type": "string"
+                    },
+                    "type": {
+                        "enum": [
+                            "outlet"
+                        ],
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "name",
+                    "pin",
+                    "state",
+                    "twoFactor",
+                    "type"
+                ],
+                "type": "object"
+            },
+            {
+                "additionalProperties": false,
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    },
+                    "nicknames": {
+                        "items": {
+                            "type": "string"
+                        },
+                        "type": "array"
+                    },
+                    "roomHint": {
+                        "type": "string"
+                    },
+                    "sceneReversible": {
+                        "type": "boolean"
+                    },
+                    "state": {
+                        "$ref": "#/definitions/State"
+                    },
+                    "type": {
+                        "enum": [
+                            "scene"
+                        ],
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "name",
+                    "sceneReversible",
+                    "state",
+                    "type"
+                ],
+                "type": "object"
+            },
+            {
+                "additionalProperties": false,
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    },
+                    "nicknames": {
+                        "items": {
+                            "type": "string"
+                        },
+                        "type": "array"
+                    },
+                    "roomHint": {
+                        "type": "string"
+                    },
+                    "sceneReversible": {
+                        "type": "boolean"
+                    },
+                    "state": {
+                        "$ref": "#/definitions/State"
+                    },
+                    "twoFactor": {
+                        "enum": [
+                            "ack"
+                        ],
+                        "type": "string"
+                    },
+                    "type": {
+                        "enum": [
+                            "scene"
+                        ],
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "name",
+                    "sceneReversible",
+                    "state",
+                    "twoFactor",
+                    "type"
+                ],
+                "type": "object"
+            },
+            {
+                "additionalProperties": false,
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    },
+                    "nicknames": {
+                        "items": {
+                            "type": "string"
+                        },
+                        "type": "array"
+                    },
+                    "pin": {
+                        "type": "string"
+                    },
+                    "roomHint": {
+                        "type": "string"
+                    },
+                    "sceneReversible": {
+                        "type": "boolean"
+                    },
+                    "state": {
+                        "$ref": "#/definitions/State"
+                    },
+                    "twoFactor": {
+                        "enum": [
+                            "pin"
+                        ],
+                        "type": "string"
+                    },
+                    "type": {
+                        "enum": [
+                            "scene"
+                        ],
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "name",
+                    "pin",
+                    "sceneReversible",
+                    "state",
+                    "twoFactor",
+                    "type"
+                ],
+                "type": "object"
+            },
+            {
+                "additionalProperties": false,
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    },
+                    "nicknames": {
+                        "items": {
+                            "type": "string"
+                        },
+                        "type": "array"
+                    },
+                    "relativeVolumeStep": {
+                        "maximum": 50,
+                        "minimum": 1,
+                        "type": "number"
+                    },
+                    "roomHint": {
+                        "type": "string"
+                    },
+                    "state": {
+                        "additionalProperties": false,
+                        "properties": {
+                            "currentVolume": {
+                                "maximum": 100,
+                                "minimum": 0,
+                                "type": "number"
+                            },
+                            "isMuted": {
+                                "type": "boolean"
+                            },
+                            "on": {
+                                "type": "boolean"
+                            },
+                            "online": {
+                                "type": "boolean"
+                            }
+                        },
+                        "required": [
+                            "currentVolume",
+                            "isMuted",
+                            "on",
+                            "online"
+                        ],
+                        "type": "object"
+                    },
+                    "type": {
+                        "enum": [
+                            "speaker"
+                        ],
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "name",
+                    "state",
+                    "type"
+                ],
+                "type": "object"
+            },
+            {
+                "additionalProperties": false,
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    },
+                    "nicknames": {
+                        "items": {
+                            "type": "string"
+                        },
+                        "type": "array"
+                    },
+                    "relativeVolumeStep": {
+                        "maximum": 50,
+                        "minimum": 1,
+                        "type": "number"
+                    },
+                    "roomHint": {
+                        "type": "string"
+                    },
+                    "state": {
+                        "additionalProperties": false,
+                        "properties": {
+                            "currentVolume": {
+                                "maximum": 100,
+                                "minimum": 0,
+                                "type": "number"
+                            },
+                            "isMuted": {
+                                "type": "boolean"
+                            },
+                            "on": {
+                                "type": "boolean"
+                            },
+                            "online": {
+                                "type": "boolean"
+                            }
+                        },
+                        "required": [
+                            "currentVolume",
+                            "isMuted",
+                            "on",
+                            "online"
+                        ],
+                        "type": "object"
+                    },
+                    "twoFactor": {
+                        "enum": [
+                            "ack"
+                        ],
+                        "type": "string"
+                    },
+                    "type": {
+                        "enum": [
+                            "speaker"
+                        ],
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "name",
+                    "state",
+                    "twoFactor",
+                    "type"
+                ],
+                "type": "object"
+            },
+            {
+                "additionalProperties": false,
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    },
+                    "nicknames": {
+                        "items": {
+                            "type": "string"
+                        },
+                        "type": "array"
+                    },
+                    "pin": {
+                        "type": "string"
+                    },
+                    "relativeVolumeStep": {
+                        "maximum": 50,
+                        "minimum": 1,
+                        "type": "number"
+                    },
+                    "roomHint": {
+                        "type": "string"
+                    },
+                    "state": {
+                        "additionalProperties": false,
+                        "properties": {
+                            "currentVolume": {
+                                "maximum": 100,
+                                "minimum": 0,
+                                "type": "number"
+                            },
+                            "isMuted": {
+                                "type": "boolean"
+                            },
+                            "on": {
+                                "type": "boolean"
+                            },
+                            "online": {
+                                "type": "boolean"
+                            }
+                        },
+                        "required": [
+                            "currentVolume",
+                            "isMuted",
+                            "on",
+                            "online"
+                        ],
+                        "type": "object"
+                    },
+                    "twoFactor": {
+                        "enum": [
+                            "pin"
+                        ],
+                        "type": "string"
+                    },
+                    "type": {
+                        "enum": [
+                            "speaker"
+                        ],
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "name",
+                    "pin",
+                    "state",
+                    "twoFactor",
+                    "type"
+                ],
+                "type": "object"
+            },
+            {
+                "additionalProperties": false,
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    },
+                    "nicknames": {
+                        "items": {
+                            "type": "string"
+                        },
+                        "type": "array"
+                    },
+                    "roomHint": {
+                        "type": "string"
+                    },
+                    "state": {
+                        "$ref": "#/definitions/OnOffState"
+                    },
+                    "type": {
+                        "enum": [
+                            "switch"
+                        ],
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "name",
+                    "state",
+                    "type"
+                ],
+                "type": "object"
+            },
+            {
+                "additionalProperties": false,
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    },
+                    "nicknames": {
+                        "items": {
+                            "type": "string"
+                        },
+                        "type": "array"
+                    },
+                    "roomHint": {
+                        "type": "string"
+                    },
+                    "state": {
+                        "$ref": "#/definitions/OnOffState"
+                    },
+                    "twoFactor": {
+                        "enum": [
+                            "ack"
+                        ],
+                        "type": "string"
+                    },
+                    "type": {
+                        "enum": [
+                            "switch"
+                        ],
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "name",
+                    "state",
+                    "twoFactor",
+                    "type"
+                ],
+                "type": "object"
+            },
+            {
+                "additionalProperties": false,
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    },
+                    "nicknames": {
+                        "items": {
+                            "type": "string"
+                        },
+                        "type": "array"
+                    },
+                    "pin": {
+                        "type": "string"
+                    },
+                    "roomHint": {
+                        "type": "string"
+                    },
+                    "state": {
+                        "$ref": "#/definitions/OnOffState"
+                    },
+                    "twoFactor": {
+                        "enum": [
+                            "pin"
+                        ],
+                        "type": "string"
+                    },
+                    "type": {
+                        "enum": [
+                            "switch"
+                        ],
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "name",
+                    "pin",
+                    "state",
+                    "twoFactor",
+                    "type"
+                ],
+                "type": "object"
+            },
+            {
+                "additionalProperties": false,
+                "properties": {
+                    "availableModes": {
+                        "items": {
+                            "enum": [
+                                "auto",
+                                "cool",
+                                "dry",
+                                "eco",
+                                "fan-only",
+                                "heat",
+                                "heatcool",
+                                "off",
+                                "on",
+                                "purifier"
+                            ],
+                            "type": "string"
+                        },
+                        "type": "array"
+                    },
+                    "bufferRangeCelsius": {
+                        "type": "number"
+                    },
+                    "commandOnlyTemperatureSetting": {
+                        "enum": [
+                            false
+                        ],
+                        "type": "boolean"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "nicknames": {
+                        "items": {
+                            "type": "string"
+                        },
+                        "type": "array"
+                    },
+                    "queryOnlyTemperatureSetting": {
+                        "enum": [
+                            false
+                        ],
+                        "type": "boolean"
+                    },
+                    "roomHint": {
+                        "type": "string"
+                    },
+                    "state": {
+                        "$ref": "#/definitions/Thermostat"
+                    },
+                    "temperatureUnit": {
+                        "enum": [
+                            "C",
+                            "F"
+                        ],
+                        "type": "string"
+                    },
+                    "type": {
+                        "enum": [
+                            "thermostat"
+                        ],
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "availableModes",
+                    "name",
+                    "state",
+                    "temperatureUnit",
+                    "type"
+                ],
+                "type": "object"
+            },
+            {
+                "additionalProperties": false,
+                "properties": {
+                    "availableModes": {
+                        "items": {
+                            "enum": [
+                                "auto",
+                                "cool",
+                                "dry",
+                                "eco",
+                                "fan-only",
+                                "heat",
+                                "heatcool",
+                                "off",
+                                "on",
+                                "purifier"
+                            ],
+                            "type": "string"
+                        },
+                        "type": "array"
+                    },
+                    "bufferRangeCelsius": {
+                        "type": "number"
+                    },
+                    "commandOnlyTemperatureSetting": {
+                        "enum": [
+                            true
+                        ],
+                        "type": "boolean"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "nicknames": {
+                        "items": {
+                            "type": "string"
+                        },
+                        "type": "array"
+                    },
+                    "queryOnlyTemperatureSetting": {
+                        "enum": [
+                            false
+                        ],
+                        "type": "boolean"
+                    },
+                    "roomHint": {
+                        "type": "string"
+                    },
+                    "state": {
+                        "$ref": "#/definitions/Thermostat"
+                    },
+                    "temperatureUnit": {
+                        "enum": [
+                            "C",
+                            "F"
+                        ],
+                        "type": "string"
+                    },
+                    "type": {
+                        "enum": [
+                            "thermostat"
+                        ],
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "availableModes",
+                    "commandOnlyTemperatureSetting",
+                    "name",
+                    "state",
+                    "temperatureUnit",
+                    "type"
+                ],
+                "type": "object"
+            },
+            {
+                "additionalProperties": false,
+                "properties": {
+                    "availableModes": {
+                        "items": {
+                            "enum": [
+                                "auto",
+                                "cool",
+                                "dry",
+                                "eco",
+                                "fan-only",
+                                "heat",
+                                "heatcool",
+                                "off",
+                                "on",
+                                "purifier"
+                            ],
+                            "type": "string"
+                        },
+                        "type": "array"
+                    },
+                    "bufferRangeCelsius": {
+                        "type": "number"
+                    },
+                    "commandOnlyTemperatureSetting": {
+                        "enum": [
+                            false
+                        ],
+                        "type": "boolean"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "nicknames": {
+                        "items": {
+                            "type": "string"
+                        },
+                        "type": "array"
+                    },
+                    "queryOnlyTemperatureSetting": {
+                        "enum": [
+                            true
+                        ],
+                        "type": "boolean"
+                    },
+                    "roomHint": {
+                        "type": "string"
+                    },
+                    "state": {
+                        "$ref": "#/definitions/Partial<Thermostat>"
+                    },
+                    "temperatureUnit": {
+                        "enum": [
+                            "C",
+                            "F"
+                        ],
+                        "type": "string"
+                    },
+                    "type": {
+                        "enum": [
+                            "thermostat"
+                        ],
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "availableModes",
+                    "name",
+                    "queryOnlyTemperatureSetting",
+                    "state",
+                    "temperatureUnit",
+                    "type"
+                ],
+                "type": "object"
+            },
+            {
+                "additionalProperties": false,
+                "properties": {
+                    "availableModes": {
+                        "items": {
+                            "enum": [
+                                "auto",
+                                "cool",
+                                "dry",
+                                "eco",
+                                "fan-only",
+                                "heat",
+                                "heatcool",
+                                "off",
+                                "on",
+                                "purifier"
+                            ],
+                            "type": "string"
+                        },
+                        "type": "array"
+                    },
+                    "bufferRangeCelsius": {
+                        "type": "number"
+                    },
+                    "commandOnlyTemperatureSetting": {
+                        "enum": [
+                            false
+                        ],
+                        "type": "boolean"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "nicknames": {
+                        "items": {
+                            "type": "string"
+                        },
+                        "type": "array"
+                    },
+                    "queryOnlyTemperatureSetting": {
+                        "enum": [
+                            false
+                        ],
+                        "type": "boolean"
+                    },
+                    "roomHint": {
+                        "type": "string"
+                    },
+                    "state": {
+                        "$ref": "#/definitions/Thermostat"
+                    },
+                    "temperatureUnit": {
+                        "enum": [
+                            "C",
+                            "F"
+                        ],
+                        "type": "string"
+                    },
+                    "twoFactor": {
+                        "enum": [
+                            "ack"
+                        ],
+                        "type": "string"
+                    },
+                    "type": {
+                        "enum": [
+                            "thermostat"
+                        ],
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "availableModes",
+                    "name",
+                    "state",
+                    "temperatureUnit",
+                    "twoFactor",
+                    "type"
+                ],
+                "type": "object"
+            },
+            {
+                "additionalProperties": false,
+                "properties": {
+                    "availableModes": {
+                        "items": {
+                            "enum": [
+                                "auto",
+                                "cool",
+                                "dry",
+                                "eco",
+                                "fan-only",
+                                "heat",
+                                "heatcool",
+                                "off",
+                                "on",
+                                "purifier"
+                            ],
+                            "type": "string"
+                        },
+                        "type": "array"
+                    },
+                    "bufferRangeCelsius": {
+                        "type": "number"
+                    },
+                    "commandOnlyTemperatureSetting": {
+                        "enum": [
+                            true
+                        ],
+                        "type": "boolean"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "nicknames": {
+                        "items": {
+                            "type": "string"
+                        },
+                        "type": "array"
+                    },
+                    "queryOnlyTemperatureSetting": {
+                        "enum": [
+                            false
+                        ],
+                        "type": "boolean"
+                    },
+                    "roomHint": {
+                        "type": "string"
+                    },
+                    "state": {
+                        "$ref": "#/definitions/Thermostat"
+                    },
+                    "temperatureUnit": {
+                        "enum": [
+                            "C",
+                            "F"
+                        ],
+                        "type": "string"
+                    },
+                    "twoFactor": {
+                        "enum": [
+                            "ack"
+                        ],
+                        "type": "string"
+                    },
+                    "type": {
+                        "enum": [
+                            "thermostat"
+                        ],
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "availableModes",
+                    "commandOnlyTemperatureSetting",
+                    "name",
+                    "state",
+                    "temperatureUnit",
+                    "twoFactor",
+                    "type"
+                ],
+                "type": "object"
+            },
+            {
+                "additionalProperties": false,
+                "properties": {
+                    "availableModes": {
+                        "items": {
+                            "enum": [
+                                "auto",
+                                "cool",
+                                "dry",
+                                "eco",
+                                "fan-only",
+                                "heat",
+                                "heatcool",
+                                "off",
+                                "on",
+                                "purifier"
+                            ],
+                            "type": "string"
+                        },
+                        "type": "array"
+                    },
+                    "bufferRangeCelsius": {
+                        "type": "number"
+                    },
+                    "commandOnlyTemperatureSetting": {
+                        "enum": [
+                            false
+                        ],
+                        "type": "boolean"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "nicknames": {
+                        "items": {
+                            "type": "string"
+                        },
+                        "type": "array"
+                    },
+                    "queryOnlyTemperatureSetting": {
+                        "enum": [
+                            true
+                        ],
+                        "type": "boolean"
+                    },
+                    "roomHint": {
+                        "type": "string"
+                    },
+                    "state": {
+                        "$ref": "#/definitions/Partial<Thermostat>"
+                    },
+                    "temperatureUnit": {
+                        "enum": [
+                            "C",
+                            "F"
+                        ],
+                        "type": "string"
+                    },
+                    "twoFactor": {
+                        "enum": [
+                            "ack"
+                        ],
+                        "type": "string"
+                    },
+                    "type": {
+                        "enum": [
+                            "thermostat"
+                        ],
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "availableModes",
+                    "name",
+                    "queryOnlyTemperatureSetting",
+                    "state",
+                    "temperatureUnit",
+                    "twoFactor",
+                    "type"
+                ],
+                "type": "object"
+            },
+            {
+                "additionalProperties": false,
+                "properties": {
+                    "availableModes": {
+                        "items": {
+                            "enum": [
+                                "auto",
+                                "cool",
+                                "dry",
+                                "eco",
+                                "fan-only",
+                                "heat",
+                                "heatcool",
+                                "off",
+                                "on",
+                                "purifier"
+                            ],
+                            "type": "string"
+                        },
+                        "type": "array"
+                    },
+                    "bufferRangeCelsius": {
+                        "type": "number"
+                    },
+                    "commandOnlyTemperatureSetting": {
+                        "enum": [
+                            false
+                        ],
+                        "type": "boolean"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "nicknames": {
+                        "items": {
+                            "type": "string"
+                        },
+                        "type": "array"
+                    },
+                    "pin": {
+                        "type": "string"
+                    },
+                    "queryOnlyTemperatureSetting": {
+                        "enum": [
+                            false
+                        ],
+                        "type": "boolean"
+                    },
+                    "roomHint": {
+                        "type": "string"
+                    },
+                    "state": {
+                        "$ref": "#/definitions/Thermostat"
+                    },
+                    "temperatureUnit": {
+                        "enum": [
+                            "C",
+                            "F"
+                        ],
+                        "type": "string"
+                    },
+                    "twoFactor": {
+                        "enum": [
+                            "pin"
+                        ],
+                        "type": "string"
+                    },
+                    "type": {
+                        "enum": [
+                            "thermostat"
+                        ],
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "availableModes",
+                    "name",
+                    "pin",
+                    "state",
+                    "temperatureUnit",
+                    "twoFactor",
+                    "type"
+                ],
+                "type": "object"
+            },
+            {
+                "additionalProperties": false,
+                "properties": {
+                    "availableModes": {
+                        "items": {
+                            "enum": [
+                                "auto",
+                                "cool",
+                                "dry",
+                                "eco",
+                                "fan-only",
+                                "heat",
+                                "heatcool",
+                                "off",
+                                "on",
+                                "purifier"
+                            ],
+                            "type": "string"
+                        },
+                        "type": "array"
+                    },
+                    "bufferRangeCelsius": {
+                        "type": "number"
+                    },
+                    "commandOnlyTemperatureSetting": {
+                        "enum": [
+                            true
+                        ],
+                        "type": "boolean"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "nicknames": {
+                        "items": {
+                            "type": "string"
+                        },
+                        "type": "array"
+                    },
+                    "pin": {
+                        "type": "string"
+                    },
+                    "queryOnlyTemperatureSetting": {
+                        "enum": [
+                            false
+                        ],
+                        "type": "boolean"
+                    },
+                    "roomHint": {
+                        "type": "string"
+                    },
+                    "state": {
+                        "$ref": "#/definitions/Thermostat"
+                    },
+                    "temperatureUnit": {
+                        "enum": [
+                            "C",
+                            "F"
+                        ],
+                        "type": "string"
+                    },
+                    "twoFactor": {
+                        "enum": [
+                            "pin"
+                        ],
+                        "type": "string"
+                    },
+                    "type": {
+                        "enum": [
+                            "thermostat"
+                        ],
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "availableModes",
+                    "commandOnlyTemperatureSetting",
+                    "name",
+                    "pin",
+                    "state",
+                    "temperatureUnit",
+                    "twoFactor",
+                    "type"
+                ],
+                "type": "object"
+            },
+            {
+                "additionalProperties": false,
+                "properties": {
+                    "availableModes": {
+                        "items": {
+                            "enum": [
+                                "auto",
+                                "cool",
+                                "dry",
+                                "eco",
+                                "fan-only",
+                                "heat",
+                                "heatcool",
+                                "off",
+                                "on",
+                                "purifier"
+                            ],
+                            "type": "string"
+                        },
+                        "type": "array"
+                    },
+                    "bufferRangeCelsius": {
+                        "type": "number"
+                    },
+                    "commandOnlyTemperatureSetting": {
+                        "enum": [
+                            false
+                        ],
+                        "type": "boolean"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "nicknames": {
+                        "items": {
+                            "type": "string"
+                        },
+                        "type": "array"
+                    },
+                    "pin": {
+                        "type": "string"
+                    },
+                    "queryOnlyTemperatureSetting": {
+                        "enum": [
+                            true
+                        ],
+                        "type": "boolean"
+                    },
+                    "roomHint": {
+                        "type": "string"
+                    },
+                    "state": {
+                        "$ref": "#/definitions/Partial<Thermostat>"
+                    },
+                    "temperatureUnit": {
+                        "enum": [
+                            "C",
+                            "F"
+                        ],
+                        "type": "string"
+                    },
+                    "twoFactor": {
+                        "enum": [
+                            "pin"
+                        ],
+                        "type": "string"
+                    },
+                    "type": {
+                        "enum": [
+                            "thermostat"
+                        ],
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "availableModes",
+                    "name",
+                    "pin",
+                    "queryOnlyTemperatureSetting",
+                    "state",
+                    "temperatureUnit",
+                    "twoFactor",
+                    "type"
+                ],
+                "type": "object"
+            }
+        ]
+    },
+    "definitions": {
+        "ColorHSV": {
+            "additionalProperties": false,
+            "properties": {
+                "h": {
+                    "maximum": 360,
+                    "minimum": 0,
+                    "type": "number"
+                },
+                "s": {
+                    "maximum": 1,
+                    "minimum": 0,
+                    "type": "number"
+                },
+                "v": {
+                    "maximum": 1,
+                    "minimum": 0,
+                    "type": "number"
+                }
+            },
+            "required": [
+                "h",
+                "s",
+                "v"
+            ],
+            "type": "object"
+        },
+        "ColorRGB": {
+            "additionalProperties": false,
+            "properties": {
+                "b": {
+                    "maximum": 255,
+                    "minimum": 0,
+                    "type": "number"
+                },
+                "g": {
+                    "maximum": 255,
+                    "minimum": 0,
+                    "type": "number"
+                },
+                "r": {
+                    "maximum": 255,
+                    "minimum": 0,
+                    "type": "number"
+                }
+            },
+            "required": [
+                "b",
+                "g",
+                "r"
+            ],
+            "type": "object"
+        },
+        "LockUnlockState": {
+            "additionalProperties": false,
+            "properties": {
+                "isJammed": {
+                    "type": "boolean"
+                },
+                "isLocked": {
+                    "type": "boolean"
+                },
+                "online": {
+                    "type": "boolean"
+                }
+            },
+            "required": [
+                "isJammed",
+                "isLocked",
+                "online"
+            ],
+            "type": "object"
+        },
+        "OnOffState": {
+            "additionalProperties": false,
+            "properties": {
+                "on": {
+                    "type": "boolean"
+                },
+                "online": {
+                    "type": "boolean"
+                }
+            },
+            "required": [
+                "on",
+                "online"
+            ],
+            "type": "object"
+        },
+        "OpenCloseState": {
+            "additionalProperties": false,
+            "properties": {
+                "online": {
+                    "type": "boolean"
+                },
+                "openPercent": {
+                    "maximum": 100,
+                    "minimum": 0,
+                    "type": "number"
+                }
+            },
+            "required": [
+                "online",
+                "openPercent"
+            ],
+            "type": "object"
+        },
+        "Partial<Thermostat>": {
+            "additionalProperties": false,
+            "description": "Make all properties in T optional",
+            "properties": {
+                "online": {
+                    "type": "boolean"
+                },
+                "thermostatHumidityAmbient": {
+                    "maximum": 100,
+                    "minimum": 0,
+                    "type": "number"
+                },
+                "thermostatMode": {
+                    "enum": [
+                        "auto",
+                        "cool",
+                        "dry",
+                        "eco",
+                        "fan-only",
+                        "heat",
+                        "heatcool",
+                        "off",
+                        "on",
+                        "purifier"
+                    ],
+                    "type": "string"
+                },
+                "thermostatTemperatureAmbient": {
+                    "type": "number"
+                },
+                "thermostatTemperatureSetpoint": {
+                    "type": "number"
+                },
+                "thermostatTemperatureSetpointHigh": {
+                    "type": "number"
+                },
+                "thermostatTemperatureSetpointLow": {
+                    "type": "number"
+                }
+            },
+            "type": "object"
+        },
+        "State": {
+            "additionalProperties": false,
+            "properties": {
+                "online": {
+                    "type": "boolean"
+                }
+            },
+            "required": [
+                "online"
+            ],
+            "type": "object"
+        },
+        "Thermostat": {
+            "additionalProperties": false,
+            "properties": {
+                "online": {
+                    "type": "boolean"
+                },
+                "thermostatHumidityAmbient": {
+                    "maximum": 100,
+                    "minimum": 0,
+                    "type": "number"
+                },
+                "thermostatMode": {
+                    "$ref": "#/definitions/ThermostatMode"
+                },
+                "thermostatTemperatureAmbient": {
+                    "type": "number"
+                },
+                "thermostatTemperatureSetpoint": {
+                    "type": "number"
+                },
+                "thermostatTemperatureSetpointHigh": {
+                    "type": "number"
+                },
+                "thermostatTemperatureSetpointLow": {
+                    "type": "number"
+                }
+            },
+            "required": [
+                "online",
+                "thermostatMode",
+                "thermostatTemperatureAmbient"
+            ],
+            "type": "object"
+        },
+        "ThermostatMode": {
+            "enum": [
+                "auto",
+                "cool",
+                "dry",
+                "eco",
+                "fan-only",
+                "heat",
+                "heatcool",
+                "off",
+                "on",
+                "purifier"
+            ],
+            "type": "string"
+        }
+    },
+    "type": "object"
+}
+
