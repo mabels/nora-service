@@ -3,6 +3,7 @@ import { QueryDevice, QueryDevices, QueryInput, QueryPayload } from '../../googl
 import { Device } from '../../models';
 import { isLightWithBrightness, isLightWithColorControlTemperature, isLightWithColorHSV, isLightWithColorRGB } from '../../models/light';
 import { DevicesRepository } from '../../services/devices.repository';
+import { ColorHue } from '../../models/states/color';
 
 export class QueryService {
     constructor(
@@ -41,13 +42,23 @@ export class QueryService {
                     state.brightness = device.state.brightness || 100;
                 }
                 if (isLightWithColorHSV(device)) {
-                    state.color = {
-                        ...state.color,
-                        spectrumHSV: {
+                    let cl: ColorHue;
+                    if (device.state.color.spectrumHsv) {
+                        cl = {
+                            ...device.state.color.spectrumHsv
+                        };
+                    }
+                    if (device.state.color.HSV) {
+                        cl = {
                             hue: device.state.color.HSV.h,
                             saturation: device.state.color.HSV.s,
                             value: device.state.color.HSV.v,
-                        },
+                        };
+                    }
+
+                    state.color = {
+                        ...state.color,
+                        spectrumHSV: cl
                     };
                 }
                 if (isLightWithColorRGB(device)) {
