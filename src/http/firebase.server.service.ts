@@ -9,9 +9,11 @@ export class FireBaseServerService {
     constructor(@Inject(LogService) log: LogService,
                 @Inject(AppService) app: AppService) {
         log.info('FireBase-Mode');
-        this.exportRef = functions.https.onRequest((request, response) => {
-            console.info('fireBaseRequest:', request.path);
-            app.express(request, response);
-        });
+        this.exportRef = functions
+            .region('europe-west1')
+            .https.onRequest((request, response) => {
+                console.info('fireBaseRequest:', request.path);
+                app.express(request, response);
+            });
     }
 }

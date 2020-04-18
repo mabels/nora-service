@@ -8,7 +8,8 @@ import { ConnectionHandler } from './connectionhandler';
 import { registerBindedEvents } from './decorators/bindevent';
 import { authenticationMiddleware } from './middlewares/authentication.middleware';
 import { childContainerMiddleware } from './middlewares/childcontainer.middleware';
-import { oneConnectionPerUserMiddleware } from './middlewares/one-connection-per-user.middleware';
+import { NoraSocket } from './nora-socket';
+// import { oneConnectionPerUserMiddleware } from './middlewares/one-connection-per-user.middleware';
 
 export class WebSocketService {
     constructor(@Inject(ConfigService) private config: Config, @Inject(Container) private container: Container) {}
@@ -21,8 +22,8 @@ export class WebSocketService {
         });
         io.use(childContainerMiddleware(this.container));
         io.use(authenticationMiddleware(this.config));
-        io.use(oneConnectionPerUserMiddleware(this.config));
-        io.on('connect', socket => {
+        // io.use(oneConnectionPerUserMiddleware(this.config));
+        io.on('connect', (socket: NoraSocket) => {
             try {
                 io.on('*', (event, data) => {
                     console.log('RecvMsg:', event, data);

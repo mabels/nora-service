@@ -45,10 +45,13 @@
             },
             callbacks: {
                 signInSuccessWithAuthResult: function (authResult, redirectUrl) {
-
                     authResult.user.getIdToken().then(function (token) {
-                        document.getElementById('inputToken').value = token;
-                        document.forms.loginForm.submit();
+                        const googleCredential = firebase.auth.GoogleAuthProvider.credential(token);
+                        firebase.auth().signInWithCredential(googleCredential)
+                                .then(o => document.getElementById('gotIdToken').innerText = JSON.stringify(o))
+                                .catch(e => document.getElementById('errorIdToken').innerText = JSON.stringify(e))
+                        // document.getElementById('inputToken').value = token;
+                        // document.forms.loginForm.submit();
                     });
                     return false;
                 },
@@ -69,6 +72,13 @@
             <input type="hidden" id="inputToken" name="token" />
             <div id="firebaseui-auth-container"></div>
         </form>
+
+        <h2 class="h6 mb-3 font-weight-normal">Got IDToken</h2>
+        <code id="gotIdToken"></code>
+        <br />
+        <h2 class="h6 mb-3 font-weight-normal">Error IDToken</h2>
+        <code id="errorIdToken"></code>
+        <br />
     </div>
 </body>
 

@@ -1,26 +1,26 @@
 import { NextFunction, Request, Response } from 'express';
-import { IncomingMessage } from 'http';
 
+import { Container } from '@andrei-tatar/ts-ioc';
 import { Config } from '../../config';
 import { JwtService } from '../../services/jwt.service';
 import { UserToken } from '../controllers/login';
 import { NotAuthorizedError } from './exception';
 
-declare module 'express' {
-    export interface Request {
-        token?: UserToken;
-    }
-}
+// declare module 'express' {
+//     export interface Request {
+//         token?: UserToken;
+//     }
+// }
 
-declare module 'socket.io' {
-    export interface Socket {
-        uid: string;
-        req: IncomingMessage;
-    }
-}
+// declare module 'socket.io' {
+//     export interface Socket {
+//         uid: string;
+//         req: IncomingMessage;
+//     }
+// }
 
-export function authMiddleware(config: Config) {
-    return async (req: Request, _res: Response, next: NextFunction) => {
+export function authMiddleware(config: Config, container: Container) {
+    return async (req: Request, res: Response, next: NextFunction) => {
         try {
             let authToken = req.cookies[config.jwtCookieName.val];
             if (!authToken) {
@@ -34,9 +34,9 @@ export function authMiddleware(config: Config) {
             }
 
             if (authToken) {
-                const jwt = req.container.resolve(JwtService);
+                const jwt = container.resolve(JwtService);
                 const token = await jwt.verify<UserToken>(authToken, config.serviceAccount.private_key.val);
-                req.token = token;
+                res.locals.token = token;
             }
         } catch (err) {
         }
@@ -46,14 +46,14 @@ export function authMiddleware(config: Config) {
 
 export function authFilter({ scope, uid, redirectToLogin = false }: { scope?: string, uid?: string, redirectToLogin?: boolean } = {}) {
     return () => (req: Request, res: Response, next: NextFunction) => {
-        if (!req.token ||
-            scope && req.token.scope !== scope ||
-            uid !== void 0 && req.token.uid !== uid) {
+        if (!res.locals.token ||
+            scope && res.locals.token.scope !== scope ||
+            uid !== void 0 && res.locals.token.uid !== uid) {
             if (redirectToLogin) {
                 const redirect = Buffer.from(req.originalUrl).toString('base64');
                 return res.redirect('/login?redirect=' + redirect);
             } else {
-                throw new NotAuthorizedError('user not allowed: ' + JSON.stringify(req.token || {}));
+                throw new NotAuthorizedError('user not allowed: ' + JSON.stringify(res.locals.token || {}));
             }
         }
         next();

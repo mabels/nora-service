@@ -51,6 +51,7 @@ export class DevicesRepository {
         @Inject(RequestSyncService)
         private requestSyncService: RequestSyncService,
     ) {
+
     }
 
     async sync(devices: Devices, group: string) {

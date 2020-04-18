@@ -41,13 +41,13 @@ export class SmartHomeController extends Controller {
     ) {
         this.log.info('FulFill:', JSON.stringify(this.request.body));
         setImmediate(() => {
-            this.storeFirebase(this.request.token.uid, requestId, inputs)
+            this.storeFirebase(this.response.locals.token.uid, requestId, inputs)
             .then()
             .catch(e => console.log(`FirebaseStore:`, e));
         });
         let payload: FulfillPayload;
         for (const input of inputs) {
-            this.log.info(`executing ${input.intent} for ${this.request.token.uid}`);
+            this.log.info(`executing ${input.intent} for ${this.response.locals.token.uid}`);
             switch (input.intent) {
                 case Intent.Sync:
                     payload = this.syncService.value.sync(requestId);

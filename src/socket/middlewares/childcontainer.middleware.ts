@@ -1,14 +1,14 @@
 import { Container } from '@andrei-tatar/ts-ioc';
-import { Socket } from 'socket.io';
+import { NoraSocket } from '../nora-socket';
 
-declare module 'socket.io' {
-    export interface Socket {
-        container: Container;
-    }
-}
+// declare module 'socket.io' {
+//     export interface Socket {
+//         container: Container;
+//     }
+// }
 
 export function childContainerMiddleware(container: Container) {
-    return (socket: Socket, next: (err?: any) => void) => {
+    return (socket: NoraSocket, next: (err?: any) => void) => {
         socket.container = container.createChild();
         socket.container.register({ token: 'socket', useValue: socket });
         socket.container.register({ token: 'uid', useFactory: () => socket.uid });

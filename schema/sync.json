@@ -631,36 +631,64 @@
                             "color": {
                                 "additionalProperties": false,
                                 "properties": {
-                                    "spectrumHsv": {
+                                    "HSV": {
                                         "additionalProperties": false,
                                         "properties": {
-                                            "hue": {
+                                            "h": {
                                                 "maximum": 360,
                                                 "minimum": 0,
                                                 "type": "number"
                                             },
-                                            "saturation": {
+                                            "s": {
                                                 "maximum": 1,
                                                 "minimum": 0,
                                                 "type": "number"
                                             },
-                                            "value": {
+                                            "v": {
                                                 "maximum": 1,
                                                 "minimum": 0,
                                                 "type": "number"
                                             }
                                         },
                                         "required": [
-                                            "hue",
-                                            "saturation",
-                                            "value"
+                                            "h",
+                                            "s",
+                                            "v"
                                         ],
                                         "type": "object"
+                                    },
+                                    "RGB": {
+                                        "additionalProperties": false,
+                                        "properties": {
+                                            "b": {
+                                                "maximum": 255,
+                                                "minimum": 0,
+                                                "type": "number"
+                                            },
+                                            "g": {
+                                                "maximum": 255,
+                                                "minimum": 0,
+                                                "type": "number"
+                                            },
+                                            "r": {
+                                                "maximum": 255,
+                                                "minimum": 0,
+                                                "type": "number"
+                                            }
+                                        },
+                                        "required": [
+                                            "b",
+                                            "g",
+                                            "r"
+                                        ],
+                                        "type": "object"
+                                    },
+                                    "temperature": {
+                                        "maximum": 6000,
+                                        "minimum": 2000,
+                                        "type": "number"
                                     }
                                 },
-                                "required": [
-                                    "spectrumHsv"
-                                ],
                                 "type": "object"
                             },
                             "on": {
@@ -732,36 +760,64 @@
                             "color": {
                                 "additionalProperties": false,
                                 "properties": {
-                                    "spectrumHsv": {
+                                    "HSV": {
                                         "additionalProperties": false,
                                         "properties": {
-                                            "hue": {
+                                            "h": {
                                                 "maximum": 360,
                                                 "minimum": 0,
                                                 "type": "number"
                                             },
-                                            "saturation": {
+                                            "s": {
                                                 "maximum": 1,
                                                 "minimum": 0,
                                                 "type": "number"
                                             },
-                                            "value": {
+                                            "v": {
                                                 "maximum": 1,
                                                 "minimum": 0,
                                                 "type": "number"
                                             }
                                         },
                                         "required": [
-                                            "hue",
-                                            "saturation",
-                                            "value"
+                                            "h",
+                                            "s",
+                                            "v"
                                         ],
                                         "type": "object"
+                                    },
+                                    "RGB": {
+                                        "additionalProperties": false,
+                                        "properties": {
+                                            "b": {
+                                                "maximum": 255,
+                                                "minimum": 0,
+                                                "type": "number"
+                                            },
+                                            "g": {
+                                                "maximum": 255,
+                                                "minimum": 0,
+                                                "type": "number"
+                                            },
+                                            "r": {
+                                                "maximum": 255,
+                                                "minimum": 0,
+                                                "type": "number"
+                                            }
+                                        },
+                                        "required": [
+                                            "b",
+                                            "g",
+                                            "r"
+                                        ],
+                                        "type": "object"
+                                    },
+                                    "temperature": {
+                                        "maximum": 6000,
+                                        "minimum": 2000,
+                                        "type": "number"
                                     }
                                 },
-                                "required": [
-                                    "spectrumHsv"
-                                ],
                                 "type": "object"
                             },
                             "on": {
@@ -843,36 +899,64 @@
                             "color": {
                                 "additionalProperties": false,
                                 "properties": {
-                                    "spectrumHsv": {
+                                    "HSV": {
                                         "additionalProperties": false,
                                         "properties": {
-                                            "hue": {
+                                            "h": {
                                                 "maximum": 360,
                                                 "minimum": 0,
                                                 "type": "number"
                                             },
-                                            "saturation": {
+                                            "s": {
                                                 "maximum": 1,
                                                 "minimum": 0,
                                                 "type": "number"
                                             },
-                                            "value": {
+                                            "v": {
                                                 "maximum": 1,
                                                 "minimum": 0,
                                                 "type": "number"
                                             }
                                         },
                                         "required": [
-                                            "hue",
-                                            "saturation",
-                                            "value"
+                                            "h",
+                                            "s",
+                                            "v"
                                         ],
                                         "type": "object"
+                                    },
+                                    "RGB": {
+                                        "additionalProperties": false,
+                                        "properties": {
+                                            "b": {
+                                                "maximum": 255,
+                                                "minimum": 0,
+                                                "type": "number"
+                                            },
+                                            "g": {
+                                                "maximum": 255,
+                                                "minimum": 0,
+                                                "type": "number"
+                                            },
+                                            "r": {
+                                                "maximum": 255,
+                                                "minimum": 0,
+                                                "type": "number"
+                                            }
+                                        },
+                                        "required": [
+                                            "b",
+                                            "g",
+                                            "r"
+                                        ],
+                                        "type": "object"
+                                    },
+                                    "temperature": {
+                                        "maximum": 6000,
+                                        "minimum": 2000,
+                                        "type": "number"
                                     }
                                 },
-                                "required": [
-                                    "spectrumHsv"
-                                ],
                                 "type": "object"
                             },
                             "on": {

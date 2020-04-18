@@ -65,7 +65,7 @@ export class OauthController extends Controller {
       throw new BadRequestError('response_type must be "code"');
     }
 
-    if (!confirm || !this.request.token || this.request.token.scope !== 'app-user') {
+    if (!confirm || !this.response.locals.token || this.response.locals.token.scope !== 'app-user') {
       const redirectPath = `/oauth?confirm=true&` +
         `client_id=${encodeURIComponent(clientId)}&` +
         `redirect_uri=${encodeURIComponent(redirectUri)}&` +
@@ -92,7 +92,7 @@ export class OauthController extends Controller {
     const authToken: AuthToken = {
       exp: Math.round(new Date().getTime() / 1000) + 600, // 10 min
       scope: 'google-home-authcode',
-      uid: this.request.token.uid,
+      uid: this.response.locals.token.uid,
     };
     const authCode = await this.jwtService.sign(authToken, this.config.serviceAccount.private_key.val);
     return this.redirect(`${redirectUri}?state=${state}&code=${authCode}`);

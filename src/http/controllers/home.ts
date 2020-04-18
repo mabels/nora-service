@@ -22,23 +22,25 @@ export class HomeController extends Controller {
 
     @Http.get()
     async get() {
-        if (!this.request.token) {
+        console.log('Home-Cookies', JSON.stringify(this.request.cookies));
+        if (!(this.request.cookies['IDToken'] || this.response.locals.token)) {
             return this.redirect('/login');
         }
-
-        const userDevices = this.devices.value.allDevices[this.request.token.uid];
-        const userDevicesHtml = userDevices
-            ? JSON.stringify(userDevices, null, 2)
-                .replace(/&/g, '&amp;')
-                .replace(/</g, '&lt;')
-                .replace(/>/g, '&gt;')
-                .replace(/"/g, '&quot;')
-                .replace(/'/g, '&#039;')
-            : 'No devices';
-        const token = await this.request.token.nodered;
-        // console.log('RenderTop:', userDevices, userDevicesHtml, token);
+        let userDevicesHtml = 'No Token';
+        if (this.response.locals.token?.uid) {
+            const userDevices = this.devices.value.allDevices[this.response.locals.token?.uid];
+            userDevicesHtml = userDevices
+                ? JSON.stringify(userDevices, null, 2)
+                    .replace(/&/g, '&amp;')
+                    .replace(/</g, '&lt;')
+                    .replace(/>/g, '&gt;')
+                    .replace(/"/g, '&quot;')
+                    .replace(/'/g, '&#039;')
+                : 'No devices';
+        }
         return await this.renderTemplate('home', {
-            token, userDevicesJson: userDevicesHtml,
+            userDevicesJson: userDevicesHtml,
+            token: this.response.locals.token?.nodered || 'No nora token',
             appTitle: this.config.appTitle.val,
             fireBase: this.config.fireBase.val,
             idToken: this.request.cookies['IDToken'] || 'No Id Token',
@@ -75,14 +77,14 @@ export class HomeController extends Controller {
 
     @Http.get('/revoke')
     async revokeToken() {
-        if (!this.request.token) {
+        if (!this.response.locals.token) {
             return this.redirect('/login');
         }
-        const uid = this.request.token.uid;
+        const uid = this.response.locals.token.uid;
         await this.userRepo.value.incrementNoderedTokenVersion(uid);
 
         const newToken = {
-            ...this.request.token,
+            ...this.response.locals.token,
             nodered: await this.nrtokenService.value.generateToken(uid, this.config.serviceAccount.private_key.val),
         };
 

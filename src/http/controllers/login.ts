@@ -79,7 +79,6 @@ export class LoginController extends Controller {
                     secure: this.config.secureCookie.val,
                 });
             }
-
             // open Redirect Security on question
             // if (typeof redirect === 'string') {
             //     const redirectUri = Buffer.from(redirect, 'base64').toString();

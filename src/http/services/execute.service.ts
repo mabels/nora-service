@@ -6,7 +6,8 @@ import {
   ExecuteStatus
 } from '../../google';
 import { CommandExecution, ExecutePayloadCommand } from '../../google/execute';
-import { DevicesRepository } from "../../services/devices.repository";
+import { DevicesRepository } from '../../services/devices.repository';
+import { ColorState } from '../../models/states/color';
 
 interface ResponseState {
   offlineDeviceIds: string[];
@@ -54,12 +55,30 @@ export class ExecuteService {
             this.devices.updateDevicesState(deviceIds, execution.params, updateOptions);
             break;
           case ExecuteCommandTypes.ColorAbsolute:
+            let send = false;
+            const cstate: ColorState = { online: true, color: { }};
             if (execution.params.color.spectrumHSV) {
-              this.devices.updateDevicesState(deviceIds, {
-                color: {
-                  spectrumHsv: execution.params.color.spectrumHSV,
-                }
-              }, updateOptions);
+              cstate.color.HSV = {
+                h: execution.params.color.spectrumHSV.hue,
+                s: execution.params.color.spectrumHSV.saturation,
+                v: execution.params.color.spectrumHSV.value
+              };
+              send = true;
+            }
+            if (execution.params.color.spectrumRGB) {
+              cstate.color.RGB = {
+                r: execution.params.color.spectrumRGB.red,
+                g: execution.params.color.spectrumRGB.green,
+                b: execution.params.color.spectrumRGB.blue
+              };
+              send = true;
+            }
+            if (execution.params.color.temperatureK) {
+              cstate.color.temperature = execution.params.color.temperatureK;
+              send = true;
+            }
+            if (send) {
+              this.devices.updateDevicesState(deviceIds, cstate, updateOptions);
             }
             break;
           case ExecuteCommandTypes.LockUnlock:

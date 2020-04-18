@@ -76,8 +76,8 @@ export class Http {
         for (const method of methods) {
             const methodName = method.controllerMethod;
             const paramsFactory = Param.getParamsFactory(controller, methodName);
-            const handler = this.requestHandler.bind(this, async (req: Request) => {
-                const controllerInstance = resolveController(req, controller);
+            const handler = this.requestHandler.bind(this, async (req: Request, res: Response) => {
+                const controllerInstance = resolveController(req, res, controller);
                 const params = await Promise.all(paramsFactory(req));
                 const result = await controllerInstance[methodName].apply(controllerInstance, params);
                 return result;
@@ -124,7 +124,7 @@ export class Http {
 }
 
 export type Filter = IRouterHandler<any> & IRouterMatcher<any>;
-export type ControllerResolver = (request: Request, controllerType) => Controller;
+export type ControllerResolver = (request: Request, res: Response, controllerType) => Controller;
 export interface ControllerOptions {
     resolveController: ControllerResolver;
 }

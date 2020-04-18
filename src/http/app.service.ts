@@ -30,11 +30,11 @@ export class AppService {
         this.express.use(bodyParser.urlencoded({ extended: true }));
         this.express.use(cookieParser());
         this.express.use(containerMiddleware(container));
-        this.express.use(authMiddleware(config));
+        this.express.use(authMiddleware(config, container));
         this.express.use(
             Http.controllers(controllers, {
-                resolveController: (req, type) => req.container.resolve(type),
-            }),
+                resolveController: (_req, res, type) => res.locals.container.resolve(type),
+            })
         );
 
         this.express.use(exceptionMiddleware());

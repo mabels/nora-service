@@ -1,4 +1,4 @@
-import { Socket } from 'socket.io';
+import { NoraSocket } from '../nora-socket';
 
 const bindEventsKey = Symbol('bind:events');
 
@@ -20,7 +20,7 @@ function getBindedEvents(target) {
     );
 }
 
-export function registerBindedEvents(target, socket: Socket) {
+export function registerBindedEvents(target, socket: NoraSocket) {
     const binded = getBindedEvents(target);
     for (const event of binded) {
         const handler = async (...args: any[]) => {

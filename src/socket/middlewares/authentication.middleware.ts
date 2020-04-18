@@ -1,13 +1,12 @@
-import { IncomingMessage } from 'http';
-import { Socket } from 'socket.io';
+// import { IncomingMessage } from 'http';
 import { Config } from '../../config';
 import { NoderedTokenService } from '../../services/nodered-token.service';
+import { NoraSocket } from '../nora-socket';
 
 export function authenticationMiddleware(config: Config) {
-    return async (socket: Socket, next: (err?: any) => void) => {
+    return async (socket: NoraSocket, next: (err?: any) => void) => {
         try {
-
-            socket.req = socket.request;
+            // socket.req = socket.request;
             const authToken = socket.handshake.query.token;
             if (!authToken || !authToken.length) {
                 throw new Error('not authorized');
@@ -22,9 +21,9 @@ export function authenticationMiddleware(config: Config) {
     };
 }
 
-declare module 'socket.io' {
-    export interface Socket {
-        uid: string;
-        req: IncomingMessage;
-    }
-}
+// declare module 'socket.io' {
+//     export interface Socket {
+//         uid: string;
+//         req: IncomingMessage;
+//     }
+// }
