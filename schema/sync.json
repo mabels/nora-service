@@ -286,14 +286,11 @@
                             "color": {
                                 "additionalProperties": false,
                                 "properties": {
-                                    "HSV": {
-                                        "$ref": "#/definitions/ColorHSV"
-                                    },
-                                    "RGB": {
-                                        "$ref": "#/definitions/ColorRGB"
-                                    },
                                     "spectrumHsv": {
                                         "$ref": "#/definitions/ColorHue"
+                                    },
+                                    "spectrumRgb": {
+                                        "type": "number"
                                     },
                                     "temperatureK": {
                                         "maximum": 6000,
@@ -390,14 +387,11 @@
                             "color": {
                                 "additionalProperties": false,
                                 "properties": {
-                                    "HSV": {
-                                        "$ref": "#/definitions/ColorHSV"
-                                    },
-                                    "RGB": {
-                                        "$ref": "#/definitions/ColorRGB"
-                                    },
                                     "spectrumHsv": {
                                         "$ref": "#/definitions/ColorHue"
+                                    },
+                                    "spectrumRgb": {
+                                        "type": "number"
                                     },
                                     "temperatureK": {
                                         "maximum": 6000,
@@ -504,14 +498,11 @@
                             "color": {
                                 "additionalProperties": false,
                                 "properties": {
-                                    "HSV": {
-                                        "$ref": "#/definitions/ColorHSV"
-                                    },
-                                    "RGB": {
-                                        "$ref": "#/definitions/ColorRGB"
-                                    },
                                     "spectrumHsv": {
                                         "$ref": "#/definitions/ColorHue"
+                                    },
+                                    "spectrumRgb": {
+                                        "type": "number"
                                     },
                                     "temperatureK": {
                                         "maximum": 6000,
@@ -1955,32 +1946,6 @@
         ]
     },
     "definitions": {
-        "ColorHSV": {
-            "additionalProperties": false,
-            "properties": {
-                "h": {
-                    "maximum": 360,
-                    "minimum": 0,
-                    "type": "number"
-                },
-                "s": {
-                    "maximum": 1,
-                    "minimum": 0,
-                    "type": "number"
-                },
-                "v": {
-                    "maximum": 1,
-                    "minimum": 0,
-                    "type": "number"
-                }
-            },
-            "required": [
-                "h",
-                "s",
-                "v"
-            ],
-            "type": "object"
-        },
         "ColorHue": {
             "additionalProperties": false,
             "properties": {
@@ -2004,32 +1969,6 @@
                 "hue",
                 "saturation",
                 "value"
-            ],
-            "type": "object"
-        },
-        "ColorRGB": {
-            "additionalProperties": false,
-            "properties": {
-                "b": {
-                    "maximum": 255,
-                    "minimum": 0,
-                    "type": "number"
-                },
-                "g": {
-                    "maximum": 255,
-                    "minimum": 0,
-                    "type": "number"
-                },
-                "r": {
-                    "maximum": 255,
-                    "minimum": 0,
-                    "type": "number"
-                }
-            },
-            "required": [
-                "b",
-                "g",
-                "r"
             ],
             "type": "object"
         },

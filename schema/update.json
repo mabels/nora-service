@@ -18,7 +18,7 @@
                 "$ref": "#/definitions/Partial<Thermostat>"
             },
             {
-                "$ref": "#/definitions/Partial<BrightnessState&{color?:(ColorTemperature&{HSV?:ColorHSV|undefined;spectrumHsv?:ColorHue|undefined;RGB?:ColorRGB|undefined;})|undefined;}&OnOffState>"
+                "$ref": "#/definitions/Partial<BrightnessState&{color?:(ColorTemperature&{spectrumRgb?:number|undefined;spectrumHsv?:ColorHue|undefined;})|undefined;}&OnOffState>"
             },
             {
                 "$ref": "#/definitions/Partial<VolumeState&OnOffState>"
@@ -26,32 +26,6 @@
         ]
     },
     "definitions": {
-        "ColorHSV": {
-            "additionalProperties": false,
-            "properties": {
-                "h": {
-                    "maximum": 360,
-                    "minimum": 0,
-                    "type": "number"
-                },
-                "s": {
-                    "maximum": 1,
-                    "minimum": 0,
-                    "type": "number"
-                },
-                "v": {
-                    "maximum": 1,
-                    "minimum": 0,
-                    "type": "number"
-                }
-            },
-            "required": [
-                "h",
-                "s",
-                "v"
-            ],
-            "type": "object"
-        },
         "ColorHue": {
             "additionalProperties": false,
             "properties": {
@@ -78,33 +52,7 @@
             ],
             "type": "object"
         },
-        "ColorRGB": {
-            "additionalProperties": false,
-            "properties": {
-                "b": {
-                    "maximum": 255,
-                    "minimum": 0,
-                    "type": "number"
-                },
-                "g": {
-                    "maximum": 255,
-                    "minimum": 0,
-                    "type": "number"
-                },
-                "r": {
-                    "maximum": 255,
-                    "minimum": 0,
-                    "type": "number"
-                }
-            },
-            "required": [
-                "b",
-                "g",
-                "r"
-            ],
-            "type": "object"
-        },
-        "Partial<BrightnessState&{color?:(ColorTemperature&{HSV?:ColorHSV|undefined;spectrumHsv?:ColorHue|undefined;RGB?:ColorRGB|undefined;})|undefined;}&OnOffState>": {
+        "Partial<BrightnessState&{color?:(ColorTemperature&{spectrumRgb?:number|undefined;spectrumHsv?:ColorHue|undefined;})|undefined;}&OnOffState>": {
             "additionalProperties": false,
             "properties": {
                 "brightness": {
@@ -115,14 +63,11 @@
                 "color": {
                     "additionalProperties": false,
                     "properties": {
-                        "HSV": {
-                            "$ref": "#/definitions/ColorHSV"
-                        },
-                        "RGB": {
-                            "$ref": "#/definitions/ColorRGB"
-                        },
                         "spectrumHsv": {
                             "$ref": "#/definitions/ColorHue"
+                        },
+                        "spectrumRgb": {
+                            "type": "number"
                         },
                         "temperatureK": {
                             "maximum": 6000,

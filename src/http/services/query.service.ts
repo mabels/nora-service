@@ -2,8 +2,8 @@ import { Inject } from '@andrei-tatar/ts-ioc';
 import { QueryDevice, QueryDevices, QueryInput, QueryPayload } from '../../google';
 import { Device } from '../../models';
 import { isLightWithBrightness, isLightWithColorControlTemperature, isLightWithColorHSV, isLightWithColorRGB } from '../../models/light';
-import { DevicesRepository } from '../../services/devices.repository';
 import { ColorHue } from '../../models/states/color';
+import { DevicesRepository } from '../../services/devices.repository';
 
 export class QueryService {
     constructor(
@@ -48,13 +48,13 @@ export class QueryService {
                             ...device.state.color.spectrumHsv
                         };
                     }
-                    if (device.state.color.HSV) {
-                        cl = {
-                            hue: device.state.color.HSV.h,
-                            saturation: device.state.color.HSV.s,
-                            value: device.state.color.HSV.v,
-                        };
-                    }
+                    // if (device.state.color.spectrumHsv) {
+                    //     cl = {
+                    //         hue: device.state.color.HSV.h,
+                    //         saturation: device.state.color.HSV.s,
+                    //         value: device.state.color.HSV.v,
+                    //     };
+                    // }
 
                     state.color = {
                         ...state.color,
@@ -64,11 +64,12 @@ export class QueryService {
                 if (isLightWithColorRGB(device)) {
                     state.color = {
                         ...state.color,
-                        spectrumRGB: {
-                            red: device.state.color.RGB.r,
-                            green: device.state.color.RGB.g,
-                            blue: device.state.color.RGB.b,
-                        },
+                        spectrumRgb: device.state.color.spectrumRgb
+                        // spectrumRGB: {
+                        //     red: device.state.color.RGB.r,
+                        //     green: device.state.color.RGB.g,
+                        //     blue: device.state.color.RGB.b,
+                        // },
                     };
                 }
                 if (isLightWithColorControlTemperature(device)) {

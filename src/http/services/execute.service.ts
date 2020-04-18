@@ -6,8 +6,8 @@ import {
   ExecuteStatus
 } from '../../google';
 import { CommandExecution, ExecutePayloadCommand } from '../../google/execute';
-import { DevicesRepository } from '../../services/devices.repository';
 import { ColorState } from '../../models/states/color';
+import { DevicesRepository } from '../../services/devices.repository';
 
 interface ResponseState {
   offlineDeviceIds: string[];
@@ -57,20 +57,21 @@ export class ExecuteService {
           case ExecuteCommandTypes.ColorAbsolute:
             let send = false;
             const cstate: ColorState = { online: true, color: { }};
-            if (execution.params.color.spectrumHSV) {
-              cstate.color.HSV = {
-                h: execution.params.color.spectrumHSV.hue,
-                s: execution.params.color.spectrumHSV.saturation,
-                v: execution.params.color.spectrumHSV.value
+            if (execution.params.color.spectrumHsv) {
+              cstate.color.spectrumHsv = {
+                ...execution.params.color.spectrumHsv
+                // h: execution.params.color.spectrumHSV.hue,
+                // s: execution.params.color.spectrumHSV.saturation,
+                // v: execution.params.color.spectrumHSV.value
               };
               send = true;
             }
-            if (execution.params.color.spectrumRGB) {
-              cstate.color.RGB = {
-                r: execution.params.color.spectrumRGB.red,
-                g: execution.params.color.spectrumRGB.green,
-                b: execution.params.color.spectrumRGB.blue
-              };
+            if (typeof execution.params.color.spectrumRgb === 'number') {
+              cstate.color.spectrumRgb = execution.params.color.spectrumRgb;
+              // r: execution.params.color.spectrumRGB.red,
+              // g: execution.params.color.spectrumRGB.green,
+              // b: execution.params.color.spectrumRGB.blue
+              // };
               send = true;
             }
             if (execution.params.color.temperatureK) {
@@ -78,6 +79,7 @@ export class ExecuteService {
               send = true;
             }
             if (send) {
+              console.log(`updateDeviceState:`, cstate);
               this.devices.updateDevicesState(deviceIds, cstate, updateOptions);
             }
             break;

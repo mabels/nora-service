@@ -1,6 +1,6 @@
 import { BaseDevice } from './device';
 import { BrightnessState } from './states/brightness';
-import { ColorHSV, ColorHue, ColorRGB, ColorTemperature } from './states/color';
+import { ColorHue, ColorTemperature } from './states/color';
 import { OnOffState } from './states/onoff';
 
 export type LightDevice = BaseDevice & {
@@ -12,9 +12,10 @@ export type LightDevice = BaseDevice & {
     colorControlTemperature?: { minK: number; maxK: number };
     state: BrightnessState & {
         color?: ColorTemperature & {
-            HSV?: ColorHSV;
+            spectrumRgb?: number;
+            // HSV?: ColorHSV;
             spectrumHsv?: ColorHue;
-            RGB?: ColorRGB;
+            // RGB?: ColorRGB;
         };
     } & OnOffState;
 };
