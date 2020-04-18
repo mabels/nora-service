@@ -1,6 +1,6 @@
 import { BlindsDevice } from './blinds';
 import { GarageDevice } from './garage';
-import { LightDevice, LightDeviceWithBrightness, LightDeviceWithColorHSV, LightDeviceWithColorRGB } from './light';
+import { LightDevice } from './light';
 import { LockDevice } from './lock';
 import { OutletDevice } from './outlet';
 import { SceneDevice } from './scene';
@@ -12,8 +12,7 @@ export interface Devices {
     [id: string]: Device;
 }
 
-export type Device = SwitchDevice | LightDevice | LightDeviceWithBrightness |
-    LightDeviceWithColorRGB | LightDeviceWithColorHSV | SceneDevice | OutletDevice | ThermostatDevice |
+export type Device = SwitchDevice | LightDevice | SceneDevice | OutletDevice | ThermostatDevice |
     SpeakerDevice | BlindsDevice | GarageDevice | LockDevice;
 
 export type AllStates = Device['state'];

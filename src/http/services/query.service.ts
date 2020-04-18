@@ -44,9 +44,9 @@ export class QueryService {
                     state.color = {
                         ...state.color,
                         spectrumHSV: {
-                            hue: device.state.HSV.h,
-                            saturation: device.state.HSV.s,
-                            value: device.state.HSV.v,
+                            hue: device.state.color.HSV.h,
+                            saturation: device.state.color.HSV.s,
+                            value: device.state.color.HSV.v,
                         },
                     };
                 }
@@ -54,14 +54,14 @@ export class QueryService {
                     state.color = {
                         ...state.color,
                         spectrumRGB: {
-                            red: device.state.RGB.r,
-                            green: device.state.RGB.g,
-                            blue: device.state.RGB.b,
+                            red: device.state.color.RGB.r,
+                            green: device.state.color.RGB.g,
+                            blue: device.state.color.RGB.b,
                         },
                     };
                 }
                 if (isLightWithColorControlTemperature(device)) {
-                    state.color = { ...state.color, temperatureK: device.state.temperatureK };
+                    state.color = { ...state.color, temperatureK: device.state.color.temperatureK };
                 }
                 break;
             case 'thermostat':

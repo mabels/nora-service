@@ -234,225 +234,6 @@
                 "additionalProperties": false,
                 "properties": {
                     "brightnessControl": {
-                        "enum": [
-                            false
-                        ],
-                        "type": "boolean"
-                    },
-                    "colorControl": {
-                        "type": "boolean"
-                    },
-                    "colorControlModel": {
-                        "enum": [
-                            "hsv",
-                            "none",
-                            "rgb"
-                        ],
-                        "type": "string"
-                    },
-                    "colorControlTemperature": {
-                        "additionalProperties": false,
-                        "properties": {
-                            "maxK": {
-                                "type": "number"
-                            },
-                            "minK": {
-                                "type": "number"
-                            }
-                        },
-                        "required": [
-                            "maxK",
-                            "minK"
-                        ],
-                        "type": "object"
-                    },
-                    "name": {
-                        "type": "string"
-                    },
-                    "nicknames": {
-                        "items": {
-                            "type": "string"
-                        },
-                        "type": "array"
-                    },
-                    "roomHint": {
-                        "type": "string"
-                    },
-                    "state": {
-                        "$ref": "#/definitions/OnOffState"
-                    },
-                    "type": {
-                        "enum": [
-                            "light"
-                        ],
-                        "type": "string"
-                    }
-                },
-                "required": [
-                    "brightnessControl",
-                    "name",
-                    "state",
-                    "type"
-                ],
-                "type": "object"
-            },
-            {
-                "additionalProperties": false,
-                "properties": {
-                    "brightnessControl": {
-                        "enum": [
-                            false
-                        ],
-                        "type": "boolean"
-                    },
-                    "colorControl": {
-                        "type": "boolean"
-                    },
-                    "colorControlModel": {
-                        "enum": [
-                            "hsv",
-                            "none",
-                            "rgb"
-                        ],
-                        "type": "string"
-                    },
-                    "colorControlTemperature": {
-                        "additionalProperties": false,
-                        "properties": {
-                            "maxK": {
-                                "type": "number"
-                            },
-                            "minK": {
-                                "type": "number"
-                            }
-                        },
-                        "required": [
-                            "maxK",
-                            "minK"
-                        ],
-                        "type": "object"
-                    },
-                    "name": {
-                        "type": "string"
-                    },
-                    "nicknames": {
-                        "items": {
-                            "type": "string"
-                        },
-                        "type": "array"
-                    },
-                    "roomHint": {
-                        "type": "string"
-                    },
-                    "state": {
-                        "$ref": "#/definitions/OnOffState"
-                    },
-                    "twoFactor": {
-                        "enum": [
-                            "ack"
-                        ],
-                        "type": "string"
-                    },
-                    "type": {
-                        "enum": [
-                            "light"
-                        ],
-                        "type": "string"
-                    }
-                },
-                "required": [
-                    "brightnessControl",
-                    "name",
-                    "state",
-                    "twoFactor",
-                    "type"
-                ],
-                "type": "object"
-            },
-            {
-                "additionalProperties": false,
-                "properties": {
-                    "brightnessControl": {
-                        "enum": [
-                            false
-                        ],
-                        "type": "boolean"
-                    },
-                    "colorControl": {
-                        "type": "boolean"
-                    },
-                    "colorControlModel": {
-                        "enum": [
-                            "hsv",
-                            "none",
-                            "rgb"
-                        ],
-                        "type": "string"
-                    },
-                    "colorControlTemperature": {
-                        "additionalProperties": false,
-                        "properties": {
-                            "maxK": {
-                                "type": "number"
-                            },
-                            "minK": {
-                                "type": "number"
-                            }
-                        },
-                        "required": [
-                            "maxK",
-                            "minK"
-                        ],
-                        "type": "object"
-                    },
-                    "name": {
-                        "type": "string"
-                    },
-                    "nicknames": {
-                        "items": {
-                            "type": "string"
-                        },
-                        "type": "array"
-                    },
-                    "pin": {
-                        "type": "string"
-                    },
-                    "roomHint": {
-                        "type": "string"
-                    },
-                    "state": {
-                        "$ref": "#/definitions/OnOffState"
-                    },
-                    "twoFactor": {
-                        "enum": [
-                            "pin"
-                        ],
-                        "type": "string"
-                    },
-                    "type": {
-                        "enum": [
-                            "light"
-                        ],
-                        "type": "string"
-                    }
-                },
-                "required": [
-                    "brightnessControl",
-                    "name",
-                    "pin",
-                    "state",
-                    "twoFactor",
-                    "type"
-                ],
-                "type": "object"
-            },
-            {
-                "additionalProperties": false,
-                "properties": {
-                    "brightnessControl": {
-                        "enum": [
-                            true
-                        ],
                         "type": "boolean"
                     },
                     "colorControl": {
@@ -501,6 +282,26 @@
                                 "maximum": 100,
                                 "minimum": 0,
                                 "type": "number"
+                            },
+                            "color": {
+                                "additionalProperties": false,
+                                "properties": {
+                                    "HSV": {
+                                        "$ref": "#/definitions/ColorHSV"
+                                    },
+                                    "RGB": {
+                                        "$ref": "#/definitions/ColorRGB"
+                                    },
+                                    "spectrumHsv": {
+                                        "$ref": "#/definitions/ColorHue"
+                                    },
+                                    "temperatureK": {
+                                        "maximum": 6000,
+                                        "minimum": 2000,
+                                        "type": "number"
+                                    }
+                                },
+                                "type": "object"
                             },
                             "on": {
                                 "type": "boolean"
@@ -516,6 +317,9 @@
                         ],
                         "type": "object"
                     },
+                    "turnOnWhenBrightnessChanges": {
+                        "type": "boolean"
+                    },
                     "type": {
                         "enum": [
                             "light"
@@ -535,9 +339,6 @@
                 "additionalProperties": false,
                 "properties": {
                     "brightnessControl": {
-                        "enum": [
-                            true
-                        ],
                         "type": "boolean"
                     },
                     "colorControl": {
@@ -587,6 +388,26 @@
                                 "minimum": 0,
                                 "type": "number"
                             },
+                            "color": {
+                                "additionalProperties": false,
+                                "properties": {
+                                    "HSV": {
+                                        "$ref": "#/definitions/ColorHSV"
+                                    },
+                                    "RGB": {
+                                        "$ref": "#/definitions/ColorRGB"
+                                    },
+                                    "spectrumHsv": {
+                                        "$ref": "#/definitions/ColorHue"
+                                    },
+                                    "temperatureK": {
+                                        "maximum": 6000,
+                                        "minimum": 2000,
+                                        "type": "number"
+                                    }
+                                },
+                                "type": "object"
+                            },
                             "on": {
                                 "type": "boolean"
                             },
@@ -600,6 +421,9 @@
                             "online"
                         ],
                         "type": "object"
+                    },
+                    "turnOnWhenBrightnessChanges": {
+                        "type": "boolean"
                     },
                     "twoFactor": {
                         "enum": [
@@ -627,9 +451,6 @@
                 "additionalProperties": false,
                 "properties": {
                     "brightnessControl": {
-                        "enum": [
-                            true
-                        ],
                         "type": "boolean"
                     },
                     "colorControl": {
@@ -682,6 +503,26 @@
                                 "minimum": 0,
                                 "type": "number"
                             },
+                            "color": {
+                                "additionalProperties": false,
+                                "properties": {
+                                    "HSV": {
+                                        "$ref": "#/definitions/ColorHSV"
+                                    },
+                                    "RGB": {
+                                        "$ref": "#/definitions/ColorRGB"
+                                    },
+                                    "spectrumHsv": {
+                                        "$ref": "#/definitions/ColorHue"
+                                    },
+                                    "temperatureK": {
+                                        "maximum": 6000,
+                                        "minimum": 2000,
+                                        "type": "number"
+                                    }
+                                },
+                                "type": "object"
+                            },
                             "on": {
                                 "type": "boolean"
                             },
@@ -696,304 +537,8 @@
                         ],
                         "type": "object"
                     },
-                    "twoFactor": {
-                        "enum": [
-                            "pin"
-                        ],
-                        "type": "string"
-                    },
-                    "type": {
-                        "enum": [
-                            "light"
-                        ],
-                        "type": "string"
-                    }
-                },
-                "required": [
-                    "brightnessControl",
-                    "name",
-                    "pin",
-                    "state",
-                    "twoFactor",
-                    "type"
-                ],
-                "type": "object"
-            },
-            {
-                "additionalProperties": false,
-                "properties": {
-                    "brightnessControl": {
-                        "enum": [
-                            true
-                        ],
+                    "turnOnWhenBrightnessChanges": {
                         "type": "boolean"
-                    },
-                    "colorControl": {
-                        "type": "boolean"
-                    },
-                    "colorControlModel": {
-                        "enum": [
-                            "rgb"
-                        ],
-                        "type": "string"
-                    },
-                    "colorControlTemperature": {
-                        "additionalProperties": false,
-                        "properties": {
-                            "maxK": {
-                                "type": "number"
-                            },
-                            "minK": {
-                                "type": "number"
-                            }
-                        },
-                        "required": [
-                            "maxK",
-                            "minK"
-                        ],
-                        "type": "object"
-                    },
-                    "name": {
-                        "type": "string"
-                    },
-                    "nicknames": {
-                        "items": {
-                            "type": "string"
-                        },
-                        "type": "array"
-                    },
-                    "roomHint": {
-                        "type": "string"
-                    },
-                    "state": {
-                        "additionalProperties": false,
-                        "properties": {
-                            "RGB": {
-                                "$ref": "#/definitions/ColorRGB"
-                            },
-                            "brightness": {
-                                "maximum": 100,
-                                "minimum": 0,
-                                "type": "number"
-                            },
-                            "on": {
-                                "type": "boolean"
-                            },
-                            "online": {
-                                "type": "boolean"
-                            },
-                            "temperatureK": {
-                                "maximum": 6000,
-                                "minimum": 2000,
-                                "type": "number"
-                            }
-                        },
-                        "required": [
-                            "RGB",
-                            "brightness",
-                            "on",
-                            "online",
-                            "temperatureK"
-                        ],
-                        "type": "object"
-                    },
-                    "type": {
-                        "enum": [
-                            "light"
-                        ],
-                        "type": "string"
-                    }
-                },
-                "required": [
-                    "brightnessControl",
-                    "colorControlModel",
-                    "name",
-                    "state",
-                    "type"
-                ],
-                "type": "object"
-            },
-            {
-                "additionalProperties": false,
-                "properties": {
-                    "brightnessControl": {
-                        "enum": [
-                            true
-                        ],
-                        "type": "boolean"
-                    },
-                    "colorControl": {
-                        "type": "boolean"
-                    },
-                    "colorControlModel": {
-                        "enum": [
-                            "rgb"
-                        ],
-                        "type": "string"
-                    },
-                    "colorControlTemperature": {
-                        "additionalProperties": false,
-                        "properties": {
-                            "maxK": {
-                                "type": "number"
-                            },
-                            "minK": {
-                                "type": "number"
-                            }
-                        },
-                        "required": [
-                            "maxK",
-                            "minK"
-                        ],
-                        "type": "object"
-                    },
-                    "name": {
-                        "type": "string"
-                    },
-                    "nicknames": {
-                        "items": {
-                            "type": "string"
-                        },
-                        "type": "array"
-                    },
-                    "roomHint": {
-                        "type": "string"
-                    },
-                    "state": {
-                        "additionalProperties": false,
-                        "properties": {
-                            "RGB": {
-                                "$ref": "#/definitions/ColorRGB"
-                            },
-                            "brightness": {
-                                "maximum": 100,
-                                "minimum": 0,
-                                "type": "number"
-                            },
-                            "on": {
-                                "type": "boolean"
-                            },
-                            "online": {
-                                "type": "boolean"
-                            },
-                            "temperatureK": {
-                                "maximum": 6000,
-                                "minimum": 2000,
-                                "type": "number"
-                            }
-                        },
-                        "required": [
-                            "RGB",
-                            "brightness",
-                            "on",
-                            "online",
-                            "temperatureK"
-                        ],
-                        "type": "object"
-                    },
-                    "twoFactor": {
-                        "enum": [
-                            "ack"
-                        ],
-                        "type": "string"
-                    },
-                    "type": {
-                        "enum": [
-                            "light"
-                        ],
-                        "type": "string"
-                    }
-                },
-                "required": [
-                    "brightnessControl",
-                    "colorControlModel",
-                    "name",
-                    "state",
-                    "twoFactor",
-                    "type"
-                ],
-                "type": "object"
-            },
-            {
-                "additionalProperties": false,
-                "properties": {
-                    "brightnessControl": {
-                        "enum": [
-                            true
-                        ],
-                        "type": "boolean"
-                    },
-                    "colorControl": {
-                        "type": "boolean"
-                    },
-                    "colorControlModel": {
-                        "enum": [
-                            "rgb"
-                        ],
-                        "type": "string"
-                    },
-                    "colorControlTemperature": {
-                        "additionalProperties": false,
-                        "properties": {
-                            "maxK": {
-                                "type": "number"
-                            },
-                            "minK": {
-                                "type": "number"
-                            }
-                        },
-                        "required": [
-                            "maxK",
-                            "minK"
-                        ],
-                        "type": "object"
-                    },
-                    "name": {
-                        "type": "string"
-                    },
-                    "nicknames": {
-                        "items": {
-                            "type": "string"
-                        },
-                        "type": "array"
-                    },
-                    "pin": {
-                        "type": "string"
-                    },
-                    "roomHint": {
-                        "type": "string"
-                    },
-                    "state": {
-                        "additionalProperties": false,
-                        "properties": {
-                            "RGB": {
-                                "$ref": "#/definitions/ColorRGB"
-                            },
-                            "brightness": {
-                                "maximum": 100,
-                                "minimum": 0,
-                                "type": "number"
-                            },
-                            "on": {
-                                "type": "boolean"
-                            },
-                            "online": {
-                                "type": "boolean"
-                            },
-                            "temperatureK": {
-                                "maximum": 6000,
-                                "minimum": 2000,
-                                "type": "number"
-                            }
-                        },
-                        "required": [
-                            "RGB",
-                            "brightness",
-                            "on",
-                            "online",
-                            "temperatureK"
-                        ],
-                        "type": "object"
                     },
                     "twoFactor": {
                         "enum": [
@@ -1010,307 +555,6 @@
                 },
                 "required": [
                     "brightnessControl",
-                    "colorControlModel",
-                    "name",
-                    "pin",
-                    "state",
-                    "twoFactor",
-                    "type"
-                ],
-                "type": "object"
-            },
-            {
-                "additionalProperties": false,
-                "properties": {
-                    "brightnessControl": {
-                        "enum": [
-                            true
-                        ],
-                        "type": "boolean"
-                    },
-                    "colorControl": {
-                        "type": "boolean"
-                    },
-                    "colorControlModel": {
-                        "enum": [
-                            "hsv"
-                        ],
-                        "type": "string"
-                    },
-                    "colorControlTemperature": {
-                        "additionalProperties": false,
-                        "properties": {
-                            "maxK": {
-                                "type": "number"
-                            },
-                            "minK": {
-                                "type": "number"
-                            }
-                        },
-                        "required": [
-                            "maxK",
-                            "minK"
-                        ],
-                        "type": "object"
-                    },
-                    "name": {
-                        "type": "string"
-                    },
-                    "nicknames": {
-                        "items": {
-                            "type": "string"
-                        },
-                        "type": "array"
-                    },
-                    "roomHint": {
-                        "type": "string"
-                    },
-                    "state": {
-                        "additionalProperties": false,
-                        "properties": {
-                            "HSV": {
-                                "$ref": "#/definitions/ColorHSV"
-                            },
-                            "brightness": {
-                                "maximum": 100,
-                                "minimum": 0,
-                                "type": "number"
-                            },
-                            "on": {
-                                "type": "boolean"
-                            },
-                            "online": {
-                                "type": "boolean"
-                            },
-                            "temperatureK": {
-                                "maximum": 6000,
-                                "minimum": 2000,
-                                "type": "number"
-                            }
-                        },
-                        "required": [
-                            "HSV",
-                            "brightness",
-                            "on",
-                            "online",
-                            "temperatureK"
-                        ],
-                        "type": "object"
-                    },
-                    "type": {
-                        "enum": [
-                            "light"
-                        ],
-                        "type": "string"
-                    }
-                },
-                "required": [
-                    "brightnessControl",
-                    "colorControlModel",
-                    "name",
-                    "state",
-                    "type"
-                ],
-                "type": "object"
-            },
-            {
-                "additionalProperties": false,
-                "properties": {
-                    "brightnessControl": {
-                        "enum": [
-                            true
-                        ],
-                        "type": "boolean"
-                    },
-                    "colorControl": {
-                        "type": "boolean"
-                    },
-                    "colorControlModel": {
-                        "enum": [
-                            "hsv"
-                        ],
-                        "type": "string"
-                    },
-                    "colorControlTemperature": {
-                        "additionalProperties": false,
-                        "properties": {
-                            "maxK": {
-                                "type": "number"
-                            },
-                            "minK": {
-                                "type": "number"
-                            }
-                        },
-                        "required": [
-                            "maxK",
-                            "minK"
-                        ],
-                        "type": "object"
-                    },
-                    "name": {
-                        "type": "string"
-                    },
-                    "nicknames": {
-                        "items": {
-                            "type": "string"
-                        },
-                        "type": "array"
-                    },
-                    "roomHint": {
-                        "type": "string"
-                    },
-                    "state": {
-                        "additionalProperties": false,
-                        "properties": {
-                            "HSV": {
-                                "$ref": "#/definitions/ColorHSV"
-                            },
-                            "brightness": {
-                                "maximum": 100,
-                                "minimum": 0,
-                                "type": "number"
-                            },
-                            "on": {
-                                "type": "boolean"
-                            },
-                            "online": {
-                                "type": "boolean"
-                            },
-                            "temperatureK": {
-                                "maximum": 6000,
-                                "minimum": 2000,
-                                "type": "number"
-                            }
-                        },
-                        "required": [
-                            "HSV",
-                            "brightness",
-                            "on",
-                            "online",
-                            "temperatureK"
-                        ],
-                        "type": "object"
-                    },
-                    "twoFactor": {
-                        "enum": [
-                            "ack"
-                        ],
-                        "type": "string"
-                    },
-                    "type": {
-                        "enum": [
-                            "light"
-                        ],
-                        "type": "string"
-                    }
-                },
-                "required": [
-                    "brightnessControl",
-                    "colorControlModel",
-                    "name",
-                    "state",
-                    "twoFactor",
-                    "type"
-                ],
-                "type": "object"
-            },
-            {
-                "additionalProperties": false,
-                "properties": {
-                    "brightnessControl": {
-                        "enum": [
-                            true
-                        ],
-                        "type": "boolean"
-                    },
-                    "colorControl": {
-                        "type": "boolean"
-                    },
-                    "colorControlModel": {
-                        "enum": [
-                            "hsv"
-                        ],
-                        "type": "string"
-                    },
-                    "colorControlTemperature": {
-                        "additionalProperties": false,
-                        "properties": {
-                            "maxK": {
-                                "type": "number"
-                            },
-                            "minK": {
-                                "type": "number"
-                            }
-                        },
-                        "required": [
-                            "maxK",
-                            "minK"
-                        ],
-                        "type": "object"
-                    },
-                    "name": {
-                        "type": "string"
-                    },
-                    "nicknames": {
-                        "items": {
-                            "type": "string"
-                        },
-                        "type": "array"
-                    },
-                    "pin": {
-                        "type": "string"
-                    },
-                    "roomHint": {
-                        "type": "string"
-                    },
-                    "state": {
-                        "additionalProperties": false,
-                        "properties": {
-                            "HSV": {
-                                "$ref": "#/definitions/ColorHSV"
-                            },
-                            "brightness": {
-                                "maximum": 100,
-                                "minimum": 0,
-                                "type": "number"
-                            },
-                            "on": {
-                                "type": "boolean"
-                            },
-                            "online": {
-                                "type": "boolean"
-                            },
-                            "temperatureK": {
-                                "maximum": 6000,
-                                "minimum": 2000,
-                                "type": "number"
-                            }
-                        },
-                        "required": [
-                            "HSV",
-                            "brightness",
-                            "on",
-                            "online",
-                            "temperatureK"
-                        ],
-                        "type": "object"
-                    },
-                    "twoFactor": {
-                        "enum": [
-                            "pin"
-                        ],
-                        "type": "string"
-                    },
-                    "type": {
-                        "enum": [
-                            "light"
-                        ],
-                        "type": "string"
-                    }
-                },
-                "required": [
-                    "brightnessControl",
-                    "colorControlModel",
                     "name",
                     "pin",
                     "state",
@@ -2183,7 +1427,7 @@
                         "type": "string"
                     },
                     "state": {
-                        "$ref": "#/definitions/Partial<Thermostat>"
+                        "$ref": "#/definitions/Thermostat"
                     },
                     "temperatureUnit": {
                         "enum": [
@@ -2421,7 +1665,7 @@
                         "type": "string"
                     },
                     "state": {
-                        "$ref": "#/definitions/Partial<Thermostat>"
+                        "$ref": "#/definitions/Thermostat"
                     },
                     "temperatureUnit": {
                         "enum": [
@@ -2677,7 +1921,7 @@
                         "type": "string"
                     },
                     "state": {
-                        "$ref": "#/definitions/Partial<Thermostat>"
+                        "$ref": "#/definitions/Thermostat"
                     },
                     "temperatureUnit": {
                         "enum": [
@@ -2737,6 +1981,32 @@
                 "h",
                 "s",
                 "v"
+            ],
+            "type": "object"
+        },
+        "ColorHue": {
+            "additionalProperties": false,
+            "properties": {
+                "hue": {
+                    "maximum": 360,
+                    "minimum": 0,
+                    "type": "number"
+                },
+                "saturation": {
+                    "maximum": 1,
+                    "minimum": 0,
+                    "type": "number"
+                },
+                "value": {
+                    "maximum": 1,
+                    "minimum": 0,
+                    "type": "number"
+                }
+            },
+            "required": [
+                "hue",
+                "saturation",
+                "value"
             ],
             "type": "object"
         },
@@ -2818,48 +2088,6 @@
                 "online",
                 "openPercent"
             ],
-            "type": "object"
-        },
-        "Partial<Thermostat>": {
-            "additionalProperties": false,
-            "description": "Make all properties in T optional",
-            "properties": {
-                "online": {
-                    "type": "boolean"
-                },
-                "thermostatHumidityAmbient": {
-                    "maximum": 100,
-                    "minimum": 0,
-                    "type": "number"
-                },
-                "thermostatMode": {
-                    "enum": [
-                        "auto",
-                        "cool",
-                        "dry",
-                        "eco",
-                        "fan-only",
-                        "heat",
-                        "heatcool",
-                        "off",
-                        "on",
-                        "purifier"
-                    ],
-                    "type": "string"
-                },
-                "thermostatTemperatureAmbient": {
-                    "type": "number"
-                },
-                "thermostatTemperatureSetpoint": {
-                    "type": "number"
-                },
-                "thermostatTemperatureSetpointHigh": {
-                    "type": "number"
-                },
-                "thermostatTemperatureSetpointLow": {
-                    "type": "number"
-                }
-            },
             "type": "object"
         },
         "State": {

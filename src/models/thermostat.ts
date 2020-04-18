@@ -20,7 +20,7 @@ interface CommandOnlyThermostat {
 }
 
 interface QueryOnlyThermostat {
-    state: Partial<Thermostat>;
+    state: Thermostat;
     queryOnlyTemperatureSetting: true;
 }
 

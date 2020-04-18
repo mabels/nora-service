@@ -18,19 +18,10 @@
                 "$ref": "#/definitions/Partial<Thermostat>"
             },
             {
-                "$ref": "#/definitions/Partial<OnOffState&BrightnessState>"
-            },
-            {
-                "$ref": "#/definitions/Partial<OnOffState&BrightnessState&ColorTemperature&{RGB:ColorRGB;}>"
-            },
-            {
-                "$ref": "#/definitions/Partial<OnOffState&BrightnessState&ColorTemperature&{HSV:ColorHSV;}>"
+                "$ref": "#/definitions/Partial<BrightnessState&{color?:(ColorTemperature&{HSV?:ColorHSV|undefined;spectrumHsv?:ColorHue|undefined;RGB?:ColorRGB|undefined;})|undefined;}&OnOffState>"
             },
             {
                 "$ref": "#/definitions/Partial<VolumeState&OnOffState>"
-            },
-            {
-                "$ref": "#/definitions/Partial<Partial<Thermostat>>"
             }
         ]
     },
@@ -61,6 +52,32 @@
             ],
             "type": "object"
         },
+        "ColorHue": {
+            "additionalProperties": false,
+            "properties": {
+                "hue": {
+                    "maximum": 360,
+                    "minimum": 0,
+                    "type": "number"
+                },
+                "saturation": {
+                    "maximum": 1,
+                    "minimum": 0,
+                    "type": "number"
+                },
+                "value": {
+                    "maximum": 1,
+                    "minimum": 0,
+                    "type": "number"
+                }
+            },
+            "required": [
+                "hue",
+                "saturation",
+                "value"
+            ],
+            "type": "object"
+        },
         "ColorRGB": {
             "additionalProperties": false,
             "properties": {
@@ -87,6 +104,43 @@
             ],
             "type": "object"
         },
+        "Partial<BrightnessState&{color?:(ColorTemperature&{HSV?:ColorHSV|undefined;spectrumHsv?:ColorHue|undefined;RGB?:ColorRGB|undefined;})|undefined;}&OnOffState>": {
+            "additionalProperties": false,
+            "properties": {
+                "brightness": {
+                    "maximum": 100,
+                    "minimum": 0,
+                    "type": "number"
+                },
+                "color": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "HSV": {
+                            "$ref": "#/definitions/ColorHSV"
+                        },
+                        "RGB": {
+                            "$ref": "#/definitions/ColorRGB"
+                        },
+                        "spectrumHsv": {
+                            "$ref": "#/definitions/ColorHue"
+                        },
+                        "temperatureK": {
+                            "maximum": 6000,
+                            "minimum": 2000,
+                            "type": "number"
+                        }
+                    },
+                    "type": "object"
+                },
+                "on": {
+                    "type": "boolean"
+                },
+                "online": {
+                    "type": "boolean"
+                }
+            },
+            "type": "object"
+        },
         "Partial<LockUnlockState>": {
             "additionalProperties": false,
             "properties": {
@@ -94,73 +148,6 @@
                     "type": "boolean"
                 },
                 "isLocked": {
-                    "type": "boolean"
-                },
-                "online": {
-                    "type": "boolean"
-                }
-            },
-            "type": "object"
-        },
-        "Partial<OnOffState&BrightnessState&ColorTemperature&{HSV:ColorHSV;}>": {
-            "additionalProperties": false,
-            "properties": {
-                "HSV": {
-                    "$ref": "#/definitions/ColorHSV"
-                },
-                "brightness": {
-                    "maximum": 100,
-                    "minimum": 0,
-                    "type": "number"
-                },
-                "on": {
-                    "type": "boolean"
-                },
-                "online": {
-                    "type": "boolean"
-                },
-                "temperatureK": {
-                    "maximum": 6000,
-                    "minimum": 2000,
-                    "type": "number"
-                }
-            },
-            "type": "object"
-        },
-        "Partial<OnOffState&BrightnessState&ColorTemperature&{RGB:ColorRGB;}>": {
-            "additionalProperties": false,
-            "properties": {
-                "RGB": {
-                    "$ref": "#/definitions/ColorRGB"
-                },
-                "brightness": {
-                    "maximum": 100,
-                    "minimum": 0,
-                    "type": "number"
-                },
-                "on": {
-                    "type": "boolean"
-                },
-                "online": {
-                    "type": "boolean"
-                },
-                "temperatureK": {
-                    "maximum": 6000,
-                    "minimum": 2000,
-                    "type": "number"
-                }
-            },
-            "type": "object"
-        },
-        "Partial<OnOffState&BrightnessState>": {
-            "additionalProperties": false,
-            "properties": {
-                "brightness": {
-                    "maximum": 100,
-                    "minimum": 0,
-                    "type": "number"
-                },
-                "on": {
                     "type": "boolean"
                 },
                 "online": {
@@ -190,47 +177,6 @@
                 "openPercent": {
                     "maximum": 100,
                     "minimum": 0,
-                    "type": "number"
-                }
-            },
-            "type": "object"
-        },
-        "Partial<Partial<Thermostat>>": {
-            "additionalProperties": false,
-            "properties": {
-                "online": {
-                    "type": "boolean"
-                },
-                "thermostatHumidityAmbient": {
-                    "maximum": 100,
-                    "minimum": 0,
-                    "type": "number"
-                },
-                "thermostatMode": {
-                    "enum": [
-                        "auto",
-                        "cool",
-                        "dry",
-                        "eco",
-                        "fan-only",
-                        "heat",
-                        "heatcool",
-                        "off",
-                        "on",
-                        "purifier"
-                    ],
-                    "type": "string"
-                },
-                "thermostatTemperatureAmbient": {
-                    "type": "number"
-                },
-                "thermostatTemperatureSetpoint": {
-                    "type": "number"
-                },
-                "thermostatTemperatureSetpointHigh": {
-                    "type": "number"
-                },
-                "thermostatTemperatureSetpointLow": {
                     "type": "number"
                 }
             },

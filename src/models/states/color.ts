@@ -5,7 +5,7 @@ export interface ColorTemperature {
      * @minimum 2000
      * @maximum 6000
      */
-    temperatureK: number;
+    temperatureK?: number;
 }
 
 export interface ColorRGB {
