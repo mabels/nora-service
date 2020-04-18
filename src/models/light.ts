@@ -7,7 +7,7 @@ export type LightDevice = BaseDevice & {
     type: 'light';
     brightnessControl: false;
     colorControl?: boolean;
-    colorControlModel: 'none' | 'rgb' | 'hsv';
+    colorControlModel?: 'none' | 'rgb' | 'hsv';
     colorControlTemperature?: { minK: number, maxK: number };
     state: OnOffState;
 };

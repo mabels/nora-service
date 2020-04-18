@@ -290,7 +290,6 @@
                 },
                 "required": [
                     "brightnessControl",
-                    "colorControlModel",
                     "name",
                     "state",
                     "type"
@@ -363,7 +362,6 @@
                 },
                 "required": [
                     "brightnessControl",
-                    "colorControlModel",
                     "name",
                     "state",
                     "twoFactor",
@@ -440,7 +438,6 @@
                 },
                 "required": [
                     "brightnessControl",
-                    "colorControlModel",
                     "name",
                     "pin",
                     "state",
