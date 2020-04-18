@@ -51,10 +51,11 @@ export class DevicesRepository {
         @Inject(RequestSyncService)
         private requestSyncService: RequestSyncService,
     ) {
-
+    	this.log.info('DevicesRepositoryForUid:', uid);
     }
 
     async sync(devices: Devices, group: string) {
+    	this.log.info('devices.repository:', group);
         const oldDevices = this.getDevicesInternal(group);
 
         const existingDevices = this.getSyncCompareDevices(oldDevices);
@@ -93,14 +94,17 @@ export class DevicesRepository {
     }
 
     userOnline(group: string, version: string = 'unknown') {
+    	this.log.info('devices.repository:userOnline:', group);
         return new Observable<void>(() => {
             let onlineGroups = DevicesRepository.onlineUsers[this.uid];
+    	    this.log.info('devices.repository.userOnline:', this.uid, group, onlineGroups);
             if (!onlineGroups) {
                 DevicesRepository.onlineUsers[this.uid] = onlineGroups = {};
             }
             onlineGroups[group] = version;
 
             return () => {
+    	    	this.log.info('devices.repository:userOnline:delete:', this.uid, group, onlineGroups);
                 delete onlineGroups[group];
                 if (Object.keys(onlineGroups).length === 0) {
                     delete DevicesRepository.onlineUsers[this.uid];
@@ -120,6 +124,7 @@ export class DevicesRepository {
         changes: Partial<AllStates> | ((device: Device) => Partial<AllStates>),
         { notifyClient = false, requestId, group }: { notifyClient?: boolean, requestId?: string, group?: string } = {}
     ) {
+        console.log('updateDevicesState:', group);
         const groupDevices = this.getDevicesInternal(group);
         const stateChanges: StateChanges = {};
         const notiyClientChanges: StateChanges = {};
@@ -155,6 +160,7 @@ export class DevicesRepository {
     }
 
     getDeviceIdsInGroup(group: string) {
+    	console.log('getDeviceIdsInGroup:', this.uid, group);
         const userDevices = DevicesRepository.devicesPerUser[this.uid] || {};
         const groupDevices = userDevices[group] || [];
         return Object.keys(groupDevices);

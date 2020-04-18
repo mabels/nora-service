@@ -311,7 +311,6 @@
                             }
                         },
                         "required": [
-                            "brightness",
                             "on",
                             "online"
                         ],
@@ -416,7 +415,6 @@
                             }
                         },
                         "required": [
-                            "brightness",
                             "on",
                             "online"
                         ],
@@ -531,7 +529,6 @@
                             }
                         },
                         "required": [
-                            "brightness",
                             "on",
                             "online"
                         ],

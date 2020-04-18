@@ -14,7 +14,7 @@ export class ValidationService {
 
         const valid = validator(object);
         if (!valid) {
-            throw new Error(`invalid object for ${schemaName}:${this.ajv.errorsText()}`);
+	throw new Error(`invalid object for ${schemaName}:${this.ajv.errors}:${JSON.stringify(object)}`);
         }
     }
 }

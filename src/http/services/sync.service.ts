@@ -21,6 +21,7 @@ export class SyncService {
         const devices = this.devices.getAllDevices();
         this.reportState(requestId, devices);
         const syncDevices = this.devicesToSync(devices);
+	console.log('sync', syncDevices);
         return {
             agentUserId: this.uid,
             devices: syncDevices,
