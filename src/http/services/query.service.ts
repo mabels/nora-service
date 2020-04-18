@@ -1,18 +1,17 @@
 import { Inject } from '@andrei-tatar/ts-ioc';
 import { QueryDevice, QueryDevices, QueryInput, QueryPayload } from '../../google';
 import { Device } from '../../models';
+import { isLightWithBrightness, isLightWithColorControlTemperature, isLightWithColorHSV, isLightWithColorRGB } from '../../models/light';
 import { DevicesRepository } from '../../services/devices.repository';
 
 export class QueryService {
-
     constructor(
         @Inject(DevicesRepository)
         private devices: DevicesRepository,
-    ) {
-    }
+    ) {}
 
     query(input: QueryInput): QueryPayload {
-        const queryIds = input.payload.devices.map(d => d.id);
+        const queryIds = input.payload.devices.map((d) => d.id);
         const userDevices = this.devices.getDevicesById(queryIds);
         const devices: QueryDevices = {};
         for (const [index, device] of userDevices.entries()) {
@@ -38,11 +37,31 @@ export class QueryService {
                 break;
             case 'light':
                 state.on = device.state.on;
-                if (device.brightnessControl) {
+                if (isLightWithBrightness(device)) {
                     state.brightness = device.state.brightness || 100;
                 }
-                if (device.colorControl) {
-                    state.color = device.state.color;
+                if (isLightWithColorHSV(device)) {
+                    state.color = {
+                        ...state.color,
+                        spectrumHSV: {
+                            hue: device.state.HSV.h,
+                            saturation: device.state.HSV.s,
+                            value: device.state.HSV.v,
+                        },
+                    };
+                }
+                if (isLightWithColorRGB(device)) {
+                    state.color = {
+                        ...state.color,
+                        spectrumRGB: {
+                            red: device.state.RGB.r,
+                            green: device.state.RGB.g,
+                            blue: device.state.RGB.b,
+                        },
+                    };
+                }
+                if (isLightWithColorControlTemperature(device)) {
+                    state.color = { ...state.color, temperatureK: device.state.temperatureK };
                 }
                 break;
             case 'thermostat':

@@ -57,9 +57,20 @@ export class SyncService {
                     if (device.brightnessControl) {
                         sync.traits.push(Traits.Brightness);
                     }
-                    if (device.colorControl) {
-                        sync.traits.push(Traits.ColorSetting);
-                        sync.attributes = { colorModel: 'hsv' };
+                    sync.attributes = {};
+                    switch (device.colorControlModel) {
+                        case 'none':
+                            break;
+                        case 'hsv':
+                        case 'rgb':
+                            sync.traits.push(Traits.ColorSetting);
+                            sync.attributes.colorModel = device.colorControlModel;
+                            break;
+                    }
+                    if (device.colorControlTemperature) {
+                        sync.attributes.colorTemperatureRange = {
+                            ...device.colorControlTemperature
+                        };
                     }
                     break;
                 case 'scene':

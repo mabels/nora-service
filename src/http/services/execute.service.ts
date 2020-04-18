@@ -74,7 +74,7 @@ export class ExecuteService {
               send = true;
             }
             if (execution.params.color.temperatureK) {
-              cstate.color.temperature = execution.params.color.temperatureK;
+              cstate.color.temperatureK = execution.params.color.temperatureK;
               send = true;
             }
             if (send) {
