@@ -239,6 +239,9 @@
                         ],
                         "type": "boolean"
                     },
+                    "colorControl": {
+                        "type": "boolean"
+                    },
                     "colorControlModel": {
                         "enum": [
                             "hsv",
@@ -303,6 +306,9 @@
                         ],
                         "type": "boolean"
                     },
+                    "colorControl": {
+                        "type": "boolean"
+                    },
                     "colorControlModel": {
                         "enum": [
                             "hsv",
@@ -374,6 +380,9 @@
                         ],
                         "type": "boolean"
                     },
+                    "colorControl": {
+                        "type": "boolean"
+                    },
                     "colorControlModel": {
                         "enum": [
                             "hsv",
@@ -449,6 +458,9 @@
                         ],
                         "type": "boolean"
                     },
+                    "colorControl": {
+                        "type": "boolean"
+                    },
                     "colorControlModel": {
                         "enum": [
                             "none"
@@ -528,6 +540,9 @@
                         "enum": [
                             true
                         ],
+                        "type": "boolean"
+                    },
+                    "colorControl": {
                         "type": "boolean"
                     },
                     "colorControlModel": {
@@ -616,6 +631,9 @@
                         "enum": [
                             true
                         ],
+                        "type": "boolean"
+                    },
+                    "colorControl": {
                         "type": "boolean"
                     },
                     "colorControlModel": {
@@ -710,6 +728,9 @@
                         ],
                         "type": "boolean"
                     },
+                    "colorControl": {
+                        "type": "boolean"
+                    },
                     "colorControlModel": {
                         "enum": [
                             "rgb"
@@ -799,6 +820,9 @@
                         "enum": [
                             true
                         ],
+                        "type": "boolean"
+                    },
+                    "colorControl": {
                         "type": "boolean"
                     },
                     "colorControlModel": {
@@ -897,6 +921,9 @@
                         "enum": [
                             true
                         ],
+                        "type": "boolean"
+                    },
+                    "colorControl": {
                         "type": "boolean"
                     },
                     "colorControlModel": {
@@ -999,6 +1026,9 @@
                         "enum": [
                             true
                         ],
+                        "type": "boolean"
+                    },
+                    "colorControl": {
                         "type": "boolean"
                     },
                     "colorControlModel": {
@@ -1092,6 +1122,9 @@
                         ],
                         "type": "boolean"
                     },
+                    "colorControl": {
+                        "type": "boolean"
+                    },
                     "colorControlModel": {
                         "enum": [
                             "hsv"
@@ -1188,6 +1221,9 @@
                         "enum": [
                             true
                         ],
+                        "type": "boolean"
+                    },
+                    "colorControl": {
                         "type": "boolean"
                     },
                     "colorControlModel": {

@@ -6,6 +6,7 @@ import { OnOffState } from './states/onoff';
 export type LightDevice = BaseDevice & {
     type: 'light';
     brightnessControl: false;
+    colorControl?: boolean;
     colorControlModel: 'none' | 'rgb' | 'hsv';
     colorControlTemperature?: { minK: number, maxK: number };
     state: OnOffState;
@@ -49,5 +50,5 @@ export type LightDeviceWithColorHSV = LightDevice & {
 }
 
 export function isLightWithColorHSV(dev: LightDevice): dev is LightDeviceWithColorHSV {
-    return dev.colorControlModel === 'hsv';
+    return dev.colorControlModel === 'hsv' || !!dev.colorControl;
 }
