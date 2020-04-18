@@ -460,7 +460,9 @@
                     },
                     "colorControlModel": {
                         "enum": [
-                            "none"
+                            "hsv",
+                            "none",
+                            "rgb"
                         ],
                         "type": "string"
                     },
@@ -523,7 +525,6 @@
                 },
                 "required": [
                     "brightnessControl",
-                    "colorControlModel",
                     "name",
                     "state",
                     "type"
@@ -544,7 +545,9 @@
                     },
                     "colorControlModel": {
                         "enum": [
-                            "none"
+                            "hsv",
+                            "none",
+                            "rgb"
                         ],
                         "type": "string"
                     },
@@ -613,7 +616,6 @@
                 },
                 "required": [
                     "brightnessControl",
-                    "colorControlModel",
                     "name",
                     "state",
                     "twoFactor",
@@ -635,7 +637,9 @@
                     },
                     "colorControlModel": {
                         "enum": [
-                            "none"
+                            "hsv",
+                            "none",
+                            "rgb"
                         ],
                         "type": "string"
                     },
@@ -707,7 +711,6 @@
                 },
                 "required": [
                     "brightnessControl",
-                    "colorControlModel",
                     "name",
                     "pin",
                     "state",

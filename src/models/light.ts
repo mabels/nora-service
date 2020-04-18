@@ -14,7 +14,6 @@ export type LightDevice = BaseDevice & {
 
 export type LightDeviceWithBrightness = LightDevice & {
     brightnessControl: true;
-    colorControlModel: 'none';
     state: BrightnessState & OnOffState;
 };
 
