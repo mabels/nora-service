@@ -59,14 +59,13 @@ export class SyncService {
                         sync.traits.push(Traits.Brightness);
                     }
                     sync.attributes = {};
-                    switch (device.colorControlModel) {
-                        case 'none':
-                            break;
-                        case 'hsv':
-                        case 'rgb':
-                            sync.traits.push(Traits.ColorSetting);
-                            sync.attributes.colorModel = device.colorControlModel;
-                            break;
+                    if (device.colorControl || device.colorControlModel === 'hsv') {
+                        sync.traits.push(Traits.ColorSetting);
+                        sync.attributes.colorModel = 'hsv';
+                    }
+                    if (device.colorControlModel === 'rgb') {
+                        sync.traits.push(Traits.ColorSetting);
+                        sync.attributes.colorModel = 'rgb';
                     }
                     if (device.colorControlTemperature) {
                         sync.attributes.colorTemperatureRange = {
